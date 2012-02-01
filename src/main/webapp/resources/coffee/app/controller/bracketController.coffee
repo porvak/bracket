@@ -21,7 +21,6 @@ define [
             @fetchFail()
 
     writeBracket:->
-      alert('hello')
       @collection.each((team, i) => @contentNode?.append("<h5>" + team?.get("teamName") + "</h5>"))
 
     fetchFail:->

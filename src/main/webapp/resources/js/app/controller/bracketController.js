@@ -24,7 +24,6 @@
         }) : void 0;
       },
       writeBracket: function() {
-        alert('hello');
         return this.collection.each(__bind(function(team, i) {
           var _ref;
           return (_ref = this.contentNode) != null ? _ref.append("<h5>" + (team != null ? team.get("teamName") : void 0) + "</h5>") : void 0;
