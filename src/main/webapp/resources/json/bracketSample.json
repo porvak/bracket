@@ -1,0 +1,38 @@
+[
+    {
+        "teamName":"Duke",
+        "mascot":"Blue Devils",
+        "id":1,
+        "region":"south",
+        "state":"North Carolina",
+        "city":"Charlotte",
+        "seed":1,
+        "home":true,
+        "score":87,
+        "gameId":3
+    },
+    {
+        "teamName":"Hamptom",
+        "mascot":"Blue Devils",
+        "id":2,
+        "region":"south",
+        "state":"North Carolina",
+        "city":"Charlotte",
+        "seed":2,
+        "home":false,
+        "score":87,
+        "gameId":3
+    },
+    {
+        "teamName":"Long Island",
+        "mascot":"Blue Devils",
+        "id":3,
+        "region":"south",
+        "state":"North Carolina",
+        "city":"Charlotte",
+        "seed":3,
+        "home":false,
+        "score":87,
+        "gameId":4
+    }
+]

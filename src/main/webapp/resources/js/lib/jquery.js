@@ -1,3 +1,5 @@
-define(['lib/orderLoad'], function () {
+(function() {
+  define(['lib/orderLoad'], function() {
     return $;
-});
+  });
+}).call(this);

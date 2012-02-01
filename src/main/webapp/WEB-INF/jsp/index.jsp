@@ -8,7 +8,7 @@
 <body>
 <h4>Bracket App</h4>
 
-<div id="content-wrapper"></div>
+<div id="content"></div>
 
 <script type="text/javascript">
 

@@ -1,0 +1,2 @@
+define ['lib/orderLoad'], ->
+  less
