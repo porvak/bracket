@@ -5,7 +5,7 @@ define [
 ], (Backbone, jsonUri, $) ->
   {
     construct:->
-      @contentNode = $("#content")
+      @contentNode = $("#bracketNode")
       @collection = new Backbone.Collection
       @collection.url = jsonUri.teams
 
@@ -21,7 +21,7 @@ define [
             @fetchFail()
 
     writeBracket:->
-      @collection.each((team, i) => @contentNode?.append("<h5>" + team?.get("teamName") + "</h5>"))
+      @collection.each((team, i) => @contentNode?.append("<h5>" + team?.get("regionName") + "</h5>"))
 
     fetchFail:->
       window.console?.log "Fetch failed on #{@uri}"

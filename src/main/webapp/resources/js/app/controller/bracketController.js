@@ -3,7 +3,7 @@
   define(['lib/backbone', 'base/jsonUri', 'lib/jquery'], function(Backbone, jsonUri, $) {
     return {
       construct: function() {
-        this.contentNode = $("#content");
+        this.contentNode = $("#bracketNode");
         this.collection = new Backbone.Collection;
         return this.collection.url = jsonUri.teams;
       },
@@ -26,7 +26,7 @@
       writeBracket: function() {
         return this.collection.each(__bind(function(team, i) {
           var _ref;
-          return (_ref = this.contentNode) != null ? _ref.append("<h5>" + (team != null ? team.get("teamName") : void 0) + "</h5>") : void 0;
+          return (_ref = this.contentNode) != null ? _ref.append("<h5>" + (team != null ? team.get("regionName") : void 0) + "</h5>") : void 0;
         }, this));
       },
       fetchFail: function() {

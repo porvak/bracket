@@ -1,4 +1,4 @@
 define [], ->
   {
-    teams:"resources/json/bracketSample.json"
+    teams:"resources/json/tournament.json"
   }
