@@ -37,7 +37,7 @@ public class ConcurrentMapOAuthSessionManager extends AbstractOAuthSessionManage
 	@Inject
 	public ConcurrentMapOAuthSessionManager(AppRepository appRepository) {
 		super(appRepository);
-		sessions = new MapMaker().softValues().expireAfterWrite(2, TimeUnit.MINUTES).makeMap();
+		sessions = null;//new MapMaker().softValues().expireAfterWrite(2, TimeUnit.MINUTES).makeMap();
 	}
 
 	@Override

@@ -1,12 +1,17 @@
 package com.porvak.bracket.controller;
 
+import com.porvak.bracket.domain.Tournament;
+import com.porvak.bracket.repository.TournamentRepository;
 import com.porvak.bracket.social.account.Account;
 import com.porvak.bracket.social.account.AccountRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import java.security.Principal;
@@ -18,10 +23,13 @@ public class HomeController {
 
     private final ConnectionRepository connectionRepository;
 
+    private final TournamentRepository tournamentRepository;
+
     @Inject
-    public HomeController(AccountRepository accountRepository, ConnectionRepository connectionRepository) {
+    public HomeController(AccountRepository accountRepository, ConnectionRepository connectionRepository, TournamentRepository tournamentRepository) {
         this.accountRepository = accountRepository;
         this.connectionRepository = connectionRepository;
+        this.tournamentRepository = tournamentRepository;
     }
 
     @RequestMapping("/")
@@ -33,5 +41,10 @@ public class HomeController {
         }
         return "index";
     }
-
+    
+    @ResponseBody
+    @RequestMapping(value = "/tournament/{id}", method = RequestMethod.GET)
+    public Tournament getTournamentById(@PathVariable("id") String id){
+        return tournamentRepository.findTournamentById(id);
+    }
 }
