@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +45,9 @@ public class TournamentRepositoryImplTest {
     public void testFindTournamentById() throws Exception {
         Tournament tournament = tournamentRepository.findTournamentById("779d06cc-ebaa-4b10-8c04-79e26c4aa84e");
         String tournamentJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tournament);
+        File tournamentFile = new File("/opt/code/github/bracket/src/main/resources/data/tournament.json");
+        tournamentFile.delete();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, tournament);
 
         tournament = mapper.readValue(tournamentJson, Tournament.class);
         assertThat(tournament.getRegions(), hasSize(4));
