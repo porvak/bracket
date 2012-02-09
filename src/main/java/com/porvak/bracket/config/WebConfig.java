@@ -39,6 +39,7 @@ package com.porvak.bracket.config;
     import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
     import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
     import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+    import org.springframework.web.servlet.mvc.WebContentInterceptor;
     import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
     import javax.inject.Inject;
@@ -47,7 +48,7 @@ package com.porvak.bracket.config;
 /**
  * Spring MVC Configuration.
  * Implements {@link org.springframework.web.servlet.config.annotation.WebMvcConfigurer}, which provides convenient callbacks that allow us to customize aspects of the Spring Web MVC framework.
- * These callbacks allow us to register custom interceptors, message converters, argument resovlers, a validator, resource handling, and other things.
+ * These callbacks allow us to register custom interceptors, message converters, argument resolvers, a validator, resource handling, and other things.
  * @author Keith Donald
  * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  */
@@ -58,10 +59,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Inject
 	private Environment environment;
 
-	// implementing WebMvcConfigurer
-
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new AccountExposingHandlerInterceptor());
+        WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
+        webContentInterceptor.setUseCacheControlNoStore(true);
+        webContentInterceptor.setUseCacheControlHeader(true);
+        webContentInterceptor.setUseExpiresHeader(true);
+        webContentInterceptor.setCacheSeconds(0);
+        registry.addInterceptor(webContentInterceptor);
+
 //		registry.addInterceptor(new DateTimeZoneHandlerInterceptor());
 //		registry.addInterceptor(new UserLocationHandlerInterceptor());
 //		registry.addInterceptor(new DeviceResolverHandlerInterceptor());
@@ -92,6 +98,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		factory.setValidationMessageSource(messageSource);
 		return factory;
 	}
+
 
 	// additional webmvc-related beans
 

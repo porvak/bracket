@@ -1,7 +1,10 @@
 package com.porvak.bracket.controller;
 
 import com.porvak.bracket.domain.Tournament;
+import com.porvak.bracket.domain.UserPick;
+import com.porvak.bracket.domain.UserPicks;
 import com.porvak.bracket.repository.TournamentRepository;
+import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.social.account.AccountRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.social.connect.ConnectionRepository;
@@ -18,17 +21,19 @@ import java.security.Principal;
 @Controller
 public class HomeController {
 
-    private final AccountRepository accountRepository;
-
-    private final ConnectionRepository connectionRepository;
-
-    private final TournamentRepository tournamentRepository;
+    @Inject
+    private AccountRepository accountRepository;
 
     @Inject
-    public HomeController(AccountRepository accountRepository, ConnectionRepository connectionRepository, TournamentRepository tournamentRepository) {
-        this.accountRepository = accountRepository;
-        this.connectionRepository = connectionRepository;
-        this.tournamentRepository = tournamentRepository;
+    private ConnectionRepository connectionRepository;
+
+    @Inject
+    private TournamentRepository tournamentRepository;
+    
+    @Inject
+    private UserPicksRepository userPicksRepository;
+
+    public HomeController() {
     }
 
     @RequestMapping("/")
@@ -45,5 +50,15 @@ public class HomeController {
     @RequestMapping(value = "/tournament/{id}", method = RequestMethod.GET)
     public Tournament getTournamentById(@PathVariable("id") String id){
         return tournamentRepository.findTournamentById(id);
+    }
+    
+    @RequestMapping("/mongo")
+    public String testMongo(){
+        UserPicks userPicks = new UserPicks();
+        userPicks.setPoolId("1");
+        userPicks.setTournamentId("1");
+        userPicks.addUserPick(new UserPick(1, 1, "teamId"));
+        userPicksRepository.save(userPicks);
+        return "index";
     }
 }

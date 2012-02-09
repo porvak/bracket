@@ -20,9 +20,14 @@ import com.porvak.bracket.social.jdbc.versioned.DatabaseChangeSet;
 import com.porvak.bracket.social.jdbc.versioned.SqlDatabaseChange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoFactoryBean;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.ConnectionProperties;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -44,6 +49,7 @@ import javax.sql.DataSource;
  * @author Keith Donald
  */
 @Configuration
+@ImportResource("classpath:/com/porvak/bracket/config/mongo-repo.xml")
 //@EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
 public class DataConfig {
 
@@ -65,6 +71,23 @@ public class DataConfig {
 //	public PlatformTransactionManager transactionManager() {
 //		return new DataSourceTransactionManager(dataSource);
 //	}
+
+    @Bean
+    public MongoFactoryBean mongo(){
+        MongoFactoryBean mongo = new MongoFactoryBean();
+        mongo.setHost("127.0.0.1");
+        return mongo;
+    }
+
+    @Bean
+    public MongoDbFactory mongoDbFactory() throws Exception {
+        return new SimpleMongoDbFactory(mongo().getObject(), "bracket");
+    }
+    
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        return new MongoTemplate(mongoDbFactory());
+    }
 
 	/**
 	 * Embedded Data configuration.
@@ -107,7 +130,7 @@ public class DataConfig {
 		}
 
 		// internal helpers
-		
+
 		private EmbeddedDatabase populateDatabase(EmbeddedDatabase database) {
 			new DatabaseUpgrader(database, environment, textEncryptor) {
 				protected void addInstallChanges(DatabaseChangeSet changeSet) {
