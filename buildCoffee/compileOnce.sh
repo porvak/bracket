@@ -1,1 +1,1 @@
-coffee -o ../src/main/webapp/resources/js/ -c ../src/main/webapp/resources/coffee/
+coffee --lint  -o ../src/main/webapp/resources/js/ -c ../src/main/webapp/resources/coffee/

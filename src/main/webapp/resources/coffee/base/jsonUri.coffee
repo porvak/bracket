@@ -1,4 +1,6 @@
 define [], ->
   {
-    teams:"resources/json/tournament.json"
+    root:"/bracket"
+    tournament:"/tournament"
+    tournamentStatic:"resources/json/tournament.json"
   }
