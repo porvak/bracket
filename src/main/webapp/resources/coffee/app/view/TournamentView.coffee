@@ -1,15 +1,15 @@
 define [
   'lib/backbone'
   'lib/jquery'
-  'text!html/bracketTemplate.html'
-], (Backbone, $, strBracketTemplate) ->
+  'text!html/tournamentTemplate.html'
+], (Backbone, $, strTournamentTemplate) ->
   Backbone.View.extend(
     initialize: (options) ->
       @container = $("#bracketNode")
       @model.bind('change',@render,@)
-      @bracketTemplate = Handlebars.compile(strBracketTemplate);
+      @tournamentHB = Handlebars.compile(strTournamentTemplate);
 
     render: ->
-      $(@el).html(@bracketTemplate(@model.toJSON()))
+      $(@el).html(@tournamentHB(@model.toJSON()))
       @container.append($(@el))
   );

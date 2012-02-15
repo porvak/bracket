@@ -1,3 +1,3 @@
 # Require looks here to kick off the application
-define [ "app/controller/bracketController" ], (bracketController) ->
+define [ "app/controller/tournamentController" ], (bracketController) ->
   bracketController.init()

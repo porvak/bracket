@@ -1,5 +1,5 @@
 (function() {
-  define(["app/controller/bracketController"], function(bracketController) {
+  define(["app/controller/tournamentController"], function(bracketController) {
     return bracketController.init();
   });
 }).call(this);
