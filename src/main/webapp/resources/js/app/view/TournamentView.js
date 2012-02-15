@@ -1,19 +1,14 @@
 (function() {
-  define(['lib/backbone', 'lib/jquery', 'app/view/RegionView'], function(Backbone, $, RegionView) {
+  define(['lib/backbone', 'lib/jquery', 'text!html/bracketTemplate.html'], function(Backbone, $, strBracketTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
-        return this.model.bind('change', this.render, this);
+        this.container = $("#bracketNode");
+        this.model.bind('change', this.render, this);
+        return this.bracketTemplate = Handlebars.compile(strBracketTemplate);
       },
       render: function() {
-        var regionCollection;
-        regionCollection = new Backbone.Collection(this.model.get('regions'));
-        return regionCollection.each(function(region) {
-          var regionView;
-          regionView = new RegionView({
-            model: new Backbone.Model(region)
-          });
-          return regionView.render();
-        });
+        $(this.el).html(this.bracketTemplate(this.model.toJSON()));
+        return this.container.append($(this.el));
       }
     });
   });

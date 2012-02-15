@@ -1,18 +1,15 @@
 define [
   'lib/backbone'
   'lib/jquery'
-  'app/view/RegionView'
-], (Backbone, $, RegionView) ->
+  'text!html/bracketTemplate.html'
+], (Backbone, $, strBracketTemplate) ->
   Backbone.View.extend(
     initialize: (options) ->
+      @container = $("#bracketNode")
       @model.bind('change',@render,@)
+      @bracketTemplate = Handlebars.compile(strBracketTemplate);
 
     render: ->
-      regionCollection = new Backbone.Collection(@model.get('regions'))
-      regionCollection.each (region) ->
-        regionView = new RegionView(
-          model:new Backbone.Model(region)
-        )
-        regionView.render()
-
+      $(@el).html(@bracketTemplate(@model.toJSON()))
+      @container.append($(@el))
   );

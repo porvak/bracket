@@ -1,31 +1,33 @@
 <ul class="regions">
-    {{#region}}
-        <li class="region {{regionId}}">
-
+    {{#each regions}}
+        <li class="region {{id}}">
+            {{name}}
             <ul class="rounds">
-                {{#round}}
+                {{#each rounds}}
                 <li class="round {{roundId}}">
-
+                    {{roundName}}
                     <ul class="games">
-                        {{#game}}
+                        {{#each games}}
                         <li class="game {{gameId}}">
-
                             <ul class="details">
-                                <li class="detail state">{{state}}</li>
-                                <li class="detail team-1 {{homeAway}}">{{teamOne}}</li>
-                                <li class="detail team-2 {{homeAway}}">{{teamTwo}}</li>
-                                <li class="detail links">{{links}}</li>
+                                <li class="detail state"></li>
+                                {{#each teams}}
+                                <li class="detail team-{{position}}">
+                                    <span style="color: blue;">{{seed}}</span>
+                                     {{name}}:
+                                    <span style="color: green;">{{score}}</span>
+                                </li>
+                                {{/each}}
+                                <li class="detail links"></li>
                             </ul>
 
                         </li>
-                        {{/game}}
+                        {{/each}}
                     </ul>
-
                 </li>
-                {{/round}}
+                {{/each}}
             </ul>
-
         </li>
-    {{/region}}
+    {{/each}}
 </ul>
 
