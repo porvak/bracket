@@ -9,6 +9,28 @@
   <name>bracket</name>
   <url>http://bracket.porvak.com</url>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Maven Central</name>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>spring-milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>http://maven.springframework.org/milestone</url>
+    </repository>
+  </repositories>
+
+  <properties>
+    <org.springframework.social-version>1.0.2.RELEASE</org.springframework.social-version>
+    <org.springframework.social.twitter-version>1.0.2.RELEASE</org.springframework.social.twitter-version>
+    <org.springframework-version>3.1.0.RELEASE</org.springframework-version>
+    <org.springframework.security-version>3.1.0.RELEASE</org.springframework.security-version>
+    <org.springframework.webmvc-version>3.1.0.RELEASE</org.springframework.webmvc-version>
+    <org.springframework.spring-data-mongodb>1.0.0.RELEASE</org.springframework.spring-data-mongodb>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
@@ -18,20 +40,40 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${org.springframework-version}</version>
+      <exclusions>
+        <!-- Exclude Commons Logging in favor of SLF4j -->
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>3.1.0.RELEASE</version>
+      <version>${org.springframework.webmvc-version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>3.1.0.RELEASE</version>
+      <version>${org.springframework-version}</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <!-- MongoDB -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-mongodb</artifactId>
+      <version>${org.springframework.spring-data-mongodb}</version>
     </dependency>
 
     <dependency>
@@ -83,6 +125,25 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <version>3.1.0.RELEASE</version>
+    </dependency>
+
+    <!-- Joda Time -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <!-- CGLIB, only required and used for @Configuration usage -->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
     </dependency>
 
   </dependencies>
