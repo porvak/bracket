@@ -10,8 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.format.datetime.joda.JodaTimeContextHolder;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -55,24 +53,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         converters.add(new MappingJacksonHttpMessageConverter());
     }
 
-
-    public Validator getValidator() {
-        LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("/WEB-INF/messages/validation");
-        if (environment.acceptsProfiles("embedded")) {
-            messageSource.setCacheSeconds(0);
-        }
-        factory.setValidationMessageSource(messageSource);
-        return factory;
-    }
-
-
-    // additional webmvc-related beans
-
-    /**
-     * ViewResolver configuration required to work with Tiles2-based views.
-     */
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
