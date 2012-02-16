@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Controller
 public class HomeController {
 
