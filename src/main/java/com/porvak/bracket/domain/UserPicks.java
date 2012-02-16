@@ -1,19 +1,27 @@
 package com.porvak.bracket.domain;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
 public class UserPicks extends AbstractBracket{
-    private String userId;
+
+    @Id
+    private String id;
     private String tournamentId;
     private String poolId;
+    private String userId;
+
+    @JsonProperty
     private List<UserPick> picks;
+
+    @Transient
     private Map<SearchKey, UserPick> indexedPicks;
 
     public UserPicks() {
@@ -33,14 +41,12 @@ public class UserPicks extends AbstractBracket{
     } 
     
     private void createIndexedPicks(){
-        indexedPicks = Maps.uniqueIndex(picks, new Function<UserPick, SearchKey>() {
-            public SearchKey apply(@Nullable UserPick input) {
-                if(input == null){
-                    return null;
-                }
-                return new SearchKey(input.getRegionId(), input.getGameId());
+        indexedPicks = Maps.newHashMap();
+        if(picks != null && picks.size() > 0){
+            for (UserPick pick : picks) {
+                indexedPicks.put(new SearchKey(pick.getRegionId(), pick.getGameId()), pick);
             }
-        });
+        }
     }
     
     public UserPick getByRegionIdAndGameId(int regionId, int gameId){
@@ -50,12 +56,12 @@ public class UserPicks extends AbstractBracket{
         return indexedPicks.get(new SearchKey(regionId, gameId));
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTournamentId() {
@@ -73,7 +79,15 @@ public class UserPicks extends AbstractBracket{
     public void setPoolId(String poolId) {
         this.poolId = poolId;
     }
-    
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     private class SearchKey {
         private int regionId;
         private int gameId;

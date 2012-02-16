@@ -33,9 +33,10 @@ public class Game extends AbstractBracket{
     }
     
     public GameTeam getTeamByPosition(int position){
+        checkArgument(position >= 0 && position <= 1, "Team position must be 0 or 1. Received %s", position);
         return teams[position];
     }
-    
+
     public void addTeam(GameTeam team){
         team = checkNotNull(team, "Team cannot be null");
         checkArgument(team.getPosition() >= 0 && team.getPosition() <= 1, "Team position must be 0 or 1. Received %s", team.getPosition());
