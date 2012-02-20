@@ -8,8 +8,13 @@ public class GameTeam extends AbstractBracket {
     private int position;
     private String id;
     private String name;
+
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
     private int seed;
+
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
     private int score;
+
     private boolean winner;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)

@@ -62,9 +62,13 @@ public class TournamentRepositoryImplTest {
 
     @Test @Ignore
     public void testFindTournamentById() throws Exception {
-        Tournament tournament = getTournamentById("4f349bc6d170640b9c895a47");
-        tournamentRepository.save(tournament);
-//                tournamentRepository.findOne("4f349bc6d170640b9c895a47");
+// Completed Tournament
+        Tournament tournament = tournamentRepository.findOne("4f349bc6d170640b9c895a47");
+// Default Tournament only 1st round populated
+//        Tournament tournament = tournamentRepository.findOne("4f41ce03d17060d0d8dbd4d6");
+        tournament = tournamentRepository.save(tournament);
+//        Generate new tournament via code
+//        Tournament tournament = getTournamentById(null);
         String tournamentJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tournament);
         LOGGER.debug(tournamentJson);
         tournament = mapper.readValue(tournamentJson, Tournament.class);
@@ -111,6 +115,21 @@ public class TournamentRepositoryImplTest {
                 .addRound(round4)
                 .build();
     }
+
+    private Region getDefaultRegionById(int regionId) {
+        Round round1 = getRoundById(1, regionId, null);
+        Round round2 = getDefaultRoundById(2, regionId);
+        Round round3 = getDefaultRoundById(3, regionId);
+        Round round4 = getDefaultRoundById(4, regionId);
+
+        return new RegionBuilder().withId(regionId).withName(String.format("Region %s", regionId))
+                .addRound(round1)
+                .addRound(round2)
+                .addRound(round3)
+                .addRound(round4)
+                .build();
+    }
+
 
     private Round getRoundById(int roundId, int regionId, Round previousRound) {
         switch (roundId) {
@@ -170,6 +189,73 @@ public class TournamentRepositoryImplTest {
                 return null;
         }
         return null;
+    }
+
+    private Round getDefaultRoundById(int roundId, int regionId) {
+        switch (roundId) {
+            case 1:
+                return new RoundBuilder()
+                        .withRoundId(roundId)
+                        .withRoundName(String.format("Round %s", roundId))
+                        .addGame(getUnplayedGame(1, new GamePointer(regionId, 9, 0)))
+                        .addGame(getUnplayedGame(2, new GamePointer(regionId, 9, 1)))
+                        .addGame(getUnplayedGame(3, new GamePointer(regionId, 10, 0)))
+                        .addGame(getUnplayedGame(4, new GamePointer(regionId, 10, 1)))
+                        .addGame(getUnplayedGame(5, new GamePointer(regionId, 11, 0)))
+                        .addGame(getUnplayedGame(6, new GamePointer(regionId, 11, 1)))
+                        .addGame(getUnplayedGame(7, new GamePointer(regionId, 12, 0)))
+                        .addGame(getUnplayedGame(8, new GamePointer(regionId, 12, 1))).build();
+            case 2:
+                return new RoundBuilder()
+                        .withRoundId(roundId)
+                        .withRoundName(String.format("Round %s", roundId))
+                        .addGame(getUnplayedGame(9, new GamePointer(regionId, 13, 0)))
+                        .addGame(getUnplayedGame(10, new GamePointer(regionId, 13, 1)))
+                        .addGame(getUnplayedGame(11, new GamePointer(regionId, 14, 0)))
+                        .addGame(getUnplayedGame(12, new GamePointer(regionId, 14, 1))).build();
+            case 3:
+                return new RoundBuilder()
+                        .withRoundId(roundId)
+                        .withRoundName(String.format("Round %s", roundId))
+                        .addGame(getUnplayedGame(13, new GamePointer(regionId, 15, 0)))
+                        .addGame(getUnplayedGame(14, new GamePointer(regionId, 15, 1))).build();
+            case 4:
+                int gameId = 0;
+                int positionId = 0;
+                switch (regionId) {
+                    case 1:
+                        gameId = 1;
+                        positionId = 0;
+                        break;
+                    case 2:
+                        gameId = 1;
+                        positionId = 1;
+                        break;
+                    case 3:
+                        gameId = 2;
+                        positionId = 0;
+                        break;
+                    case 4:
+                        gameId = 2;
+                        positionId = 1;
+
+                }
+                return new RoundBuilder()
+                        .withRoundId(roundId)
+                        .withRoundName(String.format("Round %s", roundId))
+                        .addGame(getUnplayedGame(15, new GamePointer(5, gameId, positionId))).build();
+            case 5:
+                checkArgument(regionId == 5 && roundId < 2, "region %s can not have more than 2 rounds. round [%s]", regionId, roundId);
+                return null;
+        }
+        return null;
+    }
+
+    private Game getUnplayedGame(int gameId, GamePointer nextGame){
+        return new GameBuilder().withGameId(gameId).withStatus(GameStatus.FUTURE)
+                .withNextGame(nextGame)
+                .addTeam(new GameTeam())
+                .addTeam(new GameTeam()).build();
     }
 
     /**
@@ -389,7 +475,7 @@ public class TournamentRepositoryImplTest {
 
         Pair<Integer, Integer> score = generateScore();
         int topScore = score.getLeft();
-        int bottomScore = score.getRight();
+        int bottomScore =  score.getRight();
 
         boolean topTeamWins = topScore > bottomScore;
         boolean bottomTeamWins = topScore < bottomScore;
