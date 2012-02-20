@@ -1,6 +1,8 @@
 package com.porvak.bracket.domain;
 
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 public class GameTeam extends AbstractBracket {
     
     private int position;
@@ -9,6 +11,9 @@ public class GameTeam extends AbstractBracket {
     private int seed;
     private int score;
     private boolean winner;
+
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private GamePointer previousGame;
 
     public int getPosition() {
         return position;
@@ -56,5 +61,13 @@ public class GameTeam extends AbstractBracket {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public GamePointer getPreviousGame() {
+        return previousGame;
+    }
+
+    public void setPreviousGame(GamePointer previousGame) {
+        this.previousGame = previousGame;
     }
 }

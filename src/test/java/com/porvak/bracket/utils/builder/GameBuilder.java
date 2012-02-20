@@ -2,6 +2,7 @@ package com.porvak.bracket.utils.builder;
 
 import com.google.common.collect.Lists;
 import com.porvak.bracket.domain.Game;
+import com.porvak.bracket.domain.GamePointer;
 import com.porvak.bracket.domain.GameStatus;
 import com.porvak.bracket.domain.GameTeam;
 
@@ -14,6 +15,7 @@ public class GameBuilder {
     private int gameId;
     private GameStatus status;
     private ArrayList<GameTeam> teams;
+    private GamePointer nextGame;
     
     public GameBuilder(){
         defaults();
@@ -23,6 +25,7 @@ public class GameBuilder {
         gameId = 1;
         status = FUTURE;
         teams = Lists.newArrayList(null, null);
+        nextGame = null;
     }
     
     public GameBuilder withGameId(int gameId){
@@ -35,7 +38,7 @@ public class GameBuilder {
         return this;
     }
     
-    public GameBuilder addTeam(String id, String name, int seed, int position, int score, boolean winner){
+    public GameBuilder addTeam(String id, String name, int seed, int position, int score, boolean winner, GamePointer previousGamePointer){
         GameTeam team = new GameTeam();
         team.setId(id);
         team.setName(name);
@@ -43,6 +46,7 @@ public class GameBuilder {
         team.setScore(score);
         team.setWinner(winner);
         team.setSeed(seed);
+        team.setPreviousGame(previousGamePointer);
         teams.add(team);
         return this;
     }
@@ -54,6 +58,11 @@ public class GameBuilder {
 
     public GameBuilder addTeam(GameTeam team){
         teams.add(team);
+        return this;
+    }
+    
+    public GameBuilder withNextGame(GamePointer nextGame){
+        this.nextGame = nextGame;
         return this;
     }
 
@@ -68,6 +77,7 @@ public class GameBuilder {
             }
         }
         game.setStatus(status);
+        game.setNextGame(nextGame);
         return game;
     }
 

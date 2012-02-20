@@ -1,0 +1,1386 @@
+[
+    {
+        "id":"4f40083f0364a565e41c1c81",
+        "name":"Nicholls St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c82",
+        "name":"Prairie View"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c83",
+        "name":"Morgan St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c84",
+        "name":"Colorado"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c85",
+        "name":"Denver"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c86",
+        "name":"Missouri"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c87",
+        "name":"Saint Joseph's"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c88",
+        "name":"Florida St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c89",
+        "name":"Nebraska"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8a",
+        "name":"Delaware St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8b",
+        "name":"Wichita St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8c",
+        "name":"Virginia"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8d",
+        "name":"Oklahoma St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8e",
+        "name":"Northeastern"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c8f",
+        "name":"UAB"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c90",
+        "name":"Cincinnati"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c91",
+        "name":"Old Dominion"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c92",
+        "name":"Ohio"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c93",
+        "name":"Weber St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c94",
+        "name":"Middle Tenn."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c95",
+        "name":"Stony Brook"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c96",
+        "name":"Howard"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c97",
+        "name":"Santa Clara"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c98",
+        "name":"Cleveland St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c99",
+        "name":"Davidson"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9a",
+        "name":"Morehead St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9b",
+        "name":"South Dakota St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9c",
+        "name":"Vermont"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9d",
+        "name":"Tennessee Tech"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9e",
+        "name":"Towson"
+    },
+    {
+        "id":"4f40083f0364a565e41c1c9f",
+        "name":"La.-Lafayette"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca0",
+        "name":"Lipscomb"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca1",
+        "name":"Kennesaw St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca2",
+        "name":"Quinnipiac"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca3",
+        "name":"UC Riverside"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca4",
+        "name":"Duke"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca5",
+        "name":"Wright St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca6",
+        "name":"Coppin St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca7",
+        "name":"Western Ky."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca8",
+        "name":"Monmouth"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ca9",
+        "name":"James Madison"
+    },
+    {
+        "id":"4f40083f0364a565e41c1caa",
+        "name":"Northern Ariz."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cab",
+        "name":"Campbell"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cac",
+        "name":"Texas A&M"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cad",
+        "name":"Idaho"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cae",
+        "name":"San Francisco"
+    },
+    {
+        "id":"4f40083f0364a565e41c1caf",
+        "name":"Cal St. Northridge"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb0",
+        "name":"Drexel"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb1",
+        "name":"Drake"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb2",
+        "name":"Chattanooga"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb3",
+        "name":"Fordham"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb4",
+        "name":"UNC Asheville"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb5",
+        "name":"FIU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb6",
+        "name":"Fresno St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb7",
+        "name":"Northwestern"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb8",
+        "name":"Ill.-Chicago"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cb9",
+        "name":"VCU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cba",
+        "name":"Binghamton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cbb",
+        "name":"Alabama St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cbc",
+        "name":"George Mason"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cbd",
+        "name":"Western Ill."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cbe",
+        "name":"UNI"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cbf",
+        "name":"Siena"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc0",
+        "name":"CSU Bakersfield"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc1",
+        "name":"Tulsa"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc2",
+        "name":"Houston Baptist"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc3",
+        "name":"St. Mary's (CA)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc4",
+        "name":"Penn St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc5",
+        "name":"Ga. Southern"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc6",
+        "name":"N.C. Central"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc7",
+        "name":"Tennessee St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc8",
+        "name":"Seton Hall"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cc9",
+        "name":"North Dakota"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cca",
+        "name":"Temple"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ccb",
+        "name":"Oregon St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ccc",
+        "name":"Portland"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ccd",
+        "name":"Kent St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cce",
+        "name":"A&M-Corpus Christi"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ccf",
+        "name":"Indiana"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd0",
+        "name":"Idaho St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd1",
+        "name":"New Mexico"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd2",
+        "name":"Southern U."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd3",
+        "name":"Mt. St. Mary's"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd4",
+        "name":"Hofstra"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd5",
+        "name":"San Diego"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd6",
+        "name":"Iowa St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd7",
+        "name":"UTSA"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd8",
+        "name":"Western Mich."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cd9",
+        "name":"Northern Colo."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cda",
+        "name":"Stanford"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cdb",
+        "name":"Loyola Marymount"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cdc",
+        "name":"Army"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cdd",
+        "name":"Illinois"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cde",
+        "name":"IPFW"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cdf",
+        "name":"New Mexico St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce0",
+        "name":"Marquette"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce1",
+        "name":"Utah Valley"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce2",
+        "name":"Canisius"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce3",
+        "name":"Central Ark."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce4",
+        "name":"Illinois St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce5",
+        "name":"Stetson"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce6",
+        "name":"Washington"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce7",
+        "name":"William & Mary"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce8",
+        "name":"Bowling Green"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ce9",
+        "name":"Rutgers"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cea",
+        "name":"Cornell"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ceb",
+        "name":"Memphis"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cec",
+        "name":"Seattle"
+    },
+    {
+        "id":"4f40083f0364a565e41c1ced",
+        "name":"Colgate"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cee",
+        "name":"Charlotte"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cef",
+        "name":"Xavier"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf0",
+        "name":"Duquesne"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf1",
+        "name":"Purdue"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf2",
+        "name":"Central Conn. St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf3",
+        "name":"Michigan"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf4",
+        "name":"West Virginia"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf5",
+        "name":"UALR"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf6",
+        "name":"Gardner-Webb"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf7",
+        "name":"Georgia St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf8",
+        "name":"Northwestern St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1cf9",
+        "name":"Houston"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cfa",
+        "name":"Col. of Charleston"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cfb",
+        "name":"Fairfield"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cfc",
+        "name":"Wofford"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cfd",
+        "name":"Troy"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cfe",
+        "name":"Samford"
+    },
+    {
+        "id":"4f40083f0364a565e41c1cff",
+        "name":"Tennessee"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d00",
+        "name":"Utah"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d01",
+        "name":"Dayton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d02",
+        "name":"La.-Monroe"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d03",
+        "name":"Albany (NY)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d04",
+        "name":"Austin Peay"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d05",
+        "name":"BYU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d06",
+        "name":"Detroit"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d07",
+        "name":"North Carolina"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d08",
+        "name":"Bradley"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d09",
+        "name":"UNLV"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0a",
+        "name":"Boston U."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0b",
+        "name":"Jacksonville St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0c",
+        "name":"Loyola Maryland"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0d",
+        "name":"Alabama A&M"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0e",
+        "name":"Eastern Wash."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d0f",
+        "name":"Norfolk St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d10",
+        "name":"Minnesota"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d11",
+        "name":"Manhattan"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d12",
+        "name":"Akron"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d13",
+        "name":"San Diego St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d14",
+        "name":"Bryant"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d15",
+        "name":"TCU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d16",
+        "name":"Texas-Arlington"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d17",
+        "name":"UC Davis"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d18",
+        "name":"SMU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d19",
+        "name":"VMI"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1a",
+        "name":"Oregon"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1b",
+        "name":"Florida"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1c",
+        "name":"Notre Dame"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1d",
+        "name":"San Jose St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1e",
+        "name":"UT Martin"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d1f",
+        "name":"Kentucky"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d20",
+        "name":"Louisville"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d21",
+        "name":"Wagner"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d22",
+        "name":"Savannah St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d23",
+        "name":"Boise St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d24",
+        "name":"Cal Poly"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d25",
+        "name":"Princeton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d26",
+        "name":"Milwaukee"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d27",
+        "name":"George Washington"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d28",
+        "name":"UNC Greensboro"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d29",
+        "name":"Saint Peter's"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2a",
+        "name":"Harvard"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2b",
+        "name":"S.C. Upstate"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2c",
+        "name":"Furman"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2d",
+        "name":"Long Beach St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2e",
+        "name":"Youngstown St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d2f",
+        "name":"Niagara"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d30",
+        "name":"Miami (FL)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d31",
+        "name":"Gonzaga"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d32",
+        "name":"N.C. A&T"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d33",
+        "name":"Rice"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d34",
+        "name":"Saint Francis (PA)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d35",
+        "name":"Bethune-Cookman"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d36",
+        "name":"Yale"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d37",
+        "name":"Ark.-Pine Bluff"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d38",
+        "name":"Wyoming"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d39",
+        "name":"Murray St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3a",
+        "name":"Southeast Mo. St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3b",
+        "name":"Delaware"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3c",
+        "name":"Name"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3d",
+        "name":"St. Bonaventure"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3e",
+        "name":"Jacksonville"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d3f",
+        "name":"North Texas"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d40",
+        "name":"Belmont"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d41",
+        "name":"Presbyterian"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d42",
+        "name":"Loyola Chicago"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d43",
+        "name":"Eastern Mich."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d44",
+        "name":"Louisiana Tech"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d45",
+        "name":"Oral Roberts"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d46",
+        "name":"Tulane"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d47",
+        "name":"Lafayette"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d48",
+        "name":"Hartford"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d49",
+        "name":"Sacramento St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4a",
+        "name":"UMKC"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4b",
+        "name":"North Florida"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4c",
+        "name":"Mississippi Val."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4d",
+        "name":"Ole Miss"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4e",
+        "name":"Toledo"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d4f",
+        "name":"Southern Utah"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d50",
+        "name":"Longwood"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d51",
+        "name":"Kansas"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d52",
+        "name":"Fla. Gulf Coast"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d53",
+        "name":"High Point"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d54",
+        "name":"Southern Miss."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d55",
+        "name":"Coastal Caro."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d56",
+        "name":"Georgetown"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d57",
+        "name":"Holy Cross"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d58",
+        "name":"Ball St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d59",
+        "name":"LIU Brooklyn"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5a",
+        "name":"North Dakota St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5b",
+        "name":"Syracuse"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5c",
+        "name":"Creighton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5d",
+        "name":"Valparaiso"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5e",
+        "name":"Hampton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d5f",
+        "name":"Pittsburgh"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d60",
+        "name":"Dartmouth"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d61",
+        "name":"Tex.-Pan American"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d62",
+        "name":"Montana"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d63",
+        "name":"Iona"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d64",
+        "name":"Marshall"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d65",
+        "name":"Brown"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d66",
+        "name":"Southern Ill."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d67",
+        "name":"St. Francis (NY)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d68",
+        "name":"Miami (OH)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d69",
+        "name":"Sacred Heart"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6a",
+        "name":"Lehigh"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6b",
+        "name":"Georgia Tech"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6c",
+        "name":"Saint Louis"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6d",
+        "name":"Central Mich."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6e",
+        "name":"Arizona"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d6f",
+        "name":"Charleston So."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d70",
+        "name":"Providence"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d71",
+        "name":"UMBC"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d72",
+        "name":"Arkansas St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d73",
+        "name":"Evansville"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d74",
+        "name":"Eastern Ill."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d75",
+        "name":"Green Bay"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d76",
+        "name":"Maine"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d77",
+        "name":"DePaul"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d78",
+        "name":"Jackson St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d79",
+        "name":"Alabama"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7a",
+        "name":"Fla. Atlantic"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7b",
+        "name":"Auburn"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7c",
+        "name":"Vanderbilt"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7d",
+        "name":"Bucknell"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7e",
+        "name":"Boston College"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d7f",
+        "name":"UCF"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d80",
+        "name":"Marist"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d81",
+        "name":"New Hampshire"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d82",
+        "name":"La Salle"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d83",
+        "name":"Southern California"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d84",
+        "name":"Western Caro."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d85",
+        "name":"Air Force"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d86",
+        "name":"Texas Tech"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d87",
+        "name":"LSU"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d88",
+        "name":"Radford"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d89",
+        "name":"Baylor"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8a",
+        "name":"Texas"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8b",
+        "name":"Chicago St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8c",
+        "name":"South Ala."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8d",
+        "name":"UCLA"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8e",
+        "name":"Texas Southern"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d8f",
+        "name":"Citadel"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d90",
+        "name":"Liberty"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d91",
+        "name":"Penn"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d92",
+        "name":"Richmond"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d93",
+        "name":"Missouri St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d94",
+        "name":"Columbia"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d95",
+        "name":"Kansas St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d96",
+        "name":"Ohio St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d97",
+        "name":"Virginia Tech"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d98",
+        "name":"Wisconsin"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d99",
+        "name":"Iowa"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9a",
+        "name":"Villanova"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9b",
+        "name":"Sam Houston St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9c",
+        "name":"South Fla."
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9d",
+        "name":"SIU Edwardsville"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9e",
+        "name":"Nevada"
+    },
+    {
+        "id":"4f40083f0364a565e41c1d9f",
+        "name":"Grambling"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da0",
+        "name":"Massachusetts"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da1",
+        "name":"UTEP"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da2",
+        "name":"Md.-East. Shore"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da3",
+        "name":"Utah St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1da4",
+        "name":"South Carolina St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1da5",
+        "name":"Mercer"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da6",
+        "name":"UC Irvine"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da7",
+        "name":"Colorado St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1da8",
+        "name":"Winthrop"
+    },
+    {
+        "id":"4f40083f0364a565e41c1da9",
+        "name":"South Carolina"
+    },
+    {
+        "id":"4f40083f0364a565e41c1daa",
+        "name":"Arizona St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dab",
+        "name":"Northern Ill."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dac",
+        "name":"Buffalo"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dad",
+        "name":"East Tenn. St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dae",
+        "name":"South Dakota"
+    },
+    {
+        "id":"4f40083f0364a565e41c1daf",
+        "name":"St. John's (NY)"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db0",
+        "name":"Rhode Island"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db1",
+        "name":"Navy"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db2",
+        "name":"UNC Wilmington"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db3",
+        "name":"California"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db4",
+        "name":"IUPUI"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db5",
+        "name":"Alcorn St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1db6",
+        "name":"Portland St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1db7",
+        "name":"Pepperdine"
+    },
+    {
+        "id":"4f40083f0364a565e41c1db8",
+        "name":"North Carolina St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1db9",
+        "name":"NJIT"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dba",
+        "name":"Stephen F. Austin"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dbb",
+        "name":"Texas St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dbc",
+        "name":"Pacific"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dbd",
+        "name":"Elon"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dbe",
+        "name":"East Carolina"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dbf",
+        "name":"Neb. Omaha"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc0",
+        "name":"Georgia"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc1",
+        "name":"Hawaii"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc2",
+        "name":"Mississippi St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc3",
+        "name":"Michigan St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc4",
+        "name":"Robert Morris"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc5",
+        "name":"Maryland"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc6",
+        "name":"UC Santa Barbara"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc7",
+        "name":"Fairleigh Dickinson"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc8",
+        "name":"Washington St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dc9",
+        "name":"Connecticut"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dca",
+        "name":"Clemson"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dcb",
+        "name":"McNeese St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dcc",
+        "name":"Arkansas"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dcd",
+        "name":"American"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dce",
+        "name":"Appalachian St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dcf",
+        "name":"Oklahoma"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd0",
+        "name":"Southeastern La."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd1",
+        "name":"Indiana St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd2",
+        "name":"Oakland"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd3",
+        "name":"Eastern Ky."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd4",
+        "name":"Cal St. Fullerton"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd5",
+        "name":"Montana St."
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd6",
+        "name":"Wake Forest"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd7",
+        "name":"Butler"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd8",
+        "name":"Rider"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dd9",
+        "name":"Lamar"
+    },
+    {
+        "id":"4f40083f0364a565e41c1dda",
+        "name":"Florida A&M"
+    }
+]
