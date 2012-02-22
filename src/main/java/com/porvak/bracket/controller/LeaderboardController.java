@@ -27,9 +27,7 @@ public class LeaderboardController {
     @ResponseBody
     @RequestMapping(value = "/leaderboard/pool/{poolId}", method = GET)
     public List<Leaderboard> getLeaderboard(@PathVariable("poolId") String poolId){
-        LOGGER.debug("Hello get Leaderboard [{}]", poolId);
-        List<Leaderboard> leaderboards = leaderboardRepository.findByPoolId(poolId, new Sort(DESC, "score"));
-        return leaderboards;
+        return leaderboardRepository.findByPoolId(poolId, new Sort(DESC, "score"));
     }
     
 }
