@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bracket App</title>
+    <title>The Bracket App</title>
     <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+    <!-- Use Google Web Fonts -->
+    <link href='' rel='stylesheet' type='text/css'>
     <script data-main="resources/js/init" src="resources/js/lib/base/require-min.js"></script>
     <script type="text/javascript">
         require.config({
@@ -17,7 +19,7 @@
 
 
     <header>
-        <h4>Bracket App</h4>
+        <h4>The Bracket App</h4>
     </header>
 
 
@@ -26,7 +28,8 @@
     </div>
 
 
-    <footer></footer>
+    <footer>
+    </footer>
 
 
 </body>
