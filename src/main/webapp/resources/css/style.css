@@ -1,0 +1,162 @@
+/*** Page  ***/
+
+/**
+ *  Using Google Web Fonts
+ *   http://www.google.com/webfonts
+ */
+@import "http://fonts.googleapis.com/css?family=Sue+Ellen+Francisco|Fredericka+the+Great|Fugaz+One|Gochi+Hand|Exo|Chelsea+Market|Annie+Use+Your+Telescope|Architects+Daughter|Ruthie|Coming+Soon";
+
+body{
+    background-color: #fff;
+    font-size: .8em;
+    font-family: 'Exo', sans-serif;
+    /*   TODO:  Make a selector to roll through fonts
+    font-family: 'Exo', sans-serif;
+    font-family: 'Fugaz One', cursive;
+    font-family: 'Coming Soon', cursive;
+    font-family: 'Gochi Hand', cursive;
+    font-family: 'Annie Use Your Telescope', cursive;
+    font-family: 'Ruthie', cursive;
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-family: 'Chelsea Market', cursive;
+    font-family: 'Architects Daughter', cursive;
+    font-family: 'Fredericka the Great', cursive;
+    */
+}
+
+header h4{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+}
+
+#main{
+	position: relative;
+    width: 80em;
+    height: 90em;
+    margin: 0 auto;
+}
+
+/*** Regions ***/
+.region {
+	height: 50%;
+	width: 45%;
+	position: absolute;
+	text-align: center;
+	font-size: 1.7em;
+}
+.region-1 { top: 0; left: 0; }
+.region-2 { top: 0; right: 0; }
+.region-3 { bottom: 0; left: 0; }
+.region-4 { bottom: 0; right: 0; }
+
+
+/*** Rounds ***/
+.rounds {
+	position: relative;
+	padding-top: 20px;
+}
+.round{
+	text-align: center;
+	position: absolute;
+	width: 25%;
+	top: 0;
+	font-size: .8em;
+}
+
+/* Horizontal spacing of rounds */
+.region-3 .round-1, .region-1 .round-1 { left: 0; }
+.region-3 .round-2, .region-1 .round-2 { left: 25%; }
+.region-3 .round-3, .region-1 .round-3 { left: 50%; }
+.region-3 .round-4, .region-1 .round-4 { left: 75%; }
+.region-4 .round-1, .region-2 .round-1 { right: 0; }
+.region-4 .round-2, .region-2 .round-2 { right: 25%; }
+.region-4 .round-3, .region-2 .round-3 { right: 50%; }
+.region-4 .round-4, .region-2 .round-4 { right: 75%; }
+
+
+/*** Games ***/
+.games { }
+.game{
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+	width: 100%-4px;
+	height: 3.2em;
+	text-align: left;
+	/*position: absolute;*/
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 10px;
+	font-size: .8em;
+}
+
+.region-1 .game,
+.region-3 .game{
+	border-right: 2px solid #000;
+}
+.region-2 .game,
+.region-4 .game{
+	border-left: 2px solid #000;
+}
+
+/* Vertical spacing of games */
+
+.round-2{ padding-top: 1.4em; }
+.game-9, .game-10, .game-11, .game-12{ height: 4em; }
+.game-10, .game-11, .game-12{ margin-top: 4.1em; }
+
+
+.round-3{ padding-top: 3em; }
+.game-13, .game-14{ height: 8.4em; }
+.game-14{ margin-top: 8.1em; }
+
+
+.round-4{ padding-top: 6.4em; }
+.game-15{ height: 16.6em; }
+
+/*** Game Details ***/
+
+.details{
+	position: relative;
+	height: 100%;
+}
+.detail{
+	width: 100%;
+	position: relative;
+}
+.team-0{
+	padding-top: 2px;
+}
+.team-1{
+	position: absolute;
+	bottom: 1px;
+}
+.seed{
+	float: left;
+	width: 15px;
+	color: #00f;
+}
+.team{
+	background-color: #eef;
+	float: left;
+	color: #111;
+	width: 55px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.team:hover{
+	background-color: #6ff;
+	cursor: pointer;
+}
+.score{
+	margin-right: 3px;
+	float: right;
+	color: #0f0;
+	width: 20px;
+}
+
+.state,
+.links{
+	display: none;
+}
+
