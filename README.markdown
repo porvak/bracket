@@ -15,7 +15,7 @@ Bracket application will allow users to choose to fill out a bracket to compete 
 
 * Clone this repo.
 * Startup your mongoDb instance
-* run <projectRoot>/data/populateMongoLocal.sh
+* run <projectRoot>/data/populateMongoLocal.sh, or populateMongoLocal.bat
 
 This will create/replace a db called bracket in mongoDb using seed data found in /data/bracket/
 
