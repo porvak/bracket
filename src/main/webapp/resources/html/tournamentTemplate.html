@@ -1,33 +1,32 @@
-<ul class="regions">
+<div class="regions">
     {{#each regions}}
-        <li class="region {{id}}">
+        <div class="region region-{{id}}">
             {{name}}
-            <ul class="rounds">
+            <div class="rounds">
                 {{#each rounds}}
-                <li class="round {{roundId}}">
+                <div class="round round-{{roundId}}">
                     {{roundName}}
-                    <ul class="games">
+                    <div class="games">
                         {{#each games}}
-                        <li class="game {{gameId}}">
-                            <ul class="details">
-                                <li class="detail state"></li>
+                        <div class="game game-{{gameId}}">
+                            <div class="details">
+                                <div class="detail state"></div>
                                 {{#each teams}}
-                                <li class="detail team-{{position}}">
-                                    <span style="color: blue;">{{seed}}</span>
-                                     {{name}}:
-                                    <span style="color: green;">{{score}}</span>
-                                </li>
+                                <div class="detail team-{{position}}">
+                                    <div class="seed">{{seed}}</div>
+                                    <div class="team">{{name}}</div>:
+                                    <div class="score">{{score}}</div>
+                                </div>
                                 {{/each}}
-                                <li class="detail links"></li>
-                            </ul>
-
-                        </li>
+                                <div class="detail links"></div>
+                            </div>
+                        </div>
                         {{/each}}
-                    </ul>
-                </li>
+                    </div>
+                </div>
                 {{/each}}
-            </ul>
-        </li>
+            </div>
+        </div>
     {{/each}}
-</ul>
+</div>
 
