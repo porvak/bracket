@@ -1,3 +1,5 @@
+<%-- Prevent the creation of a session --%>
+<%@ page session="false" %>
 <!DOCTYPE html>
 <html>
 <head>
