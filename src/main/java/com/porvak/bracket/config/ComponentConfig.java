@@ -1,8 +1,6 @@
 package com.porvak.bracket.config;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +10,8 @@ import org.springframework.stereotype.Service;
                 @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Service.class)})
 public class ComponentConfig {
 
+    @Configuration
+    @PropertySource("classpath:com/porvak/bracket/config/application.properties")
+    static class Standard {
+    }
 }

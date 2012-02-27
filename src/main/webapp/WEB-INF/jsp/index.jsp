@@ -21,15 +21,12 @@
     <p>Welcome, <c:out value="${account.displayName}"/>!</p>
     <p><img src="${account.profileUrl}" /> </p>
     <a href="<c:url value="/signout" />">Sign Out</a>
-
-    <ul>
-        <li><a href="connect/twitter">Twitter</a> (Connected? <c:out value="${twitter_status}"/>)</li>
-    </ul>
 </c:if>
-
+<c:if test="${empty account.displayName}">
 <form id="twitter_signin" action="/bracket/signin/twitter" method="post">
     <button type="submit" style="height: 26px; width: 150px;background: transparent url('resources/social/twitter/sign-in-with-twitter-d.png') no-repeat center top;"></button>
 </form>
+</c:if>
 
 
     <header>
