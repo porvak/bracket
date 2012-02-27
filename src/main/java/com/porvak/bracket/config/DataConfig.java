@@ -15,13 +15,23 @@
  */
 package com.porvak.bracket.config;
 
+import com.porvak.bracket.social.database.DatabaseUpgrader;
+import com.porvak.bracket.social.jdbc.versioned.DatabaseChangeSet;
+import com.porvak.bracket.social.jdbc.versioned.SqlDatabaseChange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.jdbc.datasource.embedded.*;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
+
+import javax.inject.Inject;
+import javax.sql.DataSource;
 
 @Configuration
 @ImportResource("classpath:/com/porvak/bracket/config/mongo-repo.xml")
@@ -44,4 +54,53 @@ public class DataConfig {
         return new MongoTemplate(mongoDbFactory());
     }
 
+
+
+
+
+
+
+
+    @Inject
+    private Environment environment;
+
+    @Inject
+    private TextEncryptor textEncryptor;
+
+    @Bean(destroyMethod="shutdown")
+    public DataSource dataSource() {
+        EmbeddedDatabaseFactory factory = new EmbeddedDatabaseFactory();
+        factory.setDatabaseName("bracket");
+        factory.setDatabaseType(EmbeddedDatabaseType.H2);
+        EmbeddedDatabaseConfigurer config = new EmbeddedDatabaseConfigurer() {
+            @Override
+            public void configureConnectionProperties(ConnectionProperties connectionProperties, String s) {
+                connectionProperties.setDriverClass(org.h2.Driver.class);
+                connectionProperties.setUrl("jdbc:h2:file:~/db/h2test.db");
+            }
+
+            @Override
+            public void shutdown(DataSource dataSource, String s) {
+
+            }
+        };
+
+
+//               factory.setDatabaseConfigurer(config);
+
+
+//        return factory.getDatabase();
+        return populateDatabase(factory.getDatabase());
+    }
+
+    // internal helpers
+
+    private EmbeddedDatabase populateDatabase(EmbeddedDatabase database) {
+        new DatabaseUpgrader(database, environment, textEncryptor) {
+            protected void addInstallChanges(DatabaseChangeSet changeSet) {
+//                changeSet.add(SqlDatabaseChange.inResource(new ClassPathResource("test-data.sql", getClass())));
+            }
+        }.run();
+        return database;
+    }
 }

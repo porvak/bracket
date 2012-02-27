@@ -1,5 +1,6 @@
 package com.porvak.bracket.config;
 
+import com.porvak.bracket.socialize.signin.AccountExposingHandlerInterceptor;
 import org.joda.time.DateTimeZone;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private Environment environment;
 
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AccountExposingHandlerInterceptor());
         WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
         webContentInterceptor.setUseCacheControlNoStore(true);
         webContentInterceptor.setUseCacheControlHeader(true);
