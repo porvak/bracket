@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-
 import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -35,7 +34,7 @@ public class HomeController {
     }
     
     @ResponseBody
-    @RequestMapping(value = "/tournament/{id}", method = GET)
+    @RequestMapping(value = "/api/pub/tournament/{id}", method = GET)
     public Tournament getTournamentById(@PathVariable("id") String id){
         return tournamentRepository.findOne(id);
     }

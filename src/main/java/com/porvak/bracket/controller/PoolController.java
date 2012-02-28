@@ -35,7 +35,7 @@ public class PoolController {
      * @param userPicks
      */
     @ResponseStatus(CREATED)
-    @RequestMapping(value = "/pool/{poolId}/user/{userId}/picks", method = POST)
+    @RequestMapping(value = "/api/pool/{poolId}/user/{userId}/picks", method = POST)
     public void saveUserPick(@PathVariable("poolId") String poolId, @PathVariable("userId") String userId, @RequestBody UserPicks userPicks){
         //TODO: validate that the given user has rights to save this pick
         // validate stuff
@@ -54,7 +54,7 @@ public class PoolController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/pool/{poolId}/user/{userId}/picks", method = GET)
+    @RequestMapping(value = "/api/pool/{poolId}/user/{userId}/picks", method = GET)
     public UserPicks getUserPick(@PathVariable("poolId")String poolId, @PathVariable("userId") String userId){
         return userPicksRepository.findByUserId(userId);
     }
@@ -66,7 +66,7 @@ public class PoolController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/pool/{poolId}", method = GET)
+    @RequestMapping(value = "/api/pool/{poolId}", method = GET)
     public Pool getPool(@PathVariable("poolId") String poolId){
         return poolRepository.findOne(poolId);
     }

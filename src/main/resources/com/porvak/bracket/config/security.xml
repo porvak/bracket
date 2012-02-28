@@ -16,6 +16,7 @@
 		<intercept-url pattern="/groups/**" access="permitAll" />
 		<intercept-url pattern="/pubsub/**" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="permitAll" />
+    <intercept-url pattern="/api/pub/**" access="permitAll" />
 		<intercept-url pattern="/signup" access="permitAll" requires-channel="#{environment['application.secureChannel']}" />	
 		<intercept-url pattern="/signin" access="permitAll" requires-channel="#{environment['application.secureChannel']}" />
 		<intercept-url pattern="/signin/*" access="permitAll" requires-channel="#{environment['application.secureChannel']}" />
