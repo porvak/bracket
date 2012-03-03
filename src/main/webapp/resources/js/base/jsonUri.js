@@ -1,9 +1,8 @@
 (function() {
   define([], function() {
     return {
-      root: "/bracket",
-      tournament: "/tournament",
-      tournamentStatic: "resources/json/tournament.json"
+      root: '/bracket',
+      poolId: '4f3c8297a0eea26b78d77538'
     };
   });
 }).call(this);

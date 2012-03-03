@@ -1,2 +1,2 @@
 define ['lib/orderLoad'], ->
-  handlebars
+  Handlebars

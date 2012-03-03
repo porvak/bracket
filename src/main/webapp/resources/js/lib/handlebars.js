@@ -1,5 +1,5 @@
 (function() {
   define(['lib/orderLoad'], function() {
-    return handlebars;
+    return Handlebars;
   });
 }).call(this);

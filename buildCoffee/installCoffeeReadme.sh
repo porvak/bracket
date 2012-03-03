@@ -1,3 +1,4 @@
+#!/bin/sh
 # First, get a mac
 # Next, get Xcode 4 for free from the app store
 # Next, install homebrew from the terminal:
