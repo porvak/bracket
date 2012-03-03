@@ -4,6 +4,8 @@ import com.porvak.bracket.domain.Pool;
 import com.porvak.bracket.domain.UserPicks;
 import com.porvak.bracket.repository.PoolRepository;
 import com.porvak.bracket.repository.UserPicksRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 public class PoolController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PoolController.class);
 
     @Inject
     private UserPicksRepository userPicksRepository;
@@ -45,6 +49,19 @@ public class PoolController {
         userPicksRepository.save(userPicks);
     }
 
+    @ResponseStatus(CREATED)
+    @RequestMapping(value = "/api/pool/{poolId}/region/{regionId}/game/{gameId}", method = POST)
+    public void saveUserPick(@PathVariable("poolId") String poolId, @PathVariable("regionId") String regionId, @PathVariable("gameId") String gameId,
+                             @RequestBody UserPicks userPicks){
+        //TODO: validate that the given user has rights to save this pick
+        // validate stuff
+
+        //TODO: check if the user already has made a pick for this pool, if so update it
+        //get existing user pick for pool
+//        userPicksRepository.save(userPicks);
+
+        LOGGER.debug("Updating pool:[{}], region:[{}], game:[{}] with:\n{}", new Object[]{poolId, regionId, gameId, userPicks});
+    }
 
     /**
      * Return a users pick for a specific pool
