@@ -16,6 +16,7 @@
 package com.porvak.bracket.config;
 
 import com.mongodb.Mongo;
+import com.mongodb.WriteConcern;
 import com.porvak.bracket.social.database.DatabaseUpgrader;
 import com.porvak.bracket.social.jdbc.versioned.DatabaseChangeSet;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.jdbc.datasource.embedded.ConnectionProperties;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseConfigurer;
@@ -54,12 +57,13 @@ public class DataConfig extends AbstractMongoConfiguration {
         return new Mongo("127.0.0.1");
     }
 
-//    @Bean
-//    public MongoTemplate mongoTemplate() throws Exception {
-//        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
-//        mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
-//        return mongoTemplate;
-//    }
+    @Bean @Override
+    public MongoTemplate mongoTemplate() throws Exception {
+        MongoTemplate mongoTemplate = super.mongoTemplate();
+        mongoTemplate.setWriteConcern(WriteConcern.JOURNAL_SAFE);
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+        return mongoTemplate;
+    }
 
     @Bean
     public DataSource dataSource() {
