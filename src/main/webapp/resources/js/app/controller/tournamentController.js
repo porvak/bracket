@@ -1,13 +1,15 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  define(['lib/jquery', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/GameModel', 'app/view/GameView', 'text!html/sectionTemplate.html'], function($, handlebars, TournamentModel, GameModel, GameView, strSectionTemplate) {
+  define(['lib/jquery', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html'], function($, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) {
     return {
       init: function() {
         this.model = new TournamentModel;
         this.model.bind('change', this.render, this);
         this.model.fetch();
-        this.gameViews = {};
-        return this.sectionHB = handlebars.compile(strSectionTemplate);
+        this.teamViews = {};
+        this.emptyTeamViews = {};
+        this.sectionHB = handlebars.compile(strSectionTemplate);
+        return this.gameHB = handlebars.compile(strGameTemplate);
       },
       render: function() {
         var elBracket, _ref;
@@ -28,17 +30,33 @@
                 }));
                 if ((_ref3 = round.games) != null) {
                   _ref3.forEach(__bind(function(game) {
-                    var gameModel, gameView;
-                    game.regionId = region.regionId;
-                    game.roundId = round.roundId;
-                    gameModel = new GameModel(game);
-                    gameView = new GameView({
-                      model: gameModel
-                    });
-                    gameView.on('drag', this.showDropZones, this);
-                    gameView.on('drop', this.hideDropZones, this);
-                    this.gameViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId] = gameView;
-                    return elRound.append(gameView.el);
+                    var elGame, _ref4;
+                    elGame = $(this.gameHB(game));
+                    if ((_ref4 = game.teams) != null) {
+                      _ref4.forEach(__bind(function(team) {
+                        var teamView, teamZero;
+                        team.regionId = region.regionId;
+                        team.roundId = round.roundId;
+                        team.gameId = game.gameId;
+                        team.nextGame = (game.nextGame ? game.nextGame : null);
+                        teamView = new TeamView({
+                          model: new TeamModel(team)
+                        });
+                        teamView.on('drag', this.showDropZones, this);
+                        teamView.on('drop', this.hideDropZones, this);
+                        this.teamViews["" + team.teamId] = teamView;
+                        if (!(team.teamId && team.name)) {
+                          this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position] = teamView;
+                        }
+                        teamZero = elGame.find('.detail.team-0');
+                        if (teamZero.val()) {
+                          return teamView.$el.insertAfter(teamZero);
+                        } else {
+                          return teamView.$el.insertAfter(elGame.find('.detail.state'));
+                        }
+                      }, this));
+                    }
+                    return elRound.append(elGame);
                   }, this));
                 }
                 return elRegion.append(elRound);
@@ -65,7 +83,7 @@
             var game;
             return game = _.find(round.games, __bind(function(game) {
               if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
-                return nextGameView = this.gameViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId];
+                return nextGameView = this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
               }
             }, this)) != null;
           }, this)) != null;

@@ -2,16 +2,19 @@ define [
   'lib/jquery'
   'lib/handlebars'
   'app/model/TournamentModel'
-  'app/model/GameModel'
-  'app/view/GameView'
+  'app/model/TeamModel'
+  'app/view/TeamView'
   'text!html/sectionTemplate.html'
-], ($, handlebars, TournamentModel, GameModel, GameView, strSectionTemplate) ->
+  'text!html/gameTemplate.html'
+], ($, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) ->
   init: ->
     @model = new TournamentModel
     @model.bind('change', @render, @)
     @model.fetch()
-    @gameViews = {}
+    @teamViews = {}
+    @emptyTeamViews = {}
     @sectionHB = handlebars.compile(strSectionTemplate)
+    @gameHB = handlebars.compile(strGameTemplate)
 
   render: ->
     elBracket = $(@sectionHB(
@@ -29,23 +32,32 @@ define [
         ))
 
         round.games?.forEach (game) =>
-          game.regionId = region.regionId
-          game.roundId = round.roundId
+          elGame = $(@gameHB(game))
+          game.teams?.forEach (team) =>
+            team.regionId = region.regionId
+            team.roundId = round.roundId
+            team.gameId = game.gameId
+            team.nextGame = (if game.nextGame then game.nextGame else null)
 
-          gameModel = new GameModel(game)
-          gameView = new GameView(model: gameModel)
-          gameView.on('drag',@showDropZones,@)
-          gameView.on('drop',@hideDropZones,@)
+            teamView = new TeamView(model:new TeamModel(team))
+            teamView.on('drag',@showDropZones,@)
+            teamView.on('drop',@hideDropZones,@)
 
-          @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"] = gameView
+            @teamViews["#{team.teamId}"] = teamView
+            @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"] = teamView unless team.teamId and team.name
 
-          elRound.append(gameView.el)
+            teamZero = elGame.find('.detail.team-0')
+            if teamZero.val()
+              teamView.$el.insertAfter(teamZero)
+            else
+              teamView.$el.insertAfter(elGame.find('.detail.state'))
 
+          elRound.append(elGame)
         elRegion.append(elRound)
-
       elBracket.append(elRegion)
 
     $('#bracketNode').append(elBracket)
+
 
   showDropZones: (model) ->
     @recurNextGames(model,'showDropZone')
@@ -59,11 +71,12 @@ define [
     nextGame = model.get('nextGame')
     nextGameView = undefined
 
+    #Find the next game location
     region = _.find(@model.get('regions'), (region) =>
         round = _.find(region.rounds, (round) =>
             game = _.find(round.games, (game) =>
                 if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-                  nextGameView = @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"]
+                  nextGameView = @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
             )?
         )?
     )
