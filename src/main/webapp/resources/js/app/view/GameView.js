@@ -1,4 +1,5 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'text!html/gameTemplate.html'], function(Backbone, $, handlebars, strGameTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
@@ -7,7 +8,29 @@
         return this.render();
       },
       render: function() {
-        return this.$el.html(this.gameHB(this.model.toJSON()));
+        this.$el.html(this.gameHB(this.model.toJSON()));
+        return this.$el.find('.team').each(__bind(function(index, team) {
+          $(team).draggable({
+            helper: 'clone',
+            opacity: 0.6,
+            start: __bind(function(event, ui) {
+              return this.trigger('drag', this.model);
+            }, this),
+            stop: __bind(function(event, ui) {
+              return this.trigger('drop');
+            }, this)
+          });
+          return $(team).droppable({
+            drop: this.drop,
+            tolerance: 'pointer',
+            over: function(event, ui) {
+              return $(event.target).addClass("team-droppable");
+            },
+            out: function(event, ui) {
+              return $(event.target).removeClass("team-droppable");
+            }
+          });
+        }, this));
       },
       events: {
         "click .game .details .detail": "click"
@@ -17,11 +40,17 @@
         team = this.getTeam(e);
         return console.log(team.name);
       },
+      drop: function(event, ui) {
+        return $(this).attr('style', 'background-color:red');
+      },
       getTeam: function(e) {
         var seatNum, seatStr, _ref, _ref2;
         seatStr = e != null ? (_ref = e.currentTarget) != null ? _ref.getAttribute('position') : void 0 : void 0;
         seatNum = parseInt(seatStr);
         return (_ref2 = this.model.get('teams')) != null ? _ref2[seatNum] : void 0;
+      },
+      highlight: function() {
+        return this.$el.addClass("highlight-game-drop");
       }
     });
   });

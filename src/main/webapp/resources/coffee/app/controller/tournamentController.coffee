@@ -8,9 +8,9 @@ define [
 ], ($, handlebars, TournamentModel, GameModel, GameView, strSectionTemplate) ->
   init: ->
     @model = new TournamentModel
-    @gameViewArr = []
     @model.bind('change', @render, @)
     @model.fetch()
+    @gameViews = {}
     @sectionHB = handlebars.compile(strSectionTemplate)
 
   render: ->
@@ -29,9 +29,16 @@ define [
         ))
 
         round.games?.forEach (game) =>
-          game.regionId = region.id
+          game.regionId = region.regionId
+          game.roundId = round.roundId
+
           gameModel = new GameModel(game)
           gameView = new GameView(model: gameModel)
+          gameView.on('drag',@showDropZones,@)
+          gameView.on('drop',@hideDropZones,@)
+
+          @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"] = gameView
+
           elRound.append(gameView.el)
 
         elRegion.append(elRound)
@@ -39,3 +46,31 @@ define [
       elBracket.append(elRegion)
 
     $('#bracketNode').append(elBracket)
+
+  showDropZones: (model) ->
+    nextGame = model.get('nextGame')
+    nextGameView = undefined
+
+    region = _.find(@model.get('regions'), (region) =>
+      round = _.find(region.rounds, (round) =>
+          game = _.find(round.games, (game) =>
+              if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
+                nextGameView = @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"]
+          )?
+      )?
+    )
+
+    nextGameView?.highlight()
+
+    if nextGameView and nextGameView.model.get('nextGame') then @showDropZones(nextGameView.model) else null
+
+
+
+
+
+
+  hideDropZones: (index,team,model) ->
+    console.log('showDropZones')
+    console.log(index)
+    console.log(team)
+    console.log(model)
