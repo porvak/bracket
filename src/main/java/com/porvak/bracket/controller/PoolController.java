@@ -9,7 +9,6 @@ import com.porvak.bracket.service.PoolService;
 import com.porvak.bracket.socialize.account.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,15 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.security.Principal;
+import java.util.Map;
 
-import static com.google.common.base.Preconditions.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
-public class PoolController {
+public class PoolController extends AbstractBracketController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PoolController.class);
 
@@ -36,9 +34,6 @@ public class PoolController {
     @Inject
     private PoolService poolService;
 
-    @Inject @Named("bracketConversionService")
-    private ConversionService conversionService;
-    
     @Inject
     private PoolRepository poolRepository;
 
@@ -49,14 +44,15 @@ public class PoolController {
      * the application will overwrite the existing pick for the given game.
      *
      * @param poolId
-     * @param userPick
+     * @param userPickMap Map that contains 'regionId', 'gameId', and 'teamId'
      * @param currentUser
      */
     @ResponseStatus(CREATED)
     @RequestMapping(value = "/api/pool/{poolId}/user/pick", method = POST)
-    public void saveUserPick(@PathVariable("poolId") String poolId, @RequestBody UserPick userPick, Principal currentUser){
+    public void saveUserPick(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> userPickMap, Principal currentUser){
         //TODO: validate that the given user has rights to save this pick
-        Account account = checkNotNull(conversionService.convert(currentUser, Account.class));
+        Account account = getUserAccount(currentUser);
+        UserPick userPick = new UserPick(userPickMap);
         poolService.addUserPick(account.getId(), poolId, userPick);
 
         LOGGER.debug("Added user[{}] pick: poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPick});
@@ -72,7 +68,7 @@ public class PoolController {
     @ResponseBody
     @RequestMapping(value = "/api/pool/{poolId}/user/picks", method = GET)
     public UserPicks getUserPicks(@PathVariable("poolId")String poolId, Principal currentUser){
-        Account account = checkNotNull(conversionService.convert(currentUser, Account.class));
+        Account account = getUserAccount(currentUser);
         return userPicksRepository.findByUserIdAndPoolId(account.getId(), poolId);
     }
 
