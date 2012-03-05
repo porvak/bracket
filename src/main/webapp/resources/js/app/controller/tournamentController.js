@@ -8,6 +8,7 @@
         this.model.fetch();
         this.teamViews = {};
         this.emptyTeamViews = {};
+        this.dropViews = [];
         this.sectionHB = handlebars.compile(strSectionTemplate);
         return this.gameHB = handlebars.compile(strGameTemplate);
       },
@@ -42,8 +43,8 @@
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });
-                        teamView.on('drag', this.showDropZones, this);
-                        teamView.on('drop', this.hideDropZones, this);
+                        teamView.on('drag', this.teamDrag, this);
+                        teamView.on('drop', this.teamDrop, this);
                         this.teamViews["" + team.teamId] = teamView;
                         if (!(team.teamId && team.name)) {
                           this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position] = teamView;
@@ -67,16 +68,30 @@
         }
         return $('#bracketNode').append(elBracket);
       },
-      showDropZones: function(model) {
-        return this.recurNextGames(model, 'showDropZone');
+      teamDrag: function(model, ui) {
+        return this.dropViews = this.recurNextGames(model, 'showDropZone');
       },
-      hideDropZones: function(model) {
-        return this.recurNextGames(model, 'hideDropZone');
+      teamDrop: function(model, ui) {
+        var landingModel, _ref;
+        if (this.dropViews.length > 0) {
+          this.dropViews.forEach(function(view) {
+            return view.hideDropZone();
+          });
+        } else {
+          this.dropViews = this.recurNextGames(model, 'hideDropZone');
+        }
+        if (!model.get('teamId')) {
+          landingModel = (_ref = this.teamViews["" + (ui.draggable.data('id'))]) != null ? _ref.model : void 0;
+          return console.log("Team " + (landingModel.get('name')) + " has landed on game id " + (model.get('gameId')) + ".");
+        }
       },
-      recurNextGames: function(model, actionAttr) {
+      recurNextGames: function(model, actionAttr, dropViews) {
         var nextGame, nextGameView, region;
         nextGame = model.get('nextGame');
         nextGameView = void 0;
+        if (!dropViews) {
+          dropViews = [];
+        }
         region = _.find(this.model.get('regions'), __bind(function(region) {
           var round;
           return round = _.find(region.rounds, __bind(function(round) {
@@ -93,10 +108,13 @@
             nextGameView[actionAttr]();
           }
         }
+        if (nextGameView) {
+          dropViews.push(nextGameView);
+        }
         if (nextGameView && nextGameView.model.get('nextGame')) {
-          return this.recurNextGames(nextGameView.model, actionAttr);
+          return this.recurNextGames(nextGameView.model, actionAttr, dropViews);
         } else {
-          return null;
+          return dropViews;
         }
       }
     };

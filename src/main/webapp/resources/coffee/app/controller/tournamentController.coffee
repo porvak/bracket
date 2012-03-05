@@ -13,8 +13,10 @@ define [
     @model.fetch()
     @teamViews = {}
     @emptyTeamViews = {}
+    @dropViews = []
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
+
 
   render: ->
     elBracket = $(@sectionHB(
@@ -39,9 +41,11 @@ define [
             team.gameId = game.gameId
             team.nextGame = (if game.nextGame then game.nextGame else null)
 
-            teamView = new TeamView(model:new TeamModel(team))
-            teamView.on('drag',@showDropZones,@)
-            teamView.on('drop',@hideDropZones,@)
+            teamView = new TeamView(
+              model:new TeamModel(team)
+            )
+            teamView.on('drag',@teamDrag,@)
+            teamView.on('drop',@teamDrop,@)
 
             @teamViews["#{team.teamId}"] = teamView
             @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"] = teamView unless team.teamId and team.name
@@ -59,17 +63,33 @@ define [
     $('#bracketNode').append(elBracket)
 
 
-  showDropZones: (model) ->
-    @recurNextGames(model,'showDropZone')
+  teamDrag: (model,ui) ->
+    @dropViews = @recurNextGames(model,'showDropZone')
 
 
-  hideDropZones: (model) ->
-    @recurNextGames(model,'hideDropZone')
+  teamDrop: (model,ui) ->
+    if @dropViews.length > 0
+      @dropViews.forEach((view) ->
+          view.hideDropZone()
+      )
+    else
+      @dropViews = @recurNextGames(model,'hideDropZone')
+
+    if not model.get('teamId') #then its an empty team
+      landingModel = @teamViews["#{ui.draggable.data('id')}"]?.model
+
+      console.log("Team #{landingModel.get('name')} has landed on game id #{model.get('gameId')}.")
+#        @model.set('teamId',landingTeamView.model.get('name'))
+#        @model.save()
 
 
-  recurNextGames: (model,actionAttr) ->
+
+
+  #Calls an action on all of the next valid games recursively
+  recurNextGames: (model,actionAttr,dropViews) ->
     nextGame = model.get('nextGame')
     nextGameView = undefined
+    dropViews = [] unless dropViews
 
     #Find the next game location
     region = _.find(@model.get('regions'), (region) =>
@@ -82,7 +102,8 @@ define [
     )
 
     nextGameView?[actionAttr]?()
+    if nextGameView then dropViews.push(nextGameView)
 
-    if nextGameView and nextGameView.model.get('nextGame') then @recurNextGames(nextGameView.model,actionAttr) else null
+    if nextGameView and nextGameView.model.get('nextGame') then @recurNextGames(nextGameView.model,actionAttr,dropViews) else dropViews
 
 

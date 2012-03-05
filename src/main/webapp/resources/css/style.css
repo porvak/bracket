@@ -140,6 +140,7 @@ header h4{
 	/*background-color: #eef;*/
 	float: left;
 	color: #111;
+    min-height: 1.3em;
 	/*width: 55px;*/
 	overflow: hidden;
 	white-space: nowrap;
@@ -162,7 +163,6 @@ header h4{
 
 .highlight-game-drop {
     background-color: yellow;
-    height:20px;
     width:100%;
 }
 

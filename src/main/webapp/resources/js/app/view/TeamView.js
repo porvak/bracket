@@ -1,6 +1,6 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, strTeamTemplate) {
+  define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'app/controller/tournamentController', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, tournamentController, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
         this.model.on('change', this.render, this);
@@ -15,15 +15,14 @@
           helper: 'clone',
           opacity: 0.6,
           start: __bind(function(event, ui) {
-            return this.trigger('drag', this.model);
-          }, this),
-          stop: __bind(function(event, ui) {
-            return this.trigger('drop', this.model);
+            return this.trigger('drag', this.model, ui);
           }, this)
         });
         return teamDiv.droppable({
-          drop: this.drop,
           tolerance: 'pointer',
+          drop: __bind(function(event, ui) {
+            return this.trigger('drop', this.model, ui);
+          }, this),
           over: function(event, ui) {},
           out: function(event, ui) {}
         });
@@ -34,17 +33,13 @@
       click: function(e) {
         return console.log(this.model.get('name'));
       },
-      drop: function(event, ui) {
-        return $(this).attr('style', 'background-color:red');
-      },
       showDropZone: function() {
-        this.$el.addClass("highlight-game-drop");
-        return console.log("" + (this.model.get('gameId')));
+        return this.$el.addClass("highlight-game-drop");
       },
       hideDropZone: function() {
-        this.$el.removeClass("highlight-game-drop");
-        return console.log("" + (this.model.get('gameId')));
-      }
+        return this.$el.removeClass("highlight-game-drop");
+      },
+      isValidDrop: function() {}
     });
   });
 }).call(this);
