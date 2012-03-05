@@ -33,7 +33,6 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan(basePackages="com.porvak.bracket", useDefaultFilters = false,
         includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)})
-
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Inject
