@@ -13,6 +13,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.*;
 
 public class Region extends AbstractBracket{
+    @JsonProperty("regionId")
     private int id;
     private String name;
     @JsonProperty

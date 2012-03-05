@@ -15,27 +15,31 @@
  */
 package com.porvak.bracket.config;
 
+import com.mongodb.Mongo;
+import com.mongodb.WriteConcern;
 import com.porvak.bracket.social.database.DatabaseUpgrader;
 import com.porvak.bracket.social.jdbc.versioned.DatabaseChangeSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoFactoryBean;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.jdbc.datasource.embedded.ConnectionProperties;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseConfigurer;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.net.UnknownHostException;
 
 @Configuration
 @ImportResource("classpath:/com/porvak/bracket/config/mongo-repo.xml")
-public class DataConfig {
+public class DataConfig extends AbstractMongoConfiguration {
 
     @Inject
     private Environment environment;
@@ -43,21 +47,22 @@ public class DataConfig {
     @Inject
     private TextEncryptor textEncryptor;
 
-    @Bean
-    public MongoFactoryBean mongo(){
-        MongoFactoryBean mongo = new MongoFactoryBean();
-        mongo.setHost("127.0.0.1");
-        return mongo;
+    @Override
+    public String getDatabaseName() {
+        return "bracket";
     }
 
     @Bean
-    public MongoDbFactory mongoDbFactory() throws Exception {
-        return new SimpleMongoDbFactory(mongo().getObject(), "bracket");
+    public Mongo mongo() throws UnknownHostException {
+        return new Mongo("127.0.0.1");
     }
 
-    @Bean
+    @Bean @Override
     public MongoTemplate mongoTemplate() throws Exception {
-        return new MongoTemplate(mongoDbFactory());
+        MongoTemplate mongoTemplate = super.mongoTemplate();
+        mongoTemplate.setWriteConcern(WriteConcern.JOURNAL_SAFE);
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+        return mongoTemplate;
     }
 
     @Bean
@@ -65,19 +70,21 @@ public class DataConfig {
         EmbeddedDatabaseFactory factory = new EmbeddedDatabaseFactory();
         factory.setDatabaseName("bracket");
         factory.setDatabaseType(EmbeddedDatabaseType.H2);
-//        EmbeddedDatabaseConfigurer config = new EmbeddedDatabaseConfigurer() {
-//            @Override
-//            public void configureConnectionProperties(ConnectionProperties connectionProperties, String s) {
-//                connectionProperties.setDriverClass(org.h2.Driver.class);
-//                connectionProperties.setUrl("jdbc:h2:file:~/db/h2test.db");
-//            }
-//
-//            @Override
-//            public void shutdown(DataSource dataSource, String s) {
-//
-//            }
-//        };
+        EmbeddedDatabaseConfigurer config = new EmbeddedDatabaseConfigurer() {
+            @Override
+            public void configureConnectionProperties(ConnectionProperties connectionProperties, String s) {
+                connectionProperties.setDriverClass(org.h2.Driver.class);
+                connectionProperties.setUrl("jdbc:h2:tcp://localhost/~/bracket");
+                connectionProperties.setUsername("sa");
+            }
 
+            @Override
+            public void shutdown(DataSource dataSource, String s) {
+
+            }
+        };
+
+//        factory.setDatabaseConfigurer(config);
         return populateDatabase(factory.getDatabase());
     }
 

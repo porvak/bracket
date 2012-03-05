@@ -1,12 +1,15 @@
 package com.porvak.bracket.domain;
 
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class GameTeam extends AbstractBracket {
     
-    private int position;
+    @JsonProperty("teamId")
     private String id;
+
+    private int position;
     private String name;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)

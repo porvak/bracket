@@ -4,15 +4,18 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 
 import java.util.List;
 import java.util.Map;
 
+@CompoundIndexes({
+    @CompoundIndex(name = "userPicks_pool_id_idx", unique = true, def = "{'userId': 1, 'poolId': 1}")
+})
 public class UserPicks extends AbstractBracket{
 
-    @Id
     private String id;
     private String tournamentId;
     private String poolId;
@@ -37,7 +40,7 @@ public class UserPicks extends AbstractBracket{
     }
     
     private boolean arePicksIndexed(){
-        return indexedPicks != null && indexedPicks.size() != 0;
+        return picks == null || (indexedPicks != null && indexedPicks.size() != 0);
     } 
     
     private void createIndexedPicks(){
@@ -86,6 +89,10 @@ public class UserPicks extends AbstractBracket{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean hasUserPicks() {
+        return picks == null || picks.size() != 0;
     }
 
     private class SearchKey {
