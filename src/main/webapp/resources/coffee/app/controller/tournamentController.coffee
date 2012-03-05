@@ -20,7 +20,7 @@ define [
 
     @model.get('regions')?.forEach (region) =>
       elRegion = $(@sectionHB(
-        class: "region region-#{region.id}"
+        class: "region region-#{region.regionId}"
       ))
 
       region.rounds?.forEach (round) =>
