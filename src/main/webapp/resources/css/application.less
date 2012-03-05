@@ -1,14 +1,23 @@
+/*Fonts*/
+@font-face { font-family: Blokletters-Balpen; src: url('../../resources/fonts/Blokletters-Balpen.ttf'); }
+@font-face { font-family: Blokletters-Viltstift; src: url('../../resources/fonts/Blokletters-Viltstift.ttf'); }
+
 /*Colors*/
 @slalomWarmGray: #efe9e5;
 
+@bgPrimary: #eeeff0;
 @bgSecondary: #000;
 @bgSecondaryGradientHelper: #6C6C6C;
+@textPrimary: #000;
 @textSecondary: @slalomWarmGray;
+@textTertiary: #b22773;
 
-@bgPrimary: #eeeff0;
+@seedColor: @textTertiary;
+@teamOneScoreColor: #21314d;
+@teamTwoScoreColor: #199fce;
 /*End Colors*/
 
-/*Common*/
+/*Common classes / functions*/
 .clear_fix{
     zoom:1;
     &:after {
@@ -32,8 +41,29 @@
 	-moz-border-radius: @border;
 	border-radius: @border;
 }
+
+/*Not supported very well*/
+/*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-top-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-bottom-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
 /*End Common*/
 
+/*General tags*/
 body {
     font-size: 14px;
     text-align: left;
@@ -43,6 +73,7 @@ body {
 input[type=submit] {
     cursor: pointer;
 }
+/*End General Tags*/
 
 header {
     .background-gradient(@bgSecondaryGradientHelper, 0%, @bgSecondaryGradientHelper, 0%, @bgSecondary, 100%);
@@ -86,7 +117,57 @@ header {
     }
 }
 
+.region {
+    div.game {
+        .team {
+            width: 80px;
+        }
+    }
 
+    &.region-1, &.region-3 {
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y right;
+        }
+    }
+    &.region-2, &.region-4 {
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y left;
+        }
+    }
+}
+
+div.game {
+    padding: 4px 2px;
+    border: none;
+
+    div.detail {
+        font-family: 'Blokletters-Balpen', Arial, sans-serif;
+        font-size: .65em;
+        line-height: 1.4em;
+        &.team-0, &.team-1 {
+            .clear_fix;
+        }
+        &.team-0 .score {
+            color: @teamOneScoreColor;
+        }
+        &.team-1 .score {
+            color: @teamTwoScoreColor;
+        }
+
+        .score, .seed {
+            font-weight: bold;
+            font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+        }
+    }
+}
+
+.seed {
+    color: @seedColor;
+}
 
 input.twitter_signin {
     border: none;

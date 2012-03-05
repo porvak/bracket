@@ -78,8 +78,8 @@ header h4{
 /*** Games ***/
 .games { }
 .game{
-	border-top: 2px solid #000;
-	border-bottom: 2px solid #000;
+	/*border-top: 2px solid #000;*/
+	/*border-bottom: 2px solid #000;*/
 	width: 100%-4px;
 	height: 3.2em;
 	text-align: left;
@@ -92,11 +92,11 @@ header h4{
 
 .region-1 .game,
 .region-3 .game{
-	border-right: 2px solid #000;
+	/*border-right: 2px solid #000;*/
 }
 .region-2 .game,
 .region-4 .game{
-	border-left: 2px solid #000;
+	/*border-left: 2px solid #000;*/
 }
 
 /* Vertical spacing of games */
@@ -137,15 +137,15 @@ header h4{
 	color: #00f;
 }
 .team{
-	background-color: #eef;
+	/*background-color: #eef;*/
 	float: left;
 	color: #111;
-	width: 55px;
+	/*width: 55px;*/
 	overflow: hidden;
 	white-space: nowrap;
 }
 .team:hover{
-	background-color: #6ff;
+	/*background-color: #6ff;*/
 	cursor: pointer;
 }
 .score{

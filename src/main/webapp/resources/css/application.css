@@ -1,6 +1,15 @@
+/*Fonts*/
+@font-face {
+  font-family: Blokletters-Balpen;
+  src: url('../../resources/fonts/Blokletters-Balpen.ttf');
+}
+@font-face {
+  font-family: Blokletters-Viltstift;
+  src: url('../../resources/fonts/Blokletters-Viltstift.ttf');
+}
 /*Colors*/
 /*End Colors*/
-/*Common*/
+/*Common classes / functions*/
 .clear_fix {
   zoom: 1;
 }
@@ -11,7 +20,27 @@
   clear: both;
   visibility: hidden;
 }
+/*Not supported very well*/
+/*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-top-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-bottom-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
 /*End Common*/
+/*General tags*/
 body {
   font-size: 14px;
   text-align: left;
@@ -20,6 +49,7 @@ body {
 input[type=submit] {
   cursor: pointer;
 }
+/*End General Tags*/
 header {
   background: #6c6c6c;
   background: -moz-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
@@ -75,6 +105,47 @@ header nav a.selected {
   border-radius: 6px;
   border-right: 1px solid #6c6c6c;
   border-bottom: 1px solid #6c6c6c;
+}
+.region div.game .team {
+  width: 80px;
+}
+.region.region-1 div.game, .region.region-3 div.game {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-2 div.game, .region.region-4 div.game {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+div.game {
+  padding: 4px 2px;
+  border: none;
+}
+div.game div.detail {
+  font-family: 'Blokletters-Balpen', Arial, sans-serif;
+  font-size: .65em;
+  line-height: 1.4em;
+}
+div.game div.detail.team-0, div.game div.detail.team-1 {
+  zoom: 1;
+}
+div.game div.detail.team-0:after, div.game div.detail.team-1:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+div.game div.detail.team-0 .score {
+  color: #21314d;
+}
+div.game div.detail.team-1 .score {
+  color: #199fce;
+}
+div.game div.detail .score, div.game div.detail .seed {
+  font-weight: bold;
+  font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+}
+.seed {
+  color: #b22773;
 }
 input.twitter_signin {
   border: none;
