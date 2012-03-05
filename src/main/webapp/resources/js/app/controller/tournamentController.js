@@ -50,6 +50,12 @@
         return $('#bracketNode').append(elBracket);
       },
       showDropZones: function(model) {
+        return this.recurNextGames(model, 'showDropZone');
+      },
+      hideDropZones: function(model) {
+        return this.recurNextGames(model, 'hideDropZone');
+      },
+      recurNextGames: function(model, actionAttr) {
         var nextGame, nextGameView, region;
         nextGame = model.get('nextGame');
         nextGameView = void 0;
@@ -65,19 +71,15 @@
           }, this)) != null;
         }, this));
         if (nextGameView != null) {
-          nextGameView.highlight();
+          if (typeof nextGameView[actionAttr] === "function") {
+            nextGameView[actionAttr]();
+          }
         }
         if (nextGameView && nextGameView.model.get('nextGame')) {
-          return this.showDropZones(nextGameView.model);
+          return this.recurNextGames(nextGameView.model, actionAttr);
         } else {
           return null;
         }
-      },
-      hideDropZones: function(index, team, model) {
-        console.log('showDropZones');
-        console.log(index);
-        console.log(team);
-        return console.log(model);
       }
     };
   });

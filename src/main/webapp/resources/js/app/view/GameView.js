@@ -17,18 +17,14 @@
               return this.trigger('drag', this.model);
             }, this),
             stop: __bind(function(event, ui) {
-              return this.trigger('drop');
+              return this.trigger('drop', this.model);
             }, this)
           });
           return $(team).droppable({
             drop: this.drop,
             tolerance: 'pointer',
-            over: function(event, ui) {
-              return $(event.target).addClass("team-droppable");
-            },
-            out: function(event, ui) {
-              return $(event.target).removeClass("team-droppable");
-            }
+            over: function(event, ui) {},
+            out: function(event, ui) {}
           });
         }, this));
       },
@@ -49,8 +45,13 @@
         seatNum = parseInt(seatStr);
         return (_ref2 = this.model.get('teams')) != null ? _ref2[seatNum] : void 0;
       },
-      highlight: function() {
-        return this.$el.addClass("highlight-game-drop");
+      showDropZone: function() {
+        this.$el.addClass("highlight-game-drop");
+        return console.log(this.model.get('gameId'));
+      },
+      hideDropZone: function() {
+        this.$el.removeClass("highlight-game-drop");
+        return console.log(this.model.get('gameId'));
       }
     });
   });

@@ -20,16 +20,16 @@ define [
             start:(event, ui) =>
               @trigger('drag',@model)
             stop:(event, ui) =>
-              @trigger('drop')
+              @trigger('drop',@model)
           )
 
           $(team).droppable(
             drop: @drop
             tolerance: 'pointer'
             over: (event, ui) ->
-              $(event.target).addClass "team-droppable"
+#              $(event.target).addClass "team-droppable"
             out:  (event, ui) ->
-              $(event.target).removeClass "team-droppable"
+#              $(event.target).removeClass "team-droppable"
           )
       )
 
@@ -49,8 +49,15 @@ define [
       seatNum = parseInt(seatStr)
       @model.get('teams')?[seatNum]
 
-    highlight: ->
+    showDropZone: ->
       @$el.addClass "highlight-game-drop"
+      console.log(@model.get('gameId'))
+
+    hideDropZone: ->
+      @$el.removeClass "highlight-game-drop"
+      console.log(@model.get('gameId'))
+
+
 
 
   )

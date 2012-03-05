@@ -48,29 +48,28 @@ define [
     $('#bracketNode').append(elBracket)
 
   showDropZones: (model) ->
+    @recurNextGames(model,'showDropZone')
+
+
+  hideDropZones: (model) ->
+    @recurNextGames(model,'hideDropZone')
+
+
+  recurNextGames: (model,actionAttr) ->
     nextGame = model.get('nextGame')
     nextGameView = undefined
 
     region = _.find(@model.get('regions'), (region) =>
-      round = _.find(region.rounds, (round) =>
-          game = _.find(round.games, (game) =>
-              if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-                nextGameView = @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"]
-          )?
-      )?
+        round = _.find(region.rounds, (round) =>
+            game = _.find(round.games, (game) =>
+                if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
+                  nextGameView = @gameViews["#{region.regionId}-#{round.roundId}-#{game.gameId}"]
+            )?
+        )?
     )
 
-    nextGameView?.highlight()
+    nextGameView?[actionAttr]?()
 
-    if nextGameView and nextGameView.model.get('nextGame') then @showDropZones(nextGameView.model) else null
-
-
+    if nextGameView and nextGameView.model.get('nextGame') then @recurNextGames(nextGameView.model,actionAttr) else null
 
 
-
-
-  hideDropZones: (index,team,model) ->
-    console.log('showDropZones')
-    console.log(index)
-    console.log(team)
-    console.log(model)
