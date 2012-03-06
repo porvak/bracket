@@ -89,7 +89,7 @@
             }, {
               wait: true,
               success: function(model, response) {
-                return console.log("POST: " + url + "   JSON:" + (model.toJSON()));
+                return console.log("POST: " + (window.location.host + model.url()) + "   JSON:" + (JSON.stringify(model.toJSON())));
               },
               error: function(model, response) {
                 postError = true;
@@ -99,7 +99,7 @@
                 }
               }
             });
-            return !postError || _.isEqual(baseView, dropView);
+            return postError || _.isEqual(baseView, dropView);
           }, this));
         }
       },

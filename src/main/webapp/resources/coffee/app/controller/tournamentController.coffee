@@ -87,7 +87,7 @@ define [
         ,
           wait:true
           success: (model,response) ->
-            console.log("POST: #{url}   JSON:#{model.toJSON()}")
+            console.log("POST: #{window.location.host + model.url()}   JSON:#{JSON.stringify(model.toJSON())}")
 
           error: (model, response) ->
             postError = true
@@ -96,7 +96,7 @@ define [
               console.log(response)
         )
 
-        !postError or _.isEqual baseView, dropView
+        postError or _.isEqual baseView, dropView
 
   hideDropZones:() ->
     if @dropViews.length > 0
