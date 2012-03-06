@@ -20,6 +20,8 @@ define [
 
 
   render: ->
+    console.log("GET: http://#{window.location.host + @model.url()}\n\n")
+
     elBracket = $(@sectionHB(
       class: "regions"
     ))
@@ -41,6 +43,8 @@ define [
             team.regionId = region.regionId
             team.roundId = round.roundId
             team.gameId = game.gameId
+            #TODO remove this when server provides it
+            team.userPick = !team.teamId
             team.nextGame = (if game.nextGame then game.nextGame else null)
 
             teamView = new TeamView(
@@ -80,6 +84,7 @@ define [
       _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
+        eachView.$el.addClass('.saving')
         eachView.model.save(
           name:landingView.model.get('name')
           teamId:landingView.model.get('teamId')
@@ -87,12 +92,14 @@ define [
         ,
           wait:true
           success: (model,response) ->
-            console.log("POST: #{window.location.host + model.url()}   JSON:#{JSON.stringify(model.toJSON())}")
+            console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+            eachView.$el.removeClass('saving')
 
           error: (model, response) ->
+            eachView.$el.removeClass('saving')
             postError = true
             if response.status is 404
-              alert 'Please sign in using your twitter account.'
+              alert 'Please sign in using twitter.'
               console.log(response)
         )
 
@@ -108,7 +115,6 @@ define [
 
 
   validDropZone: (baseView,landingView) ->
-    if baseView.model.get('teamId') then return false
     if baseView.model.get('regionId') isnt landingView.model.get('regionId') then return false
     if baseView.model.get('roundId') <= landingView.model.get('roundId') then return false
     _.find @dropViews, (dropView) ->
@@ -126,8 +132,8 @@ define [
         _.find(round.games, (game) =>
             if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
               nextGameView = @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
-        )?
-      )?
+        )
+      )
     )
 
     nextGameView?[actionAttr]?()

@@ -1,5 +1,5 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'app/controller/tournamentController', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, tournamentController, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
@@ -9,27 +9,37 @@
       },
       render: function() {
         this.$el = $(this.teamHB(this.model.toJSON()));
-        $(this.$el.find('.team')).draggable({
-          helper: 'clone',
-          opacity: 0.6,
-          start: __bind(function(event, ui) {
-            return this.trigger('drag', this, ui);
-          }, this),
-          stop: __bind(function(event, ui) {
-            return this.trigger('dragStop', this, ui);
-          }, this)
-        });
-        return this.$el.droppable({
-          tolerance: 'pointer',
-          drop: __bind(function(event, ui) {
-            return this.trigger('drop', this, ui);
-          }, this),
-          over: function(event, ui) {},
-          out: function(event, ui) {}
-        });
+        if (this.model.get('userPick')) this.$el.addClass('pickable');
+        if (this.model.get('teamId')) this.setupDrag();
+        if (this.model.get('userPick')) return this.setupDrop();
       },
       update: function() {
-        return this.$el.replaceWith(this.teamHB(this.model.toJSON()));
+        this.$el.html($(this.teamHB(this.model.toJSON())).html());
+        if (this.model.get('teamId')) return this.setupDrag();
+      },
+      setupDrag: function() {
+        var _this = this;
+        return this.$el.draggable({
+          helper: 'clone',
+          opacity: 0.6,
+          zIndex: 2000,
+          start: function(event, ui) {
+            return _this.trigger('drag', _this, ui);
+          },
+          stop: function(event, ui) {
+            return _this.trigger('dragStop', _this, ui);
+          }
+        });
+      },
+      setupDrop: function() {
+        var _this = this;
+        return this.$el.droppable({
+          tolerance: 'pointer',
+          drop: function(event, ui) {
+            _this.trigger('drop', _this, ui);
+            return console.log('drop');
+          }
+        });
       },
       events: {
         "click .detail": "click"
@@ -45,4 +55,5 @@
       }
     });
   });
+
 }).call(this);
