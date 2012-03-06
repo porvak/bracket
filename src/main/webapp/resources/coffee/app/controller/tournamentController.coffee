@@ -64,7 +64,7 @@ define [
     $('#bracketNode').append(elBracket)
 
 
-  teamDrag: (baseView,ui) ->
+  teamDrag: (baseView) ->
     @dropViews = @recurNextGames(baseView.model,'showDropZone')
 
 
@@ -79,7 +79,11 @@ define [
     landingView = @teamViews["#{ui.draggable.data('id')}"]
 
     if @validDropZone(baseView,landingView)
-      baseView.model.set(landingView.model)
+      baseView.model.set(
+        name:landingView.model.get('name')
+        teamId:landingView.model.get('teamId')
+        seed:landingView.model.get('seed')
+      )
       baseView.model.save()
 
 
@@ -87,32 +91,28 @@ define [
     if baseView.model.get('teamId') then return false
     if baseView.model.get('regionId') isnt landingView.model.get('regionId') then return false
     if baseView.model.get('roundId') <= landingView.model.get('roundId') then return false
-    if not _.find(@dropViews,(dropView) ->
-      _.isEqual(baseView,dropView)
-    )
-      return false
-    true
+    _.find @dropViews, (dropView) ->
+      _.isEqual baseView, dropView
 
 
-    #Calls an action on all of the next valid games recursively
   recurNextGames: (model,actionAttr,dropViews) ->
     nextGame = model.get('nextGame')
-    nextGameView = undefined
-    dropViews = [] unless dropViews
+    nextGameView = null
+    dropViews = dropViews or []
 
     #Find the next game location
-    region = _.find(@model.get('regions'), (region) =>
-        round = _.find(region.rounds, (round) =>
-            game = _.find(round.games, (game) =>
-                if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-                  nextGameView = @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
-            )?
+    _.find(@model.get('regions'), (region) =>
+      _.find(region.rounds, (round) =>
+        _.find(round.games, (game) =>
+            if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
+              nextGameView = @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
         )?
+      )?
     )
 
     nextGameView?[actionAttr]?()
     if nextGameView then dropViews.push(nextGameView)
 
-    if nextGameView and nextGameView.model.get('nextGame') then @recurNextGames(nextGameView.model,actionAttr,dropViews) else dropViews
-
-
+    if nextGameView and nextGameView.model.get('nextGame')
+      @recurNextGames(nextGameView.model,actionAttr,dropViews)
+    else dropViews

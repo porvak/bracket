@@ -62,7 +62,7 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         newUserPicks.setPoolId(poolId);
         newUserPicks.setUserId(userId);
         //TODO: add handling for no result
-//        newUserPicks.setTournamentId(poolRepository.findOne(poolId).getTournamentId());
+        newUserPicks.setTournamentId(poolRepository.findOne(poolId).getTournamentId());
         newUserPicks.addUserPick(userPick);
         userPicksRepository.save(newUserPicks);
     }

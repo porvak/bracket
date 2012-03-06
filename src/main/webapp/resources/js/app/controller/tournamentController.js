@@ -68,7 +68,7 @@
         }
         return $('#bracketNode').append(elBracket);
       },
-      teamDrag: function(baseView, ui) {
+      teamDrag: function(baseView) {
         return this.dropViews = this.recurNextGames(baseView.model, 'showDropZone');
       },
       teamDrop: function(baseView, ui) {
@@ -82,7 +82,11 @@
         }
         landingView = this.teamViews["" + (ui.draggable.data('id'))];
         if (this.validDropZone(baseView, landingView)) {
-          baseView.model.set(landingView.model);
+          baseView.model.set({
+            name: landingView.model.get('name'),
+            teamId: landingView.model.get('teamId'),
+            seed: landingView.model.get('seed')
+          });
           return baseView.model.save();
         }
       },
@@ -96,25 +100,18 @@
         if (baseView.model.get('roundId') <= landingView.model.get('roundId')) {
           return false;
         }
-        if (!_.find(this.dropViews, function(dropView) {
+        return _.find(this.dropViews, function(dropView) {
           return _.isEqual(baseView, dropView);
-        })) {
-          return false;
-        }
-        return true;
+        });
       },
       recurNextGames: function(model, actionAttr, dropViews) {
-        var nextGame, nextGameView, region;
+        var nextGame, nextGameView;
         nextGame = model.get('nextGame');
-        nextGameView = void 0;
-        if (!dropViews) {
-          dropViews = [];
-        }
-        region = _.find(this.model.get('regions'), __bind(function(region) {
-          var round;
-          return round = _.find(region.rounds, __bind(function(round) {
-            var game;
-            return game = _.find(round.games, __bind(function(game) {
+        nextGameView = null;
+        dropViews = dropViews || [];
+        _.find(this.model.get('regions'), __bind(function(region) {
+          return _.find(region.rounds, __bind(function(round) {
+            return _.find(round.games, __bind(function(game) {
               if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
                 return nextGameView = this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
               }
