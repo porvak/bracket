@@ -1,5 +1,8 @@
 (function() {
-  define(["app/controller/tournamentController"], function(tournamentController) {
-    return tournamentController.init();
+
+  define(["app/controller/tournamentController", "app/controller/leaderBoardController"], function(tournamentController, leaderBoardController) {
+    tournamentController.init();
+    return leaderBoardController.init();
   });
+
 }).call(this);
