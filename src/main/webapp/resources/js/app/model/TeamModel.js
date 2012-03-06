@@ -1,5 +1,4 @@
 (function() {
-
   define(['lib/backbone', 'base/jsonUri'], function(Backbone, jsonUri) {
     return Backbone.Model.extend({
       url: function() {
@@ -7,5 +6,4 @@
       }
     });
   });
-
 }).call(this);

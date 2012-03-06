@@ -17,7 +17,6 @@ define [
     @dropViews = []
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
-    @regionHeaderHB = handlebars.compile("<h2>{{regionName}}</h2>");
 
 
   render: ->
@@ -28,13 +27,8 @@ define [
     @model.get('regions')?.forEach (region) =>
       elRegion = $(@sectionHB(
         class: "region region-#{region.regionId}"
+        header:region.name
       ))
-
-      elRegionHeader = $(@regionHeaderHB(
-        regionName: region.name
-      ))
-
-      elRegion.append(elRegionHeader)
 
       region.rounds?.forEach (round) =>
         elRound = $(@sectionHB(
@@ -53,6 +47,7 @@ define [
               model:new TeamModel(team)
             )
             teamView.on('drag',@teamDrag,@)
+            teamView.on('dragStop',@hideDropZones,@)
             teamView.on('drop',@teamDrop,@)
 
             @teamViews["#{team.teamId}"] = teamView
@@ -76,22 +71,40 @@ define [
 
 
   teamDrop: (baseView,ui) ->
+    @hideDropZones()
+    postError = false
+
+    landingView = @teamViews["#{ui.draggable.data('id')}"]
+
+    if @validDropZone(baseView,landingView)
+      _.find @dropViews, (dropView,i) =>
+        eachView = @dropViews[i]
+
+        eachView.model.save(
+          name:landingView.model.get('name')
+          teamId:landingView.model.get('teamId')
+          seed:landingView.model.get('seed')
+        ,
+          wait:true
+          success: (model,response) ->
+            console.log("POST: #{url}   JSON:#{model.toJSON()}")
+
+          error: (model, response) ->
+            postError = true
+            if response.status is 404
+              alert 'Please sign in using your twitter account.'
+              console.log(response)
+        )
+
+        !postError or _.isEqual baseView, dropView
+
+  hideDropZones:() ->
     if @dropViews.length > 0
       @dropViews.forEach((view) ->
           view.hideDropZone()
       )
     else
       @dropViews = @recurNextGames(model,'hideDropZone')
-
-    landingView = @teamViews["#{ui.draggable.data('id')}"]
-
-    if @validDropZone(baseView,landingView)
-      baseView.model.set(
-        name:landingView.model.get('name')
-        teamId:landingView.model.get('teamId')
-        seed:landingView.model.get('seed')
-      )
-      baseView.model.save()
 
 
   validDropZone: (baseView,landingView) ->

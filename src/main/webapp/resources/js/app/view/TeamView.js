@@ -1,30 +1,35 @@
 (function() {
-
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'app/controller/tournamentController', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, tournamentController, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
-        this.model.on('change', this.render, this);
+        this.model.on('change', this.update, this);
         this.teamHB = handlebars.compile(strTeamTemplate);
         return this.render();
       },
       render: function() {
-        var _this = this;
         this.$el = $(this.teamHB(this.model.toJSON()));
         $(this.$el.find('.team')).draggable({
           helper: 'clone',
           opacity: 0.6,
-          start: function(event, ui) {
-            return _this.trigger('drag', _this, ui);
-          }
+          start: __bind(function(event, ui) {
+            return this.trigger('drag', this, ui);
+          }, this),
+          stop: __bind(function(event, ui) {
+            return this.trigger('dragStop', this, ui);
+          }, this)
         });
         return this.$el.droppable({
           tolerance: 'pointer',
-          drop: function(event, ui) {
-            return _this.trigger('drop', _this, ui);
-          },
+          drop: __bind(function(event, ui) {
+            return this.trigger('drop', this, ui);
+          }, this),
           over: function(event, ui) {},
           out: function(event, ui) {}
         });
+      },
+      update: function() {
+        return this.$el.replaceWith(this.teamHB(this.model.toJSON()));
       },
       events: {
         "click .detail": "click"
@@ -37,9 +42,7 @@
       },
       hideDropZone: function() {
         return this.$el.removeClass("highlight-game-drop");
-      },
-      isValidDrop: function() {}
+      }
     });
   });
-
 }).call(this);

@@ -7,7 +7,7 @@ define [
 ], (Backbone, $, handlebars, tournamentController, strTeamTemplate) ->
   Backbone.View.extend(
     initialize: (options) ->
-      @model.on('change', @render, @)
+      @model.on('change', @update, @)
       @teamHB = handlebars.compile(strTeamTemplate)
       @render()
 
@@ -19,6 +19,9 @@ define [
         opacity: 0.6
         start:(event, ui) =>
           @trigger('drag',@,ui)
+        stop:(event, ui) =>
+          @trigger('dragStop',@,ui)
+
       )
 
       @$el.droppable(
@@ -31,6 +34,10 @@ define [
 #              $(event.target).removeClass "team-droppable"
       )
 
+    update: ->
+      @$el.replaceWith(@teamHB(@model.toJSON()))
+
+
     events:
       "click .detail": "click"
 
@@ -42,7 +49,5 @@ define [
 
     hideDropZone: ->
       @$el.removeClass "highlight-game-drop"
-
-    isValidDrop: ->
 
   )
