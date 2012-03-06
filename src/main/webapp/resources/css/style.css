@@ -4,7 +4,7 @@
  *  Using Google Web Fonts
  *   http://www.google.com/webfonts
  */
-@import "http://fonts.googleapis.com/css?family=Sue+Ellen+Francisco|Fredericka+the+Great|Fugaz+One|Gochi+Hand|Exo|Chelsea+Market|Annie+Use+Your+Telescope|Architects+Daughter|Ruthie|Coming+Soon";
+/*@import "http://fonts.googleapis.com/css?family=Sue+Ellen+Francisco|Fredericka+the+Great|Fugaz+One|Gochi+Hand|Exo|Chelsea+Market|Annie+Use+Your+Telescope|Architects+Daughter|Ruthie|Coming+Soon";*/
 
 body{
     background-color: #fff;
@@ -140,6 +140,7 @@ header h4{
 	/*background-color: #eef;*/
 	float: left;
 	color: #111;
+    min-height: 1.3em;
 	/*width: 55px;*/
 	overflow: hidden;
 	white-space: nowrap;
@@ -158,5 +159,10 @@ header h4{
 .state,
 .links{
 	display: none;
+}
+
+.highlight-game-drop {
+    background-color: yellow;
+    width:100%;
 }
 
