@@ -1,6 +1,7 @@
 package com.porvak.bracket.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -8,7 +9,10 @@ public class Game extends AbstractBracket{
 
     private int gameId;
     private GameStatus status;
+
     private GameTeam[] teams;
+
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private GamePointer nextGame;
 
     public Game() {

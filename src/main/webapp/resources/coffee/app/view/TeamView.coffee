@@ -2,8 +2,9 @@ define [
   'lib/backbone'
   'lib/jquery'
   'lib/handlebars'
+  'app/controller/tournamentController'
   'text!html/teamTemplate.html'
-], (Backbone, $, handlebars, strTeamTemplate) ->
+], (Backbone, $, handlebars, tournamentController, strTeamTemplate) ->
   Backbone.View.extend(
     initialize: (options) ->
       @model.on('change', @render, @)
@@ -12,20 +13,18 @@ define [
 
     render: ->
       @$el = $(@teamHB(@model.toJSON()))
-      teamDiv = $(@$el.find('.team'))
 
-      teamDiv.draggable(
+      $(@$el.find('.team')).draggable(
         helper: 'clone'
         opacity: 0.6
         start:(event, ui) =>
-          @trigger('drag',@model)
-        stop:(event, ui) =>
-          @trigger('drop',@model)
+          @trigger('drag',@,ui)
       )
 
-      teamDiv.droppable(
-        drop: @drop
+      @$el.droppable(
         tolerance: 'pointer'
+        drop: (event,ui) =>
+          @trigger('drop',@,ui)
         over: (event, ui) ->
 #              $(event.target).addClass "team-droppable"
         out:  (event, ui) ->
@@ -38,18 +37,12 @@ define [
     click: (e) ->
       console.log(@model.get('name'))
 
-    drop: (event, ui) ->
-      $(this).attr('style', 'background-color:red')
-
     showDropZone: ->
       @$el.addClass "highlight-game-drop"
-      console.log("#{@model.get('gameId')}")
 
     hideDropZone: ->
       @$el.removeClass "highlight-game-drop"
-      console.log("#{@model.get('gameId')}")
 
-
-
+    isValidDrop: ->
 
   )
