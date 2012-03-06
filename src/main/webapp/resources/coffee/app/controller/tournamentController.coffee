@@ -1,12 +1,13 @@
 define [
   'lib/jquery'
+  'lib/underscore'
   'lib/handlebars'
   'app/model/TournamentModel'
   'app/model/TeamModel'
   'app/view/TeamView'
   'text!html/sectionTemplate.html'
   'text!html/gameTemplate.html'
-], ($, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) ->
+], ($, _, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) ->
   init: ->
     @model = new TournamentModel
     @model.bind('change', @render, @)
@@ -63,11 +64,11 @@ define [
     $('#bracketNode').append(elBracket)
 
 
-  teamDrag: (model,ui) ->
-    @dropViews = @recurNextGames(model,'showDropZone')
+  teamDrag: (baseView,ui) ->
+    @dropViews = @recurNextGames(baseView.model,'showDropZone')
 
 
-  teamDrop: (model,ui) ->
+  teamDrop: (baseView,ui) ->
     if @dropViews.length > 0
       @dropViews.forEach((view) ->
           view.hideDropZone()
@@ -75,17 +76,25 @@ define [
     else
       @dropViews = @recurNextGames(model,'hideDropZone')
 
-    if not model.get('teamId') #then its an empty team
-      landingModel = @teamViews["#{ui.draggable.data('id')}"]?.model
+    landingView = @teamViews["#{ui.draggable.data('id')}"]
 
-      console.log("Team #{landingModel.get('name')} has landed on game id #{model.get('gameId')}.")
-#        @model.set('teamId',landingTeamView.model.get('name'))
-#        @model.save()
-
+    if @validDropZone(baseView,landingView)
+      baseView.model.set(landingView.model)
+      baseView.model.save()
 
 
+  validDropZone: (baseView,landingView) ->
+    if baseView.model.get('teamId') then return false
+    if baseView.model.get('regionId') isnt landingView.model.get('regionId') then return false
+    if baseView.model.get('roundId') <= landingView.model.get('roundId') then return false
+    if not _.find(@dropViews,(dropView) ->
+      _.isEqual(baseView,dropView)
+    )
+      return false
+    true
 
-  #Calls an action on all of the next valid games recursively
+
+    #Calls an action on all of the next valid games recursively
   recurNextGames: (model,actionAttr,dropViews) ->
     nextGame = model.get('nextGame')
     nextGameView = undefined

@@ -4,7 +4,7 @@ define [
 ], (Backbone, jsonUri) ->
   Backbone.Model.extend(
     url: ->
-      "/api/pool/#{jsonUri.poolId}/user/pick"
+       "#{jsonUri.root}/api/pool/#{jsonUri.poolId}/user/pick"
   )
 
 

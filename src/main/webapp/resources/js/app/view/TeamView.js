@@ -8,20 +8,18 @@
         return this.render();
       },
       render: function() {
-        var teamDiv;
         this.$el = $(this.teamHB(this.model.toJSON()));
-        teamDiv = $(this.$el.find('.team'));
-        teamDiv.draggable({
+        $(this.$el.find('.team')).draggable({
           helper: 'clone',
           opacity: 0.6,
           start: __bind(function(event, ui) {
-            return this.trigger('drag', this.model, ui);
+            return this.trigger('drag', this, ui);
           }, this)
         });
-        return teamDiv.droppable({
+        return this.$el.droppable({
           tolerance: 'pointer',
           drop: __bind(function(event, ui) {
-            return this.trigger('drop', this.model, ui);
+            return this.trigger('drop', this, ui);
           }, this),
           over: function(event, ui) {},
           out: function(event, ui) {}

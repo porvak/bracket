@@ -13,19 +13,18 @@ define [
 
     render: ->
       @$el = $(@teamHB(@model.toJSON()))
-      teamDiv = $(@$el.find('.team'))
 
-      teamDiv.draggable(
+      $(@$el.find('.team')).draggable(
         helper: 'clone'
         opacity: 0.6
         start:(event, ui) =>
-          @trigger('drag',@model,ui)
+          @trigger('drag',@,ui)
       )
 
-      teamDiv.droppable(
+      @$el.droppable(
         tolerance: 'pointer'
         drop: (event,ui) =>
-          @trigger('drop',@model,ui)
+          @trigger('drop',@,ui)
         over: (event, ui) ->
 #              $(event.target).addClass "team-droppable"
         out:  (event, ui) ->
@@ -45,7 +44,5 @@ define [
       @$el.removeClass "highlight-game-drop"
 
     isValidDrop: ->
-      #dropModel.regionId === @model.regionId
-      #dropModel.roundId >= @model.roundId
 
   )
