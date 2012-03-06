@@ -52,6 +52,13 @@
       },
       hideDropZone: function() {
         return this.$el.removeClass("highlight-team-drop");
+      },
+      reset: function() {
+        return this.model.set({
+          name: null,
+          teamId: null,
+          seed: null
+        });
       }
     });
   });

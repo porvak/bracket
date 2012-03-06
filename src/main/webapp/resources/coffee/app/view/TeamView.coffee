@@ -51,4 +51,8 @@ define [
     hideDropZone: ->
       @$el.removeClass "highlight-team-drop"
 
-
+    reset: ->
+      @model.set
+        name:null
+        teamId:null
+        seed:null

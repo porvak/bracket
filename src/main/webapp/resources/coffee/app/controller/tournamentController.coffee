@@ -80,7 +80,7 @@ define [
     landingView = @teamViews["#{ui.draggable.data('id')}"]
 
     if @validDropZone(baseView,landingView)
-      _.find @dropViews, (dropView,i) =>
+      lastUpdatedView = _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
         eachView.$el.addClass('.saving')
@@ -103,6 +103,8 @@ define [
 
 
         postError or _.isEqual baseView, dropView
+
+#      @recurNextGames(lastUpdatedView.model,'reset')
 
   hideDropZones:() ->
     if @dropViews.length > 0

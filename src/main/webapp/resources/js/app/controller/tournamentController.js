@@ -77,13 +77,13 @@
         return this.dropViews = this.recurNextGames(baseView.model, 'showDropZone');
       },
       teamDrop: function(baseView, ui) {
-        var landingView, postError,
+        var landingView, lastUpdatedView, postError,
           _this = this;
         this.hideDropZones();
         postError = false;
         landingView = this.teamViews["" + (ui.draggable.data('id'))];
         if (this.validDropZone(baseView, landingView)) {
-          return _.find(this.dropViews, function(dropView, i) {
+          return lastUpdatedView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
             eachView = _this.dropViews[i];
             eachView.$el.addClass('.saving');
