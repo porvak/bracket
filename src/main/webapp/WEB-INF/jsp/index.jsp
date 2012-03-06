@@ -27,8 +27,8 @@
     <header class="clear_fix">
         <h1>The Bracket <strong>App</strong></h1>
         <nav>
-            <a href="#" class="selected">My Bracket</a>
-            <a href="#">Leaderboard</a>
+            <a href="#" class="navbar bracket selected">My Bracket</a>
+            <a href="#" class="navbar leaderboard">Leaderboard</a>
         </nav>
         <div class="login">
             <c:if test="${not empty account.displayName}">
@@ -44,7 +44,7 @@
         </div>
     </header>
 
-
+    <div id="leaderBoard"></div>
     <div id="main" role="main">
         <div id="bracketNode">
             <div id="scoreboard">
