@@ -29,10 +29,6 @@ body{
     background-color: red;
 }
 
-.pickable {
-    background-color: green;
-}
-
 /*** Regions ***/
 .region {
 	height: 50%;

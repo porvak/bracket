@@ -43,9 +43,8 @@ define [
             team.regionId = region.regionId
             team.roundId = round.roundId
             team.gameId = game.gameId
-            #TODO remove this when server provides it
-            team.userPick = !team.teamId
             team.nextGame = (if game.nextGame then game.nextGame else null)
+            team.pickable = true if team.teamId
 
             teamView = new TeamView(
               model:new TeamModel(team)
@@ -85,7 +84,7 @@ define [
         eachView = @dropViews[i]
 
         eachView.$el.addClass('.saving')
-        eachView.model.save(
+        eachView.model.save
           name:landingView.model.get('name')
           teamId:landingView.model.get('teamId')
           seed:landingView.model.get('seed')
@@ -101,7 +100,7 @@ define [
             if response.status is 404
               alert 'Please sign in using twitter.'
               console.log(response)
-        )
+
 
         postError or _.isEqual baseView, dropView
 

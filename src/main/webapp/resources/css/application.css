@@ -235,7 +235,7 @@ div.game div.detail .score {
 div.game div.detail .pick_icon {
   display: none;
 }
-div.game.pickable .team-0, div.game.pickable .team-1 {
+.pickable {
   background: #d3d6d8;
   background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
@@ -249,10 +249,10 @@ div.game.pickable .team-0, div.game.pickable .team-1 {
   -webkit-box-shadow: 1px 1px 1px 1px #aaaaaa;
   -moz-box-shadow: 1px 1px 1px 1px #aaaaaa;
 }
-div.game.pickable .score {
+.pickable .score {
   display: none;
 }
-div.game.pickable div.detail div.pick_icon {
+.pickable div.pick_icon {
   cursor: pointer;
   position: relative;
   top: 1px;
@@ -263,10 +263,10 @@ div.game.pickable div.detail div.pick_icon {
   width: 12px;
   background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
 }
-div.game.pickable div.detail div.pick_icon:hover {
+.pickable div.pick_icon:hover {
   background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
 }
-div.game.pickable div.detail.highlight-game-drop {
+.highlight-team-drop {
   background-color: yellow;
   background: #d3d6d8;
   background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
@@ -282,7 +282,7 @@ div.game.pickable div.detail.highlight-game-drop {
   width: 98%;
   left: 1%;
 }
-div.game.pickable div.detail.highlight-game-drop div.pick_icon {
+.highlight-team-drop div.pick_icon {
   display: none;
 }
 .seed {
@@ -303,8 +303,3 @@ input.twitter_signin {
   font-size: 1.0em;
   border: 1px solid #333333;
 }
-
-table tr.highlight {
-    background-color: YELLOW;
-}
-

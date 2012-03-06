@@ -14,10 +14,10 @@ define [
 
     render: ->
       @$el = $(@teamHB(@model.toJSON()))
-      @$el.addClass 'pickable' if @model.get 'userPick'
+      @$el.addClass 'pickable' if @model.get 'pickable'
 
       @setupDrag() if @model.get 'teamId'
-      @setupDrop() if @model.get 'userPick'
+      @setupDrop()
 
     update: ->
       @$el.html($(@teamHB(@model.toJSON())).html())
@@ -46,9 +46,9 @@ define [
       console.log(@model.get('name'))
 
     showDropZone: ->
-      @$el.addClass "highlight-game-drop"
+      @$el.addClass "highlight-team-drop"
 
     hideDropZone: ->
-      @$el.removeClass "highlight-game-drop"
+      @$el.removeClass "highlight-team-drop"
 
 

@@ -42,8 +42,8 @@
                         team.regionId = region.regionId;
                         team.roundId = round.roundId;
                         team.gameId = game.gameId;
-                        team.userPick = !team.teamId;
                         team.nextGame = (game.nextGame ? game.nextGame : null);
+                        if (team.teamId) team.pickable = true;
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });

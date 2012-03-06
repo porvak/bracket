@@ -9,9 +9,9 @@
       },
       render: function() {
         this.$el = $(this.teamHB(this.model.toJSON()));
-        if (this.model.get('userPick')) this.$el.addClass('pickable');
+        if (this.model.get('pickable')) this.$el.addClass('pickable');
         if (this.model.get('teamId')) this.setupDrag();
-        if (this.model.get('userPick')) return this.setupDrop();
+        return this.setupDrop();
       },
       update: function() {
         this.$el.html($(this.teamHB(this.model.toJSON())).html());
@@ -48,10 +48,10 @@
         return console.log(this.model.get('name'));
       },
       showDropZone: function() {
-        return this.$el.addClass("highlight-game-drop");
+        return this.$el.addClass("highlight-team-drop");
       },
       hideDropZone: function() {
-        return this.$el.removeClass("highlight-game-drop");
+        return this.$el.removeClass("highlight-team-drop");
       }
     });
   });
