@@ -1,5 +1,5 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'app/controller/tournamentController', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, tournamentController, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
@@ -8,19 +8,20 @@
         return this.render();
       },
       render: function() {
+        var _this = this;
         this.$el = $(this.teamHB(this.model.toJSON()));
         $(this.$el.find('.team')).draggable({
           helper: 'clone',
           opacity: 0.6,
-          start: __bind(function(event, ui) {
-            return this.trigger('drag', this, ui);
-          }, this)
+          start: function(event, ui) {
+            return _this.trigger('drag', _this, ui);
+          }
         });
         return this.$el.droppable({
           tolerance: 'pointer',
-          drop: __bind(function(event, ui) {
-            return this.trigger('drop', this, ui);
-          }, this),
+          drop: function(event, ui) {
+            return _this.trigger('drop', _this, ui);
+          },
           over: function(event, ui) {},
           out: function(event, ui) {}
         });
@@ -40,4 +41,5 @@
       isValidDrop: function() {}
     });
   });
+
 }).call(this);
