@@ -15,6 +15,7 @@ define [
     @emptyTeamViews = {}
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
+    @regionHeaderHB = handlebars.compile("<h2>{{regionName}}</h2>");
 
   render: ->
     elBracket = $(@sectionHB(
@@ -25,6 +26,12 @@ define [
       elRegion = $(@sectionHB(
         class: "region region-#{region.regionId}"
       ))
+
+      elRegionHeader = $(@regionHeaderHB(
+        regionName: region.name
+      ))
+
+      elRegion.append(elRegionHeader)
 
       region.rounds?.forEach (round) =>
         elRound = $(@sectionHB(

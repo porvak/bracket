@@ -49,6 +49,12 @@ body {
 input[type=submit] {
   cursor: pointer;
 }
+h2 {
+  color: #1e4164;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.45em;
+}
 /*End General Tags*/
 header {
   background: #6c6c6c;
@@ -106,26 +112,97 @@ header nav a.selected {
   border-right: 1px solid #6c6c6c;
   border-bottom: 1px solid #6c6c6c;
 }
-.region div.game .team {
-  width: 80px;
+#scoreboard {
+  position: relative;
+  margin: 0 auto;
+  width: 17em;
+  border: 1px solid #d3d6d8;
+  padding: 10px 5px;
+  background: #eeeff0;
+  background: -moz-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeff0), color-stop(40%, #d3d6d8), color-stop(70%, #c5c9cc));
+  background: -webkit-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -o-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -ms-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  box-shadow: 0px 0px 5px 1px #cccccc;
+  -webkit-box-shadow: 0px 0px 5px 1px #cccccc;
+  -moz-box-shadow: 0px 0px 5px 1px #cccccc;
+}
+#scoreboard h2 {
+  margin-bottom: .5em;
+}
+#scoreboard ul.stats {
+  zoom: 1;
+}
+#scoreboard ul.stats:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+#scoreboard ul.stats li {
+  float: left;
+  width: 25%;
+  text-align: center;
+}
+#scoreboard ul.stats div.title {
+  font-size: .7em;
+}
+#scoreboard ul.stats div.value {
+  color: #b22773;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+.region h2 {
+  color: #c5c9cc;
+  text-shadow: 0px 0px 2px #c5c9cc;
+  position: absolute;
+  top: 47%;
+}
+.region.region-1 h2, .region.region-3 h2 {
+  right: 2em;
 }
 .region.region-1 div.game, .region.region-3 div.game {
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
 }
+.region.region-1 div.game div.details, .region.region-3 div.game div.details {
+  margin-right: 3px;
+}
+.region.region-2 h2, .region.region-4 h2 {
+  left: 2em;
+}
 .region.region-2 div.game, .region.region-4 div.game {
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
 }
+.region.region-2 div.game div.details, .region.region-4 div.game div.details {
+  margin-left: 3px;
+}
+.region.region-2 div.game div.detail div.pick_icon, .region.region-4 div.game div.detail div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-2 div.game div.detail div.pick_icon:hover, .region.region-4 div.game div.detail div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-3, .region.region-4 {
+  bottom: -60px;
+}
 div.game {
-  padding: 4px 2px;
+  padding: 4px 0px;
   border: none;
 }
 div.game div.detail {
   font-family: 'Blokletters-Balpen', Arial, sans-serif;
-  font-size: .65em;
+  font-size: .55em;
   line-height: 1.4em;
+  width: 100%;
 }
 div.game div.detail.team-0, div.game div.detail.team-1 {
   zoom: 1;
+  padding: 4px 0px;
 }
 div.game div.detail.team-0:after, div.game div.detail.team-1:after {
   content: ".";
@@ -140,9 +217,73 @@ div.game div.detail.team-0 .score {
 div.game div.detail.team-1 .score {
   color: #199fce;
 }
+div.game div.detail .team {
+  width: 80px;
+  margin-right: 0px;
+}
+div.game div.detail .seed {
+  margin-left: 2px;
+  float: left;
+}
 div.game div.detail .score, div.game div.detail .seed {
   font-weight: bold;
   font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+}
+div.game div.detail .score {
+  float: right;
+}
+div.game div.detail .pick_icon {
+  display: none;
+}
+div.game.pickable .team-0, div.game.pickable .team-1 {
+  background: #d3d6d8;
+  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
+  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  box-shadow: 1px 1px 1px 1px #aaaaaa;
+  -webkit-box-shadow: 1px 1px 1px 1px #aaaaaa;
+  -moz-box-shadow: 1px 1px 1px 1px #aaaaaa;
+}
+div.game.pickable .score {
+  display: none;
+}
+div.game.pickable div.detail div.pick_icon {
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+  display: block;
+  float: right;
+  text-indent: -9999px;
+  height: 100%;
+  width: 12px;
+  background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
+}
+div.game.pickable div.detail div.pick_icon:hover {
+  background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+}
+div.game.pickable div.detail.highlight-game-drop {
+  background-color: yellow;
+  background: #d3d6d8;
+  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
+  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  border: 1px dashed #AAA;
+  height: 1.4em;
+  width: 98%;
+  left: 1%;
+}
+div.game.pickable div.detail.highlight-game-drop div.pick_icon {
+  display: none;
 }
 .seed {
   color: #b22773;

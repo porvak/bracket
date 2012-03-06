@@ -1,5 +1,5 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
@@ -8,18 +8,19 @@
         return this.render();
       },
       render: function() {
-        var teamDiv;
+        var teamDiv,
+          _this = this;
         this.$el = $(this.teamHB(this.model.toJSON()));
         teamDiv = $(this.$el.find('.team'));
         teamDiv.draggable({
           helper: 'clone',
           opacity: 0.6,
-          start: __bind(function(event, ui) {
-            return this.trigger('drag', this.model);
-          }, this),
-          stop: __bind(function(event, ui) {
-            return this.trigger('drop', this.model);
-          }, this)
+          start: function(event, ui) {
+            return _this.trigger('drag', _this.model);
+          },
+          stop: function(event, ui) {
+            return _this.trigger('drop', _this.model);
+          }
         });
         return teamDiv.droppable({
           drop: this.drop,
@@ -47,4 +48,5 @@
       }
     });
   });
+
 }).call(this);

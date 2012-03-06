@@ -46,7 +46,29 @@
 
 
     <div id="main" role="main">
-        <div id="bracketNode"></div>
+        <div id="bracketNode">
+            <div id="scoreboard">
+                <h2>MY SCOREBOARD</h2>
+                    <ul class="stats">
+                        <li>
+                            <div class="title">POINTS</div>
+                            <div class="value">30</div>
+                        </li>
+                        <li>
+                            <div class="title">AVAILABLE</div>
+                            <div class="value">180</div>
+                        </li>
+                        <li>
+                            <div class="title">PLACE</div>
+                            <div class="value">15</div>
+                        </li>
+                        <li>
+                            <div class="title">OUT OF</div>
+                            <div class="value">231</div>
+                        </li>
+                    </ul>
+            </div>
+        </div>
     </div>
 
 
