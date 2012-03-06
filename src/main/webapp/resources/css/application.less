@@ -4,6 +4,7 @@
 
 /*Colors*/
 @slalomWarmGray: #efe9e5;
+@slalomBlue: #1E4164;
 
 @bgPrimary: #eeeff0;
 @bgSecondary: #000;
@@ -42,6 +43,12 @@
 	border-radius: @border;
 }
 
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+
 /*Not supported very well*/
 /*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
 /*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
@@ -72,6 +79,13 @@ body {
 
 input[type=submit] {
     cursor: pointer;
+}
+
+h2 {
+    color: @slalomBlue;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.45em;
 }
 /*End General Tags*/
 
@@ -117,39 +131,91 @@ header {
     }
 }
 
-.region {
-    div.game {
-        .team {
-            width: 80px;
-        }
+#scoreboard {
+    position: relative;
+    margin: 0 auto;
+    width: 17em;
+    border: 1px solid darken(@bgPrimary,10%);
+    padding: 10px 5px;
+    .background-gradient(darken(@bgPrimary,0%), 0%, darken(@bgPrimary,10%), 40%, darken(@bgPrimary,15%), 70%);
+    .box-shadow(0px 0px 5px 1px, #CCC);
+    h2 {
+        margin-bottom: .5em;
     }
-
-    &.region-1, &.region-3 {
-        div.game {
-            background: url('../images/gameborder_t.png') repeat-x top
-                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
-                    , url('../../resources/images/gameborder_r.png') repeat-y right;
+    ul.stats {
+        .clear_fix;
+        li {
+            float: left;
+            width: 25%;
+            text-align: center;
         }
-    }
-    &.region-2, &.region-4 {
-        div.game {
-            background: url('../images/gameborder_t.png') repeat-x top
-                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
-                    , url('../../resources/images/gameborder_r.png') repeat-y left;
+        div.title {
+            font-size: .7em;
+        }
+        div.value {
+            color: @textTertiary;
+            font-weight: bold;
+            font-size: 1.25em;
         }
     }
 }
 
+.region {
+    h2 {
+        color: darken(@bgPrimary, 15%);
+        text-shadow: 0px 0px 2px darken(@bgPrimary, 15%);
+        position: absolute;
+        top: 47%;
+    }
+    &.region-1, &.region-3 {
+        h2 {
+            right: 2em;
+        }
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y right;
+            div.details {
+                margin-right: 3px;
+            }
+        }
+    }
+    &.region-2, &.region-4 {
+        h2 {
+            left: 2em;
+        }
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y left;
+            div.details {
+                margin-left: 3px;
+            }
+            div.detail div.pick_icon {
+                background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+                &:hover {
+                    background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+                }
+            }
+        }
+    }
+    &.region-3, &.region-4 {
+        bottom: -60px;
+    }
+}
+
 div.game {
-    padding: 4px 2px;
+    padding: 4px 0px;
     border: none;
 
     div.detail {
         font-family: 'Blokletters-Balpen', Arial, sans-serif;
-        font-size: .65em;
+        font-size: .55em;
         line-height: 1.4em;
+        width: 100%;
         &.team-0, &.team-1 {
             .clear_fix;
+            padding: 4px 0px;
         }
         &.team-0 .score {
             color: @teamOneScoreColor;
@@ -158,9 +224,67 @@ div.game {
             color: @teamTwoScoreColor;
         }
 
+        .team {
+            width: 80px;
+            margin-right: 0px;
+        }
+
+        .seed {
+            margin-left: 2px;
+            float: left;
+        }
+
         .score, .seed {
             font-weight: bold;
             font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+        }
+
+        .score {
+            float: right;
+        }
+
+        .pick_icon {
+            display: none;
+        }
+    }
+}
+
+div.game.pickable {
+    .team-0, .team-1 {
+        .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 60%);
+        .box-shadow(1px 1px 1px 1px, #AAA);
+    }
+
+    .score {
+        display: none;
+    }
+
+    div.detail {
+        div.pick_icon {
+            cursor: pointer;
+            position: relative;
+            top: 1px;
+            display: block;
+            float: right;
+            text-indent: -9999px;
+            height: 100%;
+            width: 12px;
+            background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
+
+            &:hover {
+                background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+            }
+        }
+        &.highlight-game-drop {
+            background-color: yellow;
+            .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 60%);
+            border: 1px dashed #AAA;
+            height:1.4em;
+            width:98%;
+            left: 1%;
+            div.pick_icon {
+                display: none;
+            }
         }
     }
 }

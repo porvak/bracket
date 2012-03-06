@@ -8,7 +8,7 @@
 
 body{
     background-color: #fff;
-    font-size: .8em;
+    /*font-size: .8em;*/
     font-family: 'Exo', sans-serif;
     /*   TODO:  Make a selector to roll through fonts
     font-family: 'Exo', sans-serif;
@@ -22,12 +22,6 @@ body{
     font-family: 'Architects Daughter', cursive;
     font-family: 'Fredericka the Great', cursive;
     */
-}
-
-header h4{
-	font-size: 2em;
-	font-weight: bold;
-	text-align: center;
 }
 
 #main{
@@ -49,6 +43,15 @@ header h4{
 .region-2 { top: 0; right: 0; }
 .region-3 { bottom: 0; left: 0; }
 .region-4 { bottom: 0; right: 0; }
+.region-5 {
+    background-color: #f5f5f5;
+    height:250px;
+    width:250px;
+    top:40%;
+    left:40%;
+}
+
+.region-5 game {}
 
 
 /*** Rounds ***/
@@ -80,14 +83,14 @@ header h4{
 .game{
 	/*border-top: 2px solid #000;*/
 	/*border-bottom: 2px solid #000;*/
-	width: 100%-4px;
+	width: 100%;
 	height: 3.2em;
 	text-align: left;
 	/*position: absolute;*/
 	margin-left: 0;
 	margin-right: 0;
-	margin-top: 10px;
-	font-size: .8em;
+	margin-top: .6em;
+	/*font-size: .8em;*/
 }
 
 .region-1 .game,
@@ -101,9 +104,9 @@ header h4{
 
 /* Vertical spacing of games */
 
-.round-2{ padding-top: 1.4em; }
+.round-2{ padding-top: 1.6em; }
 .game-9, .game-10, .game-11, .game-12{ height: 4em; }
-.game-10, .game-11, .game-12{ margin-top: 4.1em; }
+.game-10, .game-11, .game-12{ margin-top: 3.9em; }
 
 
 .round-3{ padding-top: 3em; }
@@ -121,7 +124,7 @@ header h4{
 	height: 100%;
 }
 .detail{
-	width: 100%;
+	/*width: 100%;*/
 	position: relative;
 }
 .team-0{
@@ -149,20 +152,14 @@ header h4{
 	cursor: pointer;
 }
 .score{
-	margin-right: 3px;
-	float: right;
-	color: #0f0;
-	width: 20px;
+	/*margin-right: 3px;*/
+	/*float: right;*/
+	/*color: #0f0;*/
+	/*width: 20px;*/
 }
 
 .state,
 .links{
 	display: none;
-}
-
-.highlight-game-drop {
-    background-color: yellow;
-    height:20px;
-    width:100%;
 }
 
