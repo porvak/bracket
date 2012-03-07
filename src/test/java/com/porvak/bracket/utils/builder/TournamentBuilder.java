@@ -19,7 +19,7 @@ public class TournamentBuilder {
 
     private void defaults() {
         id = "1";
-        name = "ncaa tournament";
+        name = "2012 Men's Basketball Championship";
         type = TournamentType.NCAA;
         regions = Lists.newLinkedList();
     }
