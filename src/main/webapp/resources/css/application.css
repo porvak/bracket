@@ -60,6 +60,9 @@ h2 {
   font-weight: bold;
   font-size: 1.45em;
 }
+strong {
+  font-weight: bold;
+}
 /*End General Tags*/
 header {
   background: #6c6c6c;
@@ -80,7 +83,7 @@ header {
 header h1 {
   float: left;
   margin-right: 40px;
-  font-size: 1.8em;
+  font-size: 2.0em;
 }
 header h1 strong {
   font-weight: bold;
@@ -88,11 +91,23 @@ header h1 strong {
 header div.login {
   float: right;
 }
+header div.login p {
+  float: left;
+  margin-right: 5px;
+}
+header div.login p a {
+  color: #ffffff;
+  font-size: .8em;
+}
+header div.login img {
+  width: 60%;
+  height: 60%;
+}
 header nav {
   font-family: Arial, sans-serif;
   float: left;
   margin-top: 8px;
-  font-size: .8em;
+  font-size: .95em;
   font-weight: bold;
 }
 header nav a {
