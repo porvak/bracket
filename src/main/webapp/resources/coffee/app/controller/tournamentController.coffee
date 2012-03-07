@@ -35,6 +35,7 @@ define [
       region.rounds?.forEach (round) =>
         elRound = $(@sectionHB(
           class: "round round-#{round.roundId}"
+          finalScoreSection:true if region.regionId is 5 and round.roundId is 3
         ))
 
         round.games?.forEach (game) =>
@@ -54,6 +55,7 @@ define [
             teamView.on('dragStop',@hideDropZones,@)
             teamView.on('drop',@teamDrop,@)
             teamView.on('advance',@advanceTeam,@)
+            teamView.on('remove',@removeTeam,@)
 
             @teamViews[team.locator] = teamView
 
@@ -87,16 +89,28 @@ define [
     endingView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
     if startingView and endingView
       @chainSaveCallbacks([
-        baseView:endingView
-        landingView:startingView
+        view:endingView
+        model:
+          name:startingView.model.get('name')
+          teamId:startingView.model.get('teamId')
+          seed:startingView.model.get('seed')
       ])
-      @checkBrokenLinks(endingView)
+      @checkRemoveFutureWins(endingView)
 
+  removeTeam:(startingView) ->
+    return if not startingView?.model.get('teamId')
+
+    @checkRemoveFutureWins(startingView)
+    startingView.model.set(
+      name:null
+      teamId:null
+      seed:null
+    )
 
 
   teamDrop: (baseView,ui) ->
     postError = false
-    pendingViews = []
+    pendingSaveArr = []
 
     landingView = @teamViews["#{ui.draggable.data('locator')}"]
 
@@ -105,43 +119,51 @@ define [
         eachView = @dropViews[i]
 
         eachView.$el.addClass('.saving')
-        pendingViews.push(
-          baseView:eachView
-          landingView:landingView
+        pendingSaveArr.push(
+          view:eachView
+          model:
+            name:landingView.model.get('name')
+            teamId:landingView.model.get('teamId')
+            seed:landingView.model.get('seed')
         )
 
         _.isEqual baseView, dropView
 
-    @chainSaveCallbacks(pendingViews)
-    @checkBrokenLinks(lastLandingView)
+    @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView])
 
 
-  chainSaveCallbacks: (pendingViews)->
-    baseView = _.first(pendingViews)?.baseView
-    landingView = _.first(pendingViews)?.landingView
+  chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
+    view = _.first(pendingSaveArr)?.view
 
-    baseView?.model.save(
-      {
-        name:landingView.model.get('name')
-        teamId:landingView.model.get('teamId')
-        seed:landingView.model.get('seed')
-      }
+    view?.model.save(
+      _.first(pendingSaveArr)?.model
     ,
       {
         wait:true
         success: (model,response) =>
           console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-          baseView.$el.removeClass('saving')
-          if pendingViews.length > 1 #if there are more views
-            @chainSaveCallbacks(_.last(pendingViews,pendingViews.length-1)) #save the rest of the views
+          view.$el.removeClass('saving')
+          if pendingSaveArr.length > 1 #if there are more views
+            @chainSaveCallbacks(_.last(pendingSaveArr,pendingSaveArr.length-1),callback,callbackArgs) #save the rest of the views
+          else
+            callback?.apply(@,callbackArgs)
 
         error: (model, response) =>
-          pendingViews.forEach((viewObj) ->
-            viewObj.baseView.$el.removeClass('saving')
+          pendingSaveArr.forEach((viewObj) ->
+            viewObj.view.$el.removeClass('saving')
           )
           if response.status is 404
             alert 'Please sign in using twitter.'
+          if response.status is 500
+            console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
       }
+    )
+
+  chainDeleteCallbacks: (pendingDeleteArr,callback,callbackArgs)->
+    view = _.first(pendingDeleteArr)?.view
+
+    pendingDeleteArr.forEach((userPick) ->
+      userPick.view.model.set(userPick.model)
     )
 
 
@@ -152,15 +174,25 @@ define [
       _.isEqual baseView, dropView
 
 
-  checkBrokenLinks: (baseView) ->
+  checkRemoveFutureWins: (baseView) ->
     nextViewArr = @recurNextTeamViews(baseView)
-    if nextViewArr.length is 0
-      return
+    return if nextViewArr.length is 0
 
+    pendingSaveArr = []
     previousViewArr = @recurPreviousTeamViews(baseView)
     if previousViewArr.length > 0
-      @recurNextTeamViews(baseView,'brokenLink',[baseView.model.get('teamId')])
+      prevTeamId = _.first(previousViewArr).model.get('teamId')
+      nextViewArr.forEach((view) ->
+        if view.model.get('teamId') is prevTeamId
+          pendingSaveArr.push
+            view:view
+            model:
+              name:null
+              teamId:null
+              seed:null
+      )
 
+      @chainDeleteCallbacks(pendingSaveArr) if pendingSaveArr.length > 0
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
     nextTeamView = null

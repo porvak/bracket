@@ -29,7 +29,8 @@
               _ref2.forEach(function(round) {
                 var elRound, _ref3;
                 elRound = $(_this.sectionHB({
-                  "class": "round round-" + round.roundId
+                  "class": "round round-" + round.roundId,
+                  finalScoreSection: region.regionId === 5 && round.roundId === 3 ? true : void 0
                 }));
                 if ((_ref3 = round.games) != null) {
                   _ref3.forEach(function(game) {
@@ -51,6 +52,7 @@
                         teamView.on('dragStop', _this.hideDropZones, _this);
                         teamView.on('drop', _this.teamDrop, _this);
                         teamView.on('advance', _this.advanceTeam, _this);
+                        teamView.on('remove', _this.removeTeam, _this);
                         _this.teamViews[team.locator] = teamView;
                         teamZero = elGame.find('.detail.team-0');
                         if (teamZero.val()) {
@@ -93,61 +95,84 @@
         if (startingView && endingView) {
           this.chainSaveCallbacks([
             {
-              baseView: endingView,
-              landingView: startingView
+              view: endingView,
+              model: {
+                name: startingView.model.get('name'),
+                teamId: startingView.model.get('teamId'),
+                seed: startingView.model.get('seed')
+              }
             }
           ]);
-          return this.checkBrokenLinks(endingView);
+          return this.checkRemoveFutureWins(endingView);
         }
       },
+      removeTeam: function(startingView) {
+        if (!(startingView != null ? startingView.model.get('teamId') : void 0)) {
+          return;
+        }
+        this.checkRemoveFutureWins(startingView);
+        return startingView.model.set({
+          name: null,
+          teamId: null,
+          seed: null
+        });
+      },
       teamDrop: function(baseView, ui) {
-        var landingView, lastLandingView, pendingViews, postError,
+        var landingView, lastLandingView, pendingSaveArr, postError,
           _this = this;
         postError = false;
-        pendingViews = [];
+        pendingSaveArr = [];
         landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
           lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
             eachView = _this.dropViews[i];
             eachView.$el.addClass('.saving');
-            pendingViews.push({
-              baseView: eachView,
-              landingView: landingView
+            pendingSaveArr.push({
+              view: eachView,
+              model: {
+                name: landingView.model.get('name'),
+                teamId: landingView.model.get('teamId'),
+                seed: landingView.model.get('seed')
+              }
             });
             return _.isEqual(baseView, dropView);
           });
         }
-        this.chainSaveCallbacks(pendingViews);
-        return this.checkBrokenLinks(lastLandingView);
+        return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView]);
       },
-      chainSaveCallbacks: function(pendingViews) {
-        var baseView, landingView, _ref, _ref2,
+      chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
+        var view, _ref, _ref2,
           _this = this;
-        baseView = (_ref = _.first(pendingViews)) != null ? _ref.baseView : void 0;
-        landingView = (_ref2 = _.first(pendingViews)) != null ? _ref2.landingView : void 0;
-        return baseView != null ? baseView.model.save({
-          name: landingView.model.get('name'),
-          teamId: landingView.model.get('teamId'),
-          seed: landingView.model.get('seed')
-        }, {
+        view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
+        return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
           wait: true,
           success: function(model, response) {
             console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
-            baseView.$el.removeClass('saving');
-            if (pendingViews.length > 1) {
-              return _this.chainSaveCallbacks(_.last(pendingViews, pendingViews.length - 1));
+            view.$el.removeClass('saving');
+            if (pendingSaveArr.length > 1) {
+              return _this.chainSaveCallbacks(_.last(pendingSaveArr, pendingSaveArr.length - 1), callback, callbackArgs);
+            } else {
+              return callback != null ? callback.apply(_this, callbackArgs) : void 0;
             }
           },
           error: function(model, response) {
-            pendingViews.forEach(function(viewObj) {
-              return viewObj.baseView.$el.removeClass('saving');
+            pendingSaveArr.forEach(function(viewObj) {
+              return viewObj.view.$el.removeClass('saving');
             });
-            if (response.status === 404) {
-              return alert('Please sign in using twitter.');
+            if (response.status === 404) alert('Please sign in using twitter.');
+            if (response.status === 500) {
+              return console.log("POST ERROR: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
             }
           }
         }) : void 0;
+      },
+      chainDeleteCallbacks: function(pendingDeleteArr, callback, callbackArgs) {
+        var view, _ref;
+        view = (_ref = _.first(pendingDeleteArr)) != null ? _ref.view : void 0;
+        return pendingDeleteArr.forEach(function(userPick) {
+          return userPick.view.model.set(userPick.model);
+        });
       },
       validDropZone: function(baseView, landingView) {
         if (!landingView) return false;
@@ -155,13 +180,29 @@
           return _.isEqual(baseView, dropView);
         });
       },
-      checkBrokenLinks: function(baseView) {
-        var nextViewArr, previousViewArr;
+      checkRemoveFutureWins: function(baseView) {
+        var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
         nextViewArr = this.recurNextTeamViews(baseView);
         if (nextViewArr.length === 0) return;
+        pendingSaveArr = [];
         previousViewArr = this.recurPreviousTeamViews(baseView);
         if (previousViewArr.length > 0) {
-          return this.recurNextTeamViews(baseView, 'brokenLink', [baseView.model.get('teamId')]);
+          prevTeamId = _.first(previousViewArr).model.get('teamId');
+          nextViewArr.forEach(function(view) {
+            if (view.model.get('teamId') === prevTeamId) {
+              return pendingSaveArr.push({
+                view: view,
+                model: {
+                  name: null,
+                  teamId: null,
+                  seed: null
+                }
+              });
+            }
+          });
+          if (pendingSaveArr.length > 0) {
+            return this.chainDeleteCallbacks(pendingSaveArr);
+          }
         }
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {

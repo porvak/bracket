@@ -168,3 +168,13 @@ body{
 	display: none;
 }
 
+
+.team-delete {
+    color: #de010f;
+    margin-left:1px;
+    font-weight: bolder;
+}
+
+.team-delete.hidden {
+    display:none;
+}

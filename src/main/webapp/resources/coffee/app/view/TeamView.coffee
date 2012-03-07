@@ -41,9 +41,15 @@ define [
 
     events:
       "click .pick_icon": "triggerAdvance"
+      "mouseenter .team": "showDelete"
+      "mouseleave .team": "hideDelete"
+      "click .team-delete": "triggerDelete"
 
     triggerAdvance: (e) ->
       @trigger('advance', @)
+
+    triggerDelete: (e) ->
+      @trigger('remove', @)
 
     showDropZone: ->
       @$el.addClass "highlight-team-drop"
@@ -51,12 +57,8 @@ define [
     hideDropZone: ->
       @$el.removeClass "highlight-team-drop"
 
-    reset: (teamId) ->
-      @model.set
-        name:null
-        teamId:null
-        seed:null
+    showDelete: ->
+      @$el.find('.team-delete').removeClass "hidden"
 
-    brokenLink: (teamId) ->
-      if teamId is @model.get('teamId')
-        @reset()
+    hideDelete: ->
+      @$el.find('.team-delete').addClass "hidden"
