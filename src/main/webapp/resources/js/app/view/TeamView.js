@@ -36,8 +36,7 @@
         return this.$el.droppable({
           tolerance: 'pointer',
           drop: function(event, ui) {
-            _this.trigger('drop', _this, ui);
-            return console.log('drop');
+            return _this.trigger('drop', _this, ui);
           }
         });
       },

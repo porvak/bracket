@@ -38,7 +38,6 @@ define [
         tolerance: 'pointer'
         drop: (event, ui) =>
           @trigger('drop', @, ui)
-          console.log('drop')
 
     events: {"click .detail": "click"}
 
