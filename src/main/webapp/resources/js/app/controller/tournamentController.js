@@ -74,14 +74,14 @@
         return this.dropViews = this.recurNextGames(baseView.model, 'showDropZone');
       },
       teamDrop: function(baseView, ui) {
-        var landingView, pendingViews, postError,
+        var landingView, lastLandingView, pendingViews, postError,
           _this = this;
         this.hideDropZones();
         postError = false;
         pendingViews = [];
         landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
-          _.find(this.dropViews, function(dropView, i) {
+          lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
             eachView = _this.dropViews[i];
             eachView.$el.addClass('.saving');
@@ -92,7 +92,8 @@
             return _.isEqual(baseView, dropView);
           });
         }
-        return this.chainSaveCallbacks(pendingViews);
+        this.chainSaveCallbacks(pendingViews);
+        return this.checkBrokenLinks(lastLandingView);
       },
       chainSaveCallbacks: function(pendingViews) {
         var baseView, landingView,
@@ -143,16 +144,46 @@
         });
       },
       checkBrokenLinks: function(baseView) {
-        var game, locator, position, region, round;
+        var game, i, inNextRound, inPreviousRound, locator, position, region, round, teamId;
         locator = baseView.model.get('locator');
-        region = locator.substr(0, 1);
-        round = locator.substr(2, 1);
-        game = locator.substr(4, 1);
-        position = locator.substr(6, 1);
-        this.teamViews["" + region + "-" + round + "-" + iterGame + "-" + iterPosition];
-        return this.recurNextGames(baseView.model, 'reset');
+        teamId = baseView.model.get('teamId');
+        region = parseInt(locator.substr(0, 1), 10);
+        round = parseInt(locator.substr(2, 1), 10);
+        game = parseInt(locator.substr(4, 1), 10);
+        position = parseInt(locator.substr(6, 1), 10);
+        i = 0;
+        inNextRound = false;
+        while (!inNextRound && i < 17) {
+          if (this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0]) {
+            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0].model.get('teamId')) {
+              inNextRound = true;
+            }
+            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 1].model.get('teamId')) {
+              inNextRound = true;
+            }
+          }
+          i++;
+        }
+        if (inNextRound) {
+          i = 0;
+          inPreviousRound = false;
+          while (!inPreviousRound && i < 17) {
+            if (this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0]) {
+              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0].model.get('teamId')) {
+                inPreviousRound = true;
+              }
+              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 1].model.get('teamId')) {
+                inPreviousRound = true;
+              }
+            }
+            i++;
+          }
+          if (inPreviousRound) {
+            return this.recurNextGames(baseView.model, 'brokenLink', [teamId]);
+          }
+        }
       },
-      recurNextGames: function(model, actionAttr, dropViews) {
+      recurNextGames: function(model, actionAttr, actionAttrArgs, dropViews) {
         var nextGame, nextGameView,
           _this = this;
         nextGame = model.get('nextGame');
@@ -167,14 +198,12 @@
             });
           });
         });
-        if (nextGameView != null) {
-          if (typeof nextGameView[actionAttr] === "function") {
-            nextGameView[actionAttr]();
-          }
+        if (nextGameView[actionAttr]) {
+          nextGameView[actionAttr].apply(nextGameView, actionAttrArgs);
         }
         if (nextGameView) dropViews.push(nextGameView);
         if (nextGameView && nextGameView.model.get('nextGame')) {
-          return this.recurNextGames(nextGameView.model, actionAttr, dropViews);
+          return this.recurNextGames(nextGameView.model, actionAttr, actionAttrArgs, dropViews);
         } else {
           return dropViews;
         }

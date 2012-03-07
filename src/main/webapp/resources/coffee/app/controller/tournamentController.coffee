@@ -80,7 +80,7 @@ define [
     landingView = @teamViews["#{ui.draggable.data('locator')}"]
 
     if @validDropZone(baseView,landingView)
-      _.find @dropViews, (dropView,i) =>
+      lastLandingView = _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
         eachView.$el.addClass('.saving')
@@ -92,8 +92,7 @@ define [
         _.isEqual baseView, dropView
 
     @chainSaveCallbacks(pendingViews)
-
-#      @checkBrokenLinks(baseView)
+    @checkBrokenLinks(lastLandingView)
 
   chainSaveCallbacks: (pendingViews)->
     baseView = pendingViews[0].baseView
@@ -139,21 +138,35 @@ define [
   checkBrokenLinks: (baseView) ->
     #if game exists in previous round
     locator = baseView.model.get('locator')
-    region = locator.substr(0,1)
-    round = locator.substr(2,1)
-    game = locator.substr(4,1)
-    position = locator.substr(6,1)
+    teamId = baseView.model.get('teamId')
+    region = parseInt(locator.substr(0,1),10)
+    round = parseInt(locator.substr(2,1),10)
+    game = parseInt(locator.substr(4,1),10)
+    position = parseInt(locator.substr(6,1),10)
 
-    #TODO - HERE
-    @teamViews["#{region}-#{round}-#{iterGame}-#{iterPosition}"]
+    i=0
+    inNextRound=false
+    while !inNextRound && i<17
+      if @teamViews["#{region}-#{round+1}-#{i}-#{0}"]
+        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{0}"].model.get('teamId')
+        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{1}"].model.get('teamId')
+      i++
 
-    #and if next round, delete this game next round on
+    if inNextRound
+      i=0
+      inPreviousRound=false
+      while !inPreviousRound && i<17
+        if @teamViews["#{region}-#{round-1}-#{i}-#{0}"]
+          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{0}"].model.get('teamId')
+          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{1}"].model.get('teamId')
+        i++
 
-    @recurNextGames(baseView.model,'reset')
+      if inPreviousRound
+        @recurNextGames(baseView.model,'brokenLink',[teamId])
 
 
 
-  recurNextGames: (model,actionAttr,dropViews) ->
+  recurNextGames: (model,actionAttr,actionAttrArgs,dropViews) ->
     nextGame = model.get('nextGame')
     nextGameView = null
     dropViews = dropViews or []
@@ -168,9 +181,10 @@ define [
       )
     )
 
-    nextGameView?[actionAttr]?()
+    nextGameView[actionAttr].apply(nextGameView, actionAttrArgs) if nextGameView[actionAttr]
+
     if nextGameView then dropViews.push(nextGameView)
 
     if nextGameView and nextGameView.model.get('nextGame')
-      @recurNextGames(nextGameView.model,actionAttr,dropViews)
+      @recurNextGames(nextGameView.model,actionAttr,actionAttrArgs,dropViews)
     else dropViews
