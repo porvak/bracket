@@ -50,6 +50,7 @@
                         teamView.on('drag', _this.findShowDropViews, _this);
                         teamView.on('dragStop', _this.hideDropZones, _this);
                         teamView.on('drop', _this.teamDrop, _this);
+                        teamView.on('advance', _this.advanceTeam, _this);
                         _this.teamViews[team.locator] = teamView;
                         teamZero = elGame.find('.detail.team-0');
                         if (teamZero.val()) {
@@ -80,6 +81,23 @@
           return this.dropViews.forEach(function(view) {
             return view.hideDropZone();
           });
+        }
+      },
+      advanceTeam: function(startingView) {
+        var endingView, nextGame;
+        if (!(startingView != null ? startingView.model.get('teamId') : void 0)) {
+          return;
+        }
+        nextGame = startingView != null ? startingView.model.get('nextGame') : void 0;
+        endingView = this.teamViews["" + nextGame.regionId + "-" + nextGame.gameId + "-" + nextGame.position];
+        if (startingView && endingView) {
+          this.chainSaveCallbacks([
+            {
+              baseView: endingView,
+              landingView: startingView
+            }
+          ]);
+          return this.checkBrokenLinks(endingView);
         }
       },
       teamDrop: function(baseView, ui) {

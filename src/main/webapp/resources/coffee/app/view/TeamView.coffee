@@ -39,10 +39,11 @@ define [
         drop: (event, ui) =>
           @trigger('drop', @, ui)
 
-    events: {"click .detail": "click"}
+    events:
+      "click .pick_icon": "triggerAdvance"
 
-    click: (e) ->
-      console.log(@model.get('name'))
+    triggerAdvance: (e) ->
+      @trigger('advance', @)
 
     showDropZone: ->
       @$el.addClass "highlight-team-drop"

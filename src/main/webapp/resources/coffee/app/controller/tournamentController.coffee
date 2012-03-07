@@ -53,6 +53,7 @@ define [
             teamView.on('drag',@findShowDropViews,@)
             teamView.on('dragStop',@hideDropZones,@)
             teamView.on('drop',@teamDrop,@)
+            teamView.on('advance',@advanceTeam,@)
 
             @teamViews[team.locator] = teamView
 
@@ -79,6 +80,18 @@ define [
     else
       @dropViews.forEach (view) ->
         view.hideDropZone()
+
+  advanceTeam:(startingView) ->
+    return if not startingView?.model.get('teamId')
+    nextGame = startingView?.model.get('nextGame')
+    endingView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
+    if startingView and endingView
+      @chainSaveCallbacks([
+        baseView:endingView
+        landingView:startingView
+      ])
+      @checkBrokenLinks(endingView)
+
 
 
   teamDrop: (baseView,ui) ->

@@ -41,10 +41,10 @@
         });
       },
       events: {
-        "click .detail": "click"
+        "click .pick_icon": "triggerAdvance"
       },
-      click: function(e) {
-        return console.log(this.model.get('name'));
+      triggerAdvance: function(e) {
+        return this.trigger('advance', this);
       },
       showDropZone: function() {
         return this.$el.addClass("highlight-team-drop");
