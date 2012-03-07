@@ -1,25 +1,54 @@
 /*Fonts*/
-@font-face {
-  font-family: Blokletters-Balpen;
-  src: url('../../resources/fonts/Blokletters-Balpen.ttf');
-}
-@font-face {
-  font-family: Blokletters-Viltstift;
-  src: url('../../resources/fonts/Blokletters-Viltstift.ttf');
-}
+@font-face { font-family: Blokletters-Balpen; src: url('../../resources/fonts/Blokletters-Balpen.ttf'); }
+@font-face { font-family: Blokletters-Viltstift; src: url('../../resources/fonts/Blokletters-Viltstift.ttf'); }
+
 /*Colors*/
+@slalomWarmGray: #efe9e5;
+@slalomBlue: #1E4164;
+
+@bgPrimary: #eeeff0;
+@bgSecondary: #000;
+@bgSecondaryGradientHelper: #6C6C6C;
+@textPrimary: #000;
+@textSecondary: @slalomWarmGray;
+@textTertiary: #b22773;
+
+@seedColor: @textTertiary;
+@teamOneScoreColor: #21314d;
+@teamTwoScoreColor: #199fce;
 /*End Colors*/
+
 /*Common classes / functions*/
-.clear_fix {
-  zoom: 1;
+.clear_fix{
+    zoom:1;
+    &:after {
+        content:".";display:block;height:0;clear:both;visibility:hidden;
+    }
 }
-.clear_fix:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+
+.background-gradient(@color1, @percent1, @color2, @percent2, @color3, @percent3) {
+	background: @color1;
+	background: -moz-linear-gradient(top,  @color1 @percent1, @color2 @percent2, @color3 @percent3);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(@percent1,@color1), color-stop(@percent2,@color2), color-stop(@percent3,@color3));
+	background: -webkit-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: -o-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: -ms-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
 }
+
+.border-radius(@border) {
+	-webkit-border-radius: @border;
+	-moz-border-radius: @border;
+	border-radius: @border;
+}
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+
 /*Not supported very well*/
 /*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
 /*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
@@ -40,266 +69,239 @@
 /*//     border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
 /*// }*/
 /*End Common*/
+
 /*General tags*/
 body {
-  font-size: 14px;
-  text-align: left;
-  background: #eeeff0 url('../../resources/images/scanline.png') repeat;
+    font-size: 14px;
+    text-align: left;
+    background: @bgPrimary url('../../resources/images/scanline.png') repeat;
 }
+
 input[type=submit] {
-  cursor: pointer;
+    cursor: pointer;
 }
+
 h2 {
-  color: #1e4164;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.45em;
+    color: @slalomBlue;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.45em;
 }
 /*End General Tags*/
+
 header {
-  background: #6c6c6c;
-  background: -moz-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6c6c6c), color-stop(0%, #6c6c6c), color-stop(100%, #000000));
-  background: -webkit-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
-  background: -o-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
-  background: -ms-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
-  background: linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
-  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+    .background-gradient(@bgSecondaryGradientHelper, 0%, @bgSecondaryGradientHelper, 0%, @bgSecondary, 100%);
+    color: @textSecondary;
+    /*height: 40px;*/
+    padding: 8px;
+    margin-bottom: 50px;
 
-  color: #efe9e5;
-  /*height: 40px;*/
+    h1 {
+        float: left;
+        margin-right: 40px;
+        font-size: 1.8em;
+        strong {
+            font-weight: bold;
+        }
+    }
 
-  padding: 8px;
-  margin-bottom: 50px;
-}
-header h1 {
-  float: left;
-  margin-right: 40px;
-  font-size: 1.8em;
-}
-header h1 strong {
-  font-weight: bold;
-}
-header div.login {
-  float: right;
-}
-header nav {
-  font-family: Arial, sans-serif;
-  float: left;
-  margin-top: 8px;
-  font-size: .8em;
-  font-weight: bold;
-}
-header nav a {
-  margin-right: 5px;
-  padding: 4px 4px;
-  color: #ffffff;
-  text-decoration: none;
-}
-header nav a.selected {
-  background: #000000;
-  background: -moz-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(0%, #000000), color-stop(100%, #393939));
-  background: -webkit-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
-  background: -o-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
-  background: -ms-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
-  background: linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
-  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+    div.login {
+        float: right;
+    }
+    
+    nav {
+        font-family: Arial, sans-serif;
+        float: left;
+        margin-top: 8px;
+        font-size: .8em;
+        font-weight: bold;
+        a {
+            margin-right: 5px;
+            padding: 4px 4px;
+            color: lighten(@textSecondary, 80%);
+            text-decoration: none;
 
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-  border-right: 1px solid #6c6c6c;
-  border-bottom: 1px solid #6c6c6c;
+            &.selected {
+                .background-gradient(@bgSecondary, 0%, @bgSecondary, 0%, darken(@bgSecondaryGradientHelper,20%), 100%);
+                .border-radius(6px);
+                border-right: 1px solid @bgSecondaryGradientHelper;
+                border-bottom: 1px solid @bgSecondaryGradientHelper;
+            }
+        }
+    }
 }
+
 #scoreboard {
-  position: relative;
-  margin: 0 auto;
-  width: 17em;
-  border: 1px solid #d3d6d8;
-  padding: 10px 5px;
-  background: #eeeff0;
-  background: -moz-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeff0), color-stop(40%, #d3d6d8), color-stop(70%, #c5c9cc));
-  background: -webkit-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
-  background: -o-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
-  background: -ms-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
-  background: linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
-  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+    position: relative;
+    margin: 0 auto;
+    width: 17em;
+    border: 1px solid darken(@bgPrimary,10%);
+    padding: 10px 5px;
+    .background-gradient(darken(@bgPrimary,0%), 0%, darken(@bgPrimary,10%), 40%, darken(@bgPrimary,15%), 70%);
+    .box-shadow(0px 0px 5px 1px, #CCC);
+    h2 {
+        margin-bottom: .5em;
+    }
+    ul.stats {
+        .clear_fix;
+        li {
+            float: left;
+            width: 25%;
+            text-align: center;
+        }
+        div.title {
+            font-size: .7em;
+        }
+        div.value {
+            color: @textTertiary;
+            font-weight: bold;
+            font-size: 1.25em;
+        }
+    }
+}
 
-  box-shadow: 0px 0px 5px 1px #cccccc;
-  -webkit-box-shadow: 0px 0px 5px 1px #cccccc;
-  -moz-box-shadow: 0px 0px 5px 1px #cccccc;
+.region {
+    h2 {
+        color: darken(@bgPrimary, 15%);
+        text-shadow: 0px 0px 2px darken(@bgPrimary, 15%);
+        position: absolute;
+        top: 47%;
+    }
+    &.region-1, &.region-3 {
+        h2 {
+            right: 2em;
+        }
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y right;
+            div.details {
+                margin-right: 3px;
+            }
+        }
+    }
+    &.region-2, &.region-4 {
+        h2 {
+            left: 2em;
+        }
+        div.game {
+            background: url('../images/gameborder_t.png') repeat-x top
+                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
+                    , url('../../resources/images/gameborder_r.png') repeat-y left;
+            div.details {
+                margin-left: 3px;
+            }
+            div.detail div.pick_icon {
+                background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+                &:hover {
+                    background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+                }
+            }
+        }
+    }
+    &.region-3, &.region-4 {
+        bottom: -60px;
+    }
 }
-#scoreboard h2 {
-  margin-bottom: .5em;
-}
-#scoreboard ul.stats {
-  zoom: 1;
-}
-#scoreboard ul.stats:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-#scoreboard ul.stats li {
-  float: left;
-  width: 25%;
-  text-align: center;
-}
-#scoreboard ul.stats div.title {
-  font-size: .7em;
-}
-#scoreboard ul.stats div.value {
-  color: #b22773;
-  font-weight: bold;
-  font-size: 1.25em;
-}
-.region h2 {
-  color: #c5c9cc;
-  text-shadow: 0px 0px 2px #c5c9cc;
-  position: absolute;
-  top: 47%;
-}
-.region.region-1 h2, .region.region-3 h2 {
-  right: 2em;
-}
-.region.region-1 div.game, .region.region-3 div.game {
-  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
-}
-.region.region-1 div.game div.details, .region.region-3 div.game div.details {
-  margin-right: 3px;
-}
-.region.region-2 h2, .region.region-4 h2 {
-  left: 2em;
-}
-.region.region-2 div.game, .region.region-4 div.game {
-  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
-}
-.region.region-2 div.game div.details, .region.region-4 div.game div.details {
-  margin-left: 3px;
-}
-.region.region-2 div.game div.detail div.pick_icon, .region.region-4 div.game div.detail div.pick_icon {
-  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
-}
-.region.region-2 div.game div.detail div.pick_icon:hover, .region.region-4 div.game div.detail div.pick_icon:hover {
-  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
-}
-.region.region-3, .region.region-4 {
-  bottom: -60px;
-}
+
 div.game {
-  padding: 4px 0px;
-  border: none;
-}
-div.game div.detail {
-  font-family: 'Blokletters-Balpen', Arial, sans-serif;
-  font-size: .55em;
-  line-height: 1.4em;
-  width: 100%;
-}
-div.game div.detail.team-0, div.game div.detail.team-1 {
-  zoom: 1;
-  padding: 4px 0px;
-}
-div.game div.detail.team-0:after, div.game div.detail.team-1:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-div.game div.detail.team-0 .score {
-  color: #21314d;
-}
-div.game div.detail.team-1 .score {
-  color: #199fce;
-}
-div.game div.detail .team {
-  width: 80px;
-  margin-right: 0px;
-}
-div.game div.detail .seed {
-  margin-left: 2px;
-  float: left;
-}
-div.game div.detail .score, div.game div.detail .seed {
-  font-weight: bold;
-  font-family: 'Blokletters-Viltstift', Arial, sans-serif;
-}
-div.game div.detail .score {
-  float: right;
-}
-div.game div.detail .pick_icon {
-  display: none;
-}
-.pickable {
-  background: #d3d6d8;
-  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
-  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+    padding: 4px 0px;
+    border: none;
 
-  box-shadow: 1px 1px 1px 1px #aaaaaa;
-  -webkit-box-shadow: 1px 1px 1px 1px #aaaaaa;
-  -moz-box-shadow: 1px 1px 1px 1px #aaaaaa;
-}
-.pickable .score {
-  display: none;
-}
-.pickable div.pick_icon {
-  cursor: pointer;
-  position: relative;
-  top: 1px;
-  display: block;
-  float: right;
-  text-indent: -9999px;
-  height: 100%;
-  width: 12px;
-  background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
-}
-.pickable div.pick_icon:hover {
-  background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
-}
-.highlight-team-drop {
-  background-color: yellow;
-  background: #d3d6d8;
-  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
-  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+    div.detail {
+        font-family: 'Blokletters-Balpen', Arial, sans-serif;
+        font-size: .55em;
+        line-height: 1.4em;
+        width: 100%;
+        &.team-0, &.team-1 {
+            .clear_fix;
+            padding: 4px 0px;
+        }
+        &.team-0 .score {
+            color: @teamOneScoreColor;
+        }
+        &.team-1 .score {
+            color: @teamTwoScoreColor;
+        }
 
-  border: 1px dashed #AAA;
-  height: 1.4em;
-  width: 98%;
-  left: 1%;
+        .team {
+            width: 80px;
+            margin-right: 0px;
+        }
+
+        .seed {
+            margin-left: 2px;
+            float: left;
+        }
+
+        .score, .seed {
+            font-weight: bold;
+            font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+        }
+
+        .score {
+            float: right;
+        }
+
+        .pick_icon {
+            display: none;
+        }
+    }
 }
-.highlight-team-drop div.pick_icon {
-  display: none;
+
+div.game .pickable {
+    .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 60%);
+    .box-shadow(1px 1px 1px 1px, #AAA);
+
+    .score {
+        display: none;
+    }
+
+    div.pick_icon {
+        cursor: pointer;
+        position: relative;
+        top: 1px;
+        display: block;
+        float: right;
+        text-indent: -9999px;
+        height: 100%;
+        width: 12px;
+        background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
+
+        &:hover {
+            background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+        }
+    }
 }
+
+/*Drop zone for highlighting a team*/
+.team-1, .team-0 {
+    &.highlight-team-drop {
+        background-color: darken(@bgPrimary,10%);
+        .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 60%);
+        border: 1px dashed #AAA;
+        height:1.4em;
+        width:98%;
+        left: 1%;
+        div.pick_icon {
+            display: none;
+        }
+    }
+}
+
 .seed {
-  color: #b22773;
+    color: @seedColor;
 }
-input.twitter_signin {
-  border: none;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  /*width: 100px;*/
 
-  height: 30px;
-  background: 4px 4px url('../../resources/images/sprite.png') no-repeat;
-  padding: 2px 4px 2px 32px;
-  color: #efe9e5;
-  text-align: left;
-  font-size: 1.0em;
-  border: 1px solid #333333;
+input.twitter_signin {
+    border: none;
+    .border-radius(8px);
+    /*width: 100px;*/
+    height: 30px;
+    background: 4px 4px url('../../resources/images/sprite.png') no-repeat;
+    padding: 2px 4px 2px 32px;
+    color: @textSecondary;
+    text-align: left;
+    font-size: 1.0em;
+    border: 1px solid lighten(@bgSecondary, 20%);
 }

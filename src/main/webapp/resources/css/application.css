@@ -235,7 +235,7 @@ div.game div.detail .score {
 div.game div.detail .pick_icon {
   display: none;
 }
-.pickable {
+div.game .pickable {
   background: #d3d6d8;
   background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
@@ -249,10 +249,10 @@ div.game div.detail .pick_icon {
   -webkit-box-shadow: 1px 1px 1px 1px #aaaaaa;
   -moz-box-shadow: 1px 1px 1px 1px #aaaaaa;
 }
-.pickable .score {
+div.game .pickable .score {
   display: none;
 }
-.pickable div.pick_icon {
+div.game .pickable div.pick_icon {
   cursor: pointer;
   position: relative;
   top: 1px;
@@ -263,11 +263,12 @@ div.game div.detail .pick_icon {
   width: 12px;
   background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
 }
-.pickable div.pick_icon:hover {
+div.game .pickable div.pick_icon:hover {
   background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
 }
-.highlight-team-drop {
-  background-color: yellow;
+/*Drop zone for highlighting a team*/
+.team-1.highlight-team-drop, .team-0.highlight-team-drop {
+  background-color: #d3d6d8;
   background: #d3d6d8;
   background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
@@ -282,7 +283,7 @@ div.game div.detail .pick_icon {
   width: 98%;
   left: 1%;
 }
-.highlight-team-drop div.pick_icon {
+.team-1.highlight-team-drop div.pick_icon, .team-0.highlight-team-drop div.pick_icon {
   display: none;
 }
 .seed {
