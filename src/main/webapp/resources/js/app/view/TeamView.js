@@ -59,10 +59,14 @@
         return this.$el.removeClass("highlight-team-drop");
       },
       showDelete: function() {
-        return this.$el.find('.team-delete').removeClass("hidden");
+        if (this.model.get('roundId') !== 1 || this.model.get('regionId') === 5) {
+          return this.$el.find('.team-delete').removeClass("hidden");
+        }
       },
       hideDelete: function() {
-        return this.$el.find('.team-delete').addClass("hidden");
+        if (this.model.get('roundId') !== 1 || this.model.get('regionId') === 5) {
+          return this.$el.find('.team-delete').addClass("hidden");
+        }
       }
     });
   });

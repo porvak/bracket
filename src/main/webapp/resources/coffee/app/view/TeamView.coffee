@@ -58,7 +58,9 @@ define [
       @$el.removeClass "highlight-team-drop"
 
     showDelete: ->
-      @$el.find('.team-delete').removeClass "hidden"
+      if @model.get('roundId') isnt 1 or @model.get('regionId') is 5
+        @$el.find('.team-delete').removeClass "hidden"
 
     hideDelete: ->
-      @$el.find('.team-delete').addClass "hidden"
+      if @model.get('roundId') isnt 1 or @model.get('regionId') is 5
+        @$el.find('.team-delete').addClass "hidden"
