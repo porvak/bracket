@@ -48,6 +48,11 @@
   -webkit-box-shadow: @style @c;
   -moz-box-shadow:    @style @c;
 }
+.clear-box-shadow {
+  box-shadow:         none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow:    none;
+}
 
 /*Not supported very well*/
 /*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
@@ -160,6 +165,30 @@ header {
     }
 }
 
+.gameBackgroundLeft {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundRight {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.gameBackgroundAll {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y left
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+
+.pickIconBackgroundRight {
+    background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+        &:hover {
+            background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+        }
+}
+
 .region {
     h2 {
         color: darken(@bgPrimary, 15%);
@@ -172,9 +201,7 @@ header {
             right: 2em;
         }
         div.game {
-            background: url('../images/gameborder_t.png') repeat-x top
-                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
-                    , url('../../resources/images/gameborder_r.png') repeat-y right;
+            .gameBackgroundLeft;
             div.details {
                 margin-right: 3px;
             }
@@ -185,22 +212,137 @@ header {
             left: 2em;
         }
         div.game {
-            background: url('../images/gameborder_t.png') repeat-x top
-                    , url('../../resources/images/gameborder_b.png') repeat-x bottom
-                    , url('../../resources/images/gameborder_r.png') repeat-y left;
+            .gameBackgroundRight;
             div.details {
                 margin-left: 3px;
             }
             div.detail div.pick_icon {
-                background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
-                &:hover {
-                    background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
-                }
+                .pickIconBackgroundRight;
             }
         }
     }
+
+    @bottomRegionOffset: 5%;
     &.region-3, &.region-4 {
-        bottom: -60px;
+        /*bottom: -60px;*/
+        bottom: -@bottomRegionOffset;
+    }
+
+    &.region-5 {
+        @height: 15%;
+        @width: 30%;
+        /*background-color: #f5f5f5;*/
+        height: @height;
+        width: @width;
+        top: (50%+@bottomRegionOffset/2) - @height/2;
+        left: 50% - @width/2;
+
+        h2 {
+            top: -1.45em;
+            width: 100%;
+        }
+
+        .round-1 {
+            position: relative;
+            height: 100%;
+            .game-1, .game-2 {
+                position: absolute;
+                height: 100%;
+                width: 40%;
+            }
+            .game-1 {
+                left: 0;
+                top: 0;
+                .gameBackgroundLeft;
+                .details {
+                    margin-right: 3px;
+                }
+            }
+            .game-2 {
+                right: 0;
+                top: 0;
+                margin-left: 3px;
+                .gameBackgroundRight;
+                div.detail div.pick_icon {
+                    .pickIconBackgroundRight;
+                }
+                .details {
+                    margin-left: 3px;
+                }
+            }
+        }
+
+        .round.round-2 {
+            top: 50%;
+            margin-top: -1.4em;
+            height: 1.4em;
+            .team-1, .team-0 {
+                position: absolute;
+                width: 40%;
+                top: 0;
+                bottom: auto;
+            }
+            .team-0 {
+                @leftPos: 5%;
+                left: @leftPos;
+                &.highlight-team-drop {
+                    left: @leftPos;
+                }
+            }
+            .team-1 {
+                @rightPos: 5%;
+                right: @rightPos;
+                &.highlight-team-drop {
+                    right: @rightPos;
+                    left: auto;
+                }
+                div.pick_icon {
+                    .pickIconBackgroundRight;
+                }
+            }
+            .game {
+                /*position: absolute;*/
+                height: inherit;
+                /*top: 50%;*/
+                /*height: 1.4em;*/
+
+            }
+        }
+
+        .round.round-3 {
+            top: 50%;
+            margin-top: 5px;
+            height: auto;
+            .game {
+                margin: 0 auto;
+                width: 60%;
+                height: 2em;
+                padding: 5px;
+                .gameBackgroundAll;
+                background-color: #FFF;
+                .team-0, .team-1 {
+                    top: 0;
+                    padding: 0;
+                    height: 100%;
+                    bottom: auto;
+                    background: none;
+                    .clear-box-shadow;
+                }
+                .pick_icon {
+                    display: none;
+                }
+            }
+        }
+
+        .round {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            .game {
+                margin-top: 0;
+            }
+        }
     }
 }
 
