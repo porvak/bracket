@@ -47,7 +47,7 @@
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });
-                        teamView.on('drag', _this.teamDrag, _this);
+                        teamView.on('drag', _this.findShowDropViews, _this);
                         teamView.on('dragStop', _this.hideDropZones, _this);
                         teamView.on('drop', _this.teamDrop, _this);
                         _this.teamViews[team.locator] = teamView;
@@ -70,13 +70,21 @@
         }
         return $('#bracketNode').append(elBracket);
       },
-      teamDrag: function(baseView) {
-        return this.dropViews = this.recurNextGames(baseView.model, 'showDropZone');
+      findShowDropViews: function(baseView) {
+        return this.dropViews = this.recurNextTeamViews(baseView, 'showDropZone');
+      },
+      hideDropZones: function() {
+        if (this.dropViews.length > 0) {
+          return this.dropViews.forEach(function(view) {
+            return view.hideDropZone();
+          });
+        } else {
+          return this.dropViews = this.recurNextGames(model, 'hideDropZone');
+        }
       },
       teamDrop: function(baseView, ui) {
         var landingView, lastLandingView, pendingViews, postError,
           _this = this;
-        this.hideDropZones();
         postError = false;
         pendingViews = [];
         landingView = this.teamViews["" + (ui.draggable.data('locator'))];
@@ -96,11 +104,11 @@
         return this.checkBrokenLinks(lastLandingView);
       },
       chainSaveCallbacks: function(pendingViews) {
-        var baseView, landingView,
+        var baseView, landingView, _ref, _ref2,
           _this = this;
-        baseView = pendingViews[0].baseView;
-        landingView = pendingViews[0].landingView;
-        return baseView.model.save({
+        baseView = (_ref = _.first(pendingViews)) != null ? _ref.baseView : void 0;
+        landingView = (_ref2 = _.first(pendingViews)) != null ? _ref2.landingView : void 0;
+        return baseView != null ? baseView.model.save({
           name: landingView.model.get('name'),
           teamId: landingView.model.get('teamId'),
           seed: landingView.model.get('seed')
@@ -121,24 +129,10 @@
               return alert('Please sign in using twitter.');
             }
           }
-        });
-      },
-      hideDropZones: function() {
-        if (this.dropViews.length > 0) {
-          return this.dropViews.forEach(function(view) {
-            return view.hideDropZone();
-          });
-        } else {
-          return this.dropViews = this.recurNextGames(model, 'hideDropZone');
-        }
+        }) : void 0;
       },
       validDropZone: function(baseView, landingView) {
-        if (baseView.model.get('regionId') !== landingView.model.get('regionId')) {
-          return false;
-        }
-        if (baseView.model.get('roundId') <= landingView.model.get('roundId')) {
-          return false;
-        }
+        if (!landingView) return false;
         return _.find(this.dropViews, function(dropView) {
           return _.isEqual(baseView, dropView);
         });
@@ -179,33 +173,64 @@
             i++;
           }
           if (inPreviousRound) {
-            return this.recurNextGames(baseView.model, 'brokenLink', [teamId]);
+            return this.recurNextTeamViews(baseView, 'brokenLink', [teamId]);
           }
         }
       },
-      recurNextGames: function(model, actionAttr, actionAttrArgs, dropViews) {
-        var nextGame, nextGameView,
+      recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
+        var nextGame, nextTeamView,
           _this = this;
-        nextGame = model.get('nextGame');
-        nextGameView = null;
-        dropViews = dropViews || [];
+        nextGame = baseView.model.get('nextGame');
+        nextTeamView = null;
+        nextTeamViewArr = nextTeamViewArr || [];
         _.find(this.model.get('regions'), function(region) {
           return _.find(region.rounds, function(round) {
             return _.find(round.games, function(game) {
               if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
-                return nextGameView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
+                return nextTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
               }
             });
           });
         });
-        if (nextGameView[actionAttr]) {
-          nextGameView[actionAttr].apply(nextGameView, actionAttrArgs);
+        if (nextTeamView[actionAttr]) {
+          nextTeamView[actionAttr].apply(nextTeamView, actionAttrArgs);
         }
-        if (nextGameView) dropViews.push(nextGameView);
-        if (nextGameView && nextGameView.model.get('nextGame')) {
-          return this.recurNextGames(nextGameView.model, actionAttr, actionAttrArgs, dropViews);
+        if (nextTeamView) nextTeamViewArr.push(nextTeamView);
+        if (nextTeamView && nextTeamView.model.get('nextGame')) {
+          return this.recurNextTeamViews(nextTeamView, actionAttr, actionAttrArgs, nextTeamViewArr);
         } else {
-          return dropViews;
+          return nextTeamViewArr;
+        }
+      },
+      recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
+        var gameId, previousTeamView, teamId,
+          _this = this;
+        previousTeamView = null;
+        previousTeamViewArr = previousTeamViewArr || [];
+        gameId = baseView.model.get('gameId');
+        teamId = baseView.model.get('teamId');
+        _.find(this.model.get('regions'), function(region) {
+          return _.find(region.rounds, function(round) {
+            return _.find(round.games, function(game) {
+              var _ref;
+              if (gameId === ((_ref = game.nextGame) != null ? _ref.gameId : void 0)) {
+                return _.find(game.teams, function(team) {
+                  if (team.teamId === teamId) {
+                    return previousTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position];
+                  }
+                });
+              }
+            });
+          });
+        });
+        if (previousTeamView[actionAttr]) {
+          previousTeamView[actionAttr].apply(previousTeamView, actionAttrArgs);
+        }
+        if (previousTeamView) previousTeamViewArr.push(previousTeamView);
+        if (previousTeamView && previousTeamView.model.get('nextGame')) {
+          return this.recurNextTeamViews(previousTeamView, actionAttr, actionAttrArgs, previousTeamViewArr);
+        } else {
+          return previousTeamViewArr;
         }
       }
     };
