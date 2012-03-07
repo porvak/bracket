@@ -36,8 +36,7 @@
         return this.$el.droppable({
           tolerance: 'pointer',
           drop: function(event, ui) {
-            _this.trigger('drop', _this, ui);
-            return console.log('drop');
+            return _this.trigger('drop', _this, ui);
           }
         });
       },
@@ -53,12 +52,15 @@
       hideDropZone: function() {
         return this.$el.removeClass("highlight-team-drop");
       },
-      reset: function() {
+      reset: function(teamId) {
         return this.model.set({
           name: null,
           teamId: null,
           seed: null
         });
+      },
+      brokenLink: function(teamId) {
+        if (teamId === this.model.get('teamId')) return this.reset();
       }
     });
   });

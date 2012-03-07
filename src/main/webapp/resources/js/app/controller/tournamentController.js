@@ -7,7 +7,6 @@
         this.model.bind('change', this.render, this);
         this.model.fetch();
         this.teamViews = {};
-        this.emptyTeamViews = {};
         this.dropViews = [];
         this.sectionHB = handlebars.compile(strSectionTemplate);
         return this.gameHB = handlebars.compile(strGameTemplate);
@@ -44,16 +43,14 @@
                         team.gameId = game.gameId;
                         team.nextGame = (game.nextGame ? game.nextGame : null);
                         if (team.teamId) team.pickable = true;
+                        team.locator = "" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position;
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });
                         teamView.on('drag', _this.teamDrag, _this);
                         teamView.on('dragStop', _this.hideDropZones, _this);
                         teamView.on('drop', _this.teamDrop, _this);
-                        _this.teamViews["" + team.teamId] = teamView;
-                        if (!(team.teamId && team.name)) {
-                          _this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position] = teamView;
-                        }
+                        _this.teamViews[team.locator] = teamView;
                         teamZero = elGame.find('.detail.team-0');
                         if (teamZero.val()) {
                           return teamView.$el.insertAfter(teamZero);
@@ -77,38 +74,54 @@
         return this.dropViews = this.recurNextGames(baseView.model, 'showDropZone');
       },
       teamDrop: function(baseView, ui) {
-        var landingView, lastUpdatedView, postError,
+        var landingView, lastLandingView, pendingViews, postError,
           _this = this;
         this.hideDropZones();
         postError = false;
-        landingView = this.teamViews["" + (ui.draggable.data('id'))];
+        pendingViews = [];
+        landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
-          return lastUpdatedView = _.find(this.dropViews, function(dropView, i) {
+          lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
             eachView = _this.dropViews[i];
             eachView.$el.addClass('.saving');
-            eachView.model.save({
-              name: landingView.model.get('name'),
-              teamId: landingView.model.get('teamId'),
-              seed: landingView.model.get('seed')
-            }, {
-              wait: true,
-              success: function(model, response) {
-                console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
-                return eachView.$el.removeClass('saving');
-              },
-              error: function(model, response) {
-                eachView.$el.removeClass('saving');
-                postError = true;
-                if (response.status === 404) {
-                  alert('Please sign in using twitter.');
-                  return console.log(response);
-                }
-              }
+            pendingViews.push({
+              baseView: eachView,
+              landingView: landingView
             });
-            return postError || _.isEqual(baseView, dropView);
+            return _.isEqual(baseView, dropView);
           });
         }
+        this.chainSaveCallbacks(pendingViews);
+        return this.checkBrokenLinks(lastLandingView);
+      },
+      chainSaveCallbacks: function(pendingViews) {
+        var baseView, landingView,
+          _this = this;
+        baseView = pendingViews[0].baseView;
+        landingView = pendingViews[0].landingView;
+        return baseView.model.save({
+          name: landingView.model.get('name'),
+          teamId: landingView.model.get('teamId'),
+          seed: landingView.model.get('seed')
+        }, {
+          wait: true,
+          success: function(model, response) {
+            console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+            baseView.$el.removeClass('saving');
+            if (pendingViews.length > 1) {
+              return _this.chainSaveCallbacks(_.last(pendingViews, pendingViews.length - 1));
+            }
+          },
+          error: function(model, response) {
+            pendingViews.forEach(function(viewObj) {
+              return viewObj.baseView.$el.removeClass('saving');
+            });
+            if (response.status === 404) {
+              return alert('Please sign in using twitter.');
+            }
+          }
+        });
       },
       hideDropZones: function() {
         if (this.dropViews.length > 0) {
@@ -130,7 +143,47 @@
           return _.isEqual(baseView, dropView);
         });
       },
-      recurNextGames: function(model, actionAttr, dropViews) {
+      checkBrokenLinks: function(baseView) {
+        var game, i, inNextRound, inPreviousRound, locator, position, region, round, teamId;
+        locator = baseView.model.get('locator');
+        teamId = baseView.model.get('teamId');
+        region = parseInt(locator.substr(0, 1), 10);
+        round = parseInt(locator.substr(2, 1), 10);
+        game = parseInt(locator.substr(4, 1), 10);
+        position = parseInt(locator.substr(6, 1), 10);
+        i = 0;
+        inNextRound = false;
+        while (!inNextRound && i < 17) {
+          if (this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0]) {
+            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0].model.get('teamId')) {
+              inNextRound = true;
+            }
+            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 1].model.get('teamId')) {
+              inNextRound = true;
+            }
+          }
+          i++;
+        }
+        if (inNextRound) {
+          i = 0;
+          inPreviousRound = false;
+          while (!inPreviousRound && i < 17) {
+            if (this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0]) {
+              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0].model.get('teamId')) {
+                inPreviousRound = true;
+              }
+              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 1].model.get('teamId')) {
+                inPreviousRound = true;
+              }
+            }
+            i++;
+          }
+          if (inPreviousRound) {
+            return this.recurNextGames(baseView.model, 'brokenLink', [teamId]);
+          }
+        }
+      },
+      recurNextGames: function(model, actionAttr, actionAttrArgs, dropViews) {
         var nextGame, nextGameView,
           _this = this;
         nextGame = model.get('nextGame');
@@ -140,19 +193,17 @@
           return _.find(region.rounds, function(round) {
             return _.find(round.games, function(game) {
               if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
-                return nextGameView = _this.emptyTeamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
+                return nextGameView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
               }
             });
           });
         });
-        if (nextGameView != null) {
-          if (typeof nextGameView[actionAttr] === "function") {
-            nextGameView[actionAttr]();
-          }
+        if (nextGameView[actionAttr]) {
+          nextGameView[actionAttr].apply(nextGameView, actionAttrArgs);
         }
         if (nextGameView) dropViews.push(nextGameView);
         if (nextGameView && nextGameView.model.get('nextGame')) {
-          return this.recurNextGames(nextGameView.model, actionAttr, dropViews);
+          return this.recurNextGames(nextGameView.model, actionAttr, actionAttrArgs, dropViews);
         } else {
           return dropViews;
         }

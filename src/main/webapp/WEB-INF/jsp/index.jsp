@@ -32,9 +32,11 @@
         </nav>
         <div class="login">
             <c:if test="${not empty account.displayName}">
-                <p>Welcome, <c:out value="${account.displayName}"/>!</p>
+                <p>Hello, <strong><c:out value="${account.displayName}"/></strong><br/>
+                    <a href="<c:url value="/signout" />">Sign Out</a>
+                </p>
                 <p><img src="${account.profileUrl}" /> </p>
-                <a href="<c:url value="/signout" />">Sign Out</a>
+
             </c:if>
             <c:if test="${empty account.displayName}">
                 <form id="twitter_signin" action="/bracket/signin/twitter" method="post">

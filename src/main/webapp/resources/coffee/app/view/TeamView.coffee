@@ -38,7 +38,6 @@ define [
         tolerance: 'pointer'
         drop: (event, ui) =>
           @trigger('drop', @, ui)
-          console.log('drop')
 
     events: {"click .detail": "click"}
 
@@ -51,8 +50,12 @@ define [
     hideDropZone: ->
       @$el.removeClass "highlight-team-drop"
 
-    reset: ->
+    reset: (teamId) ->
       @model.set
         name:null
         teamId:null
         seed:null
+
+    brokenLink: (teamId) ->
+      if teamId is @model.get('teamId')
+        @reset()

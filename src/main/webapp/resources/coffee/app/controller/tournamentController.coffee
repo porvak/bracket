@@ -13,7 +13,6 @@ define [
     @model.bind('change', @render, @)
     @model.fetch()
     @teamViews = {}
-    @emptyTeamViews = {}
     @dropViews = []
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
@@ -45,6 +44,7 @@ define [
             team.gameId = game.gameId
             team.nextGame = (if game.nextGame then game.nextGame else null)
             team.pickable = true if team.teamId
+            team.locator = "#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"
 
             teamView = new TeamView(
               model:new TeamModel(team)
@@ -53,8 +53,7 @@ define [
             teamView.on('dragStop',@hideDropZones,@)
             teamView.on('drop',@teamDrop,@)
 
-            @teamViews["#{team.teamId}"] = teamView
-            @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"] = teamView unless team.teamId and team.name
+            @teamViews[team.locator] = teamView
 
             teamZero = elGame.find('.detail.team-0')
             if teamZero.val()
@@ -76,35 +75,49 @@ define [
   teamDrop: (baseView,ui) ->
     @hideDropZones()
     postError = false
+    pendingViews = []
 
-    landingView = @teamViews["#{ui.draggable.data('id')}"]
+    landingView = @teamViews["#{ui.draggable.data('locator')}"]
 
     if @validDropZone(baseView,landingView)
-      lastUpdatedView = _.find @dropViews, (dropView,i) =>
+      lastLandingView = _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
         eachView.$el.addClass('.saving')
-        eachView.model.save
-          name:landingView.model.get('name')
-          teamId:landingView.model.get('teamId')
-          seed:landingView.model.get('seed')
-        ,
-          wait:true
-          success: (model,response) ->
-            console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-            eachView.$el.removeClass('saving')
+        pendingViews.push(
+          baseView:eachView
+          landingView:landingView
+        )
 
-          error: (model, response) ->
-            eachView.$el.removeClass('saving')
-            postError = true
-            if response.status is 404
-              alert 'Please sign in using twitter.'
-              console.log(response)
+        _.isEqual baseView, dropView
+
+    @chainSaveCallbacks(pendingViews)
+    @checkBrokenLinks(lastLandingView)
+
+  chainSaveCallbacks: (pendingViews)->
+    baseView = pendingViews[0].baseView
+    landingView = pendingViews[0].landingView
+
+    baseView.model.save
+      name:landingView.model.get('name')
+      teamId:landingView.model.get('teamId')
+      seed:landingView.model.get('seed')
+    ,
+    wait:true
+    success: (model,response) =>
+      console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+      baseView.$el.removeClass('saving')
+      if pendingViews.length > 1 #if there are more views
+        @chainSaveCallbacks(_.last(pendingViews,pendingViews.length-1)) #save the rest of the views
+
+    error: (model, response) =>
+      pendingViews.forEach((viewObj) ->
+        viewObj.baseView.$el.removeClass('saving')
+      )
+      if response.status is 404
+        alert 'Please sign in using twitter.'
 
 
-        postError or _.isEqual baseView, dropView
-
-#      @recurNextGames(lastUpdatedView.model,'reset')
 
   hideDropZones:() ->
     if @dropViews.length > 0
@@ -122,7 +135,38 @@ define [
       _.isEqual baseView, dropView
 
 
-  recurNextGames: (model,actionAttr,dropViews) ->
+  checkBrokenLinks: (baseView) ->
+    #if game exists in previous round
+    locator = baseView.model.get('locator')
+    teamId = baseView.model.get('teamId')
+    region = parseInt(locator.substr(0,1),10)
+    round = parseInt(locator.substr(2,1),10)
+    game = parseInt(locator.substr(4,1),10)
+    position = parseInt(locator.substr(6,1),10)
+
+    i=0
+    inNextRound=false
+    while !inNextRound && i<17
+      if @teamViews["#{region}-#{round+1}-#{i}-#{0}"]
+        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{0}"].model.get('teamId')
+        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{1}"].model.get('teamId')
+      i++
+
+    if inNextRound
+      i=0
+      inPreviousRound=false
+      while !inPreviousRound && i<17
+        if @teamViews["#{region}-#{round-1}-#{i}-#{0}"]
+          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{0}"].model.get('teamId')
+          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{1}"].model.get('teamId')
+        i++
+
+      if inPreviousRound
+        @recurNextGames(baseView.model,'brokenLink',[teamId])
+
+
+
+  recurNextGames: (model,actionAttr,actionAttrArgs,dropViews) ->
     nextGame = model.get('nextGame')
     nextGameView = null
     dropViews = dropViews or []
@@ -132,14 +176,15 @@ define [
       _.find(region.rounds, (round) =>
         _.find(round.games, (game) =>
             if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-              nextGameView = @emptyTeamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
+              nextGameView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
         )
       )
     )
 
-    nextGameView?[actionAttr]?()
+    nextGameView[actionAttr].apply(nextGameView, actionAttrArgs) if nextGameView[actionAttr]
+
     if nextGameView then dropViews.push(nextGameView)
 
     if nextGameView and nextGameView.model.get('nextGame')
-      @recurNextGames(nextGameView.model,actionAttr,dropViews)
+      @recurNextGames(nextGameView.model,actionAttr,actionAttrArgs,dropViews)
     else dropViews

@@ -20,6 +20,11 @@
   clear: both;
   visibility: hidden;
 }
+.clear-box-shadow {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
 /*Not supported very well*/
 /*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
 /*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
@@ -55,6 +60,9 @@ h2 {
   font-weight: bold;
   font-size: 1.45em;
 }
+strong {
+  font-weight: bold;
+}
 /*End General Tags*/
 header {
   background: #6c6c6c;
@@ -75,7 +83,7 @@ header {
 header h1 {
   float: left;
   margin-right: 40px;
-  font-size: 1.8em;
+  font-size: 2.0em;
 }
 header h1 strong {
   font-weight: bold;
@@ -83,11 +91,23 @@ header h1 strong {
 header div.login {
   float: right;
 }
+header div.login p {
+  float: left;
+  margin-right: 5px;
+}
+header div.login p a {
+  color: #ffffff;
+  font-size: .8em;
+}
+header div.login img {
+  width: 60%;
+  height: 60%;
+}
 header nav {
   font-family: Arial, sans-serif;
   float: left;
   margin-top: 8px;
-  font-size: .8em;
+  font-size: .95em;
   font-weight: bold;
 }
 header nav a {
@@ -157,6 +177,21 @@ header nav a.selected {
   font-weight: bold;
   font-size: 1.25em;
 }
+.gameBackgroundLeft {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundRight {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.gameBackgroundAll {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.pickIconBackgroundRight {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.pickIconBackgroundRight:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
 .region h2 {
   color: #c5c9cc;
   text-shadow: 0px 0px 2px #c5c9cc;
@@ -188,7 +223,127 @@ header nav a.selected {
   background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
 }
 .region.region-3, .region.region-4 {
-  bottom: -60px;
+  /*bottom: -60px;*/
+
+  bottom: -5%;
+}
+.region.region-5 {
+  /*background-color: #f5f5f5;*/
+
+  height: 15%;
+  width: 30%;
+  top: 45%;
+  left: 35%;
+}
+.region.region-5 h2 {
+  top: -1.45em;
+  width: 100%;
+}
+.region.region-5 .round-1 {
+  position: relative;
+  height: 100%;
+}
+.region.region-5 .round-1 .game-1, .region.region-5 .round-1 .game-2 {
+  position: absolute;
+  height: 100%;
+  width: 40%;
+}
+.region.region-5 .round-1 .game-1 {
+  left: 0;
+  top: 0;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-5 .round-1 .game-1 .details {
+  margin-right: 3px;
+}
+.region.region-5 .round-1 .game-2 {
+  right: 0;
+  top: 0;
+  margin-left: 3px;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.region.region-5 .round-1 .game-2 div.detail div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round-1 .game-2 div.detail div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round-1 .game-2 .details {
+  margin-left: 3px;
+}
+.region.region-5 .round.round-2 {
+  top: 50%;
+  margin-top: -1.4em;
+  height: 1.4em;
+}
+.region.region-5 .round.round-2 .team-1, .region.region-5 .round.round-2 .team-0 {
+  position: absolute;
+  width: 40%;
+  top: 0;
+  bottom: auto;
+}
+.region.region-5 .round.round-2 .team-0 {
+  left: 5%;
+}
+.region.region-5 .round.round-2 .team-0.highlight-team-drop {
+  left: 5%;
+}
+.region.region-5 .round.round-2 .team-1 {
+  right: 5%;
+}
+.region.region-5 .round.round-2 .team-1.highlight-team-drop {
+  right: 5%;
+  left: auto;
+}
+.region.region-5 .round.round-2 .team-1 div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round.round-2 .team-1 div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round.round-2 .game {
+  /*position: absolute;*/
+
+  height: inherit;
+  /*top: 50%;*/
+
+  /*height: 1.4em;*/
+
+}
+.region.region-5 .round.round-3 {
+  top: 50%;
+  margin-top: 5px;
+  height: auto;
+}
+.region.region-5 .round.round-3 .game {
+  margin: 0 auto;
+  width: 60%;
+  height: 2em;
+  padding: 5px;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+}
+.region.region-5 .round.round-3 .game .team-0, .region.region-5 .round.round-3 .game .team-1 {
+  top: 0;
+  padding: 0;
+  height: 100%;
+  bottom: auto;
+  background: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
+.region.region-5 .round.round-3 .game .pick_icon {
+  display: none;
+}
+.region.region-5 .round {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+.region.region-5 .round .game {
+  margin-top: 0;
 }
 div.game {
   padding: 4px 0px;
