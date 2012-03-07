@@ -73,13 +73,13 @@
       findShowDropViews: function(baseView) {
         return this.dropViews = this.recurNextTeamViews(baseView, 'showDropZone');
       },
-      hideDropZones: function() {
-        if (this.dropViews.length > 0) {
+      hideDropZones: function(baseView) {
+        if (!this.dropViews) {
+          return this.dropViews = this.recurNextTeamViews(baseView, 'hideDropZone');
+        } else {
           return this.dropViews.forEach(function(view) {
             return view.hideDropZone();
           });
-        } else {
-          return this.dropViews = this.recurNextGames(model, 'hideDropZone');
         }
       },
       teamDrop: function(baseView, ui) {
@@ -138,97 +138,72 @@
         });
       },
       checkBrokenLinks: function(baseView) {
-        var game, i, inNextRound, inPreviousRound, locator, position, region, round, teamId;
-        locator = baseView.model.get('locator');
-        teamId = baseView.model.get('teamId');
-        region = parseInt(locator.substr(0, 1), 10);
-        round = parseInt(locator.substr(2, 1), 10);
-        game = parseInt(locator.substr(4, 1), 10);
-        position = parseInt(locator.substr(6, 1), 10);
-        i = 0;
-        inNextRound = false;
-        while (!inNextRound && i < 17) {
-          if (this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0]) {
-            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 0].model.get('teamId')) {
-              inNextRound = true;
-            }
-            if (teamId === this.teamViews["" + region + "-" + (round + 1) + "-" + i + "-" + 1].model.get('teamId')) {
-              inNextRound = true;
-            }
-          }
-          i++;
-        }
-        if (inNextRound) {
-          i = 0;
-          inPreviousRound = false;
-          while (!inPreviousRound && i < 17) {
-            if (this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0]) {
-              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 0].model.get('teamId')) {
-                inPreviousRound = true;
-              }
-              if (teamId === this.teamViews["" + region + "-" + (round - 1) + "-" + i + "-" + 1].model.get('teamId')) {
-                inPreviousRound = true;
-              }
-            }
-            i++;
-          }
-          if (inPreviousRound) {
-            return this.recurNextTeamViews(baseView, 'brokenLink', [teamId]);
-          }
+        var nextViewArr, previousViewArr;
+        nextViewArr = this.recurNextTeamViews(baseView);
+        if (nextViewArr.length === 0) return;
+        previousViewArr = this.recurPreviousTeamViews(baseView);
+        if (previousViewArr.length > 0) {
+          return this.recurNextTeamViews(baseView, 'brokenLink', [baseView.model.get('teamId')]);
         }
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
-        var nextGame, nextTeamView,
+        var nextGame, nextTeamView, _ref,
           _this = this;
-        nextGame = baseView.model.get('nextGame');
         nextTeamView = null;
         nextTeamViewArr = nextTeamViewArr || [];
-        _.find(this.model.get('regions'), function(region) {
-          return _.find(region.rounds, function(round) {
-            return _.find(round.games, function(game) {
-              if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
-                return nextTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
-              }
+        nextGame = baseView != null ? baseView.model.get('nextGame') : void 0;
+        if (nextGame) {
+          _.find(this.model.get('regions'), function(region) {
+            return _.find(region.rounds, function(round) {
+              return _.find(round.games, function(game) {
+                if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
+                  return nextTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
+                }
+              });
             });
           });
-        });
-        if (nextTeamView[actionAttr]) {
-          nextTeamView[actionAttr].apply(nextTeamView, actionAttrArgs);
         }
-        if (nextTeamView) nextTeamViewArr.push(nextTeamView);
-        if (nextTeamView && nextTeamView.model.get('nextGame')) {
+        if (nextTeamView) {
+          nextTeamViewArr.push(nextTeamView);
+          if ((_ref = nextTeamView[actionAttr]) != null) {
+            _ref.apply(nextTeamView, actionAttrArgs);
+          }
+        }
+        if (nextTeamView != null ? nextTeamView.model.get('nextGame') : void 0) {
           return this.recurNextTeamViews(nextTeamView, actionAttr, actionAttrArgs, nextTeamViewArr);
         } else {
           return nextTeamViewArr;
         }
       },
       recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
-        var gameId, previousTeamView, teamId,
+        var gameId, previousTeamView, teamId, _ref,
           _this = this;
         previousTeamView = null;
         previousTeamViewArr = previousTeamViewArr || [];
         gameId = baseView.model.get('gameId');
         teamId = baseView.model.get('teamId');
-        _.find(this.model.get('regions'), function(region) {
-          return _.find(region.rounds, function(round) {
-            return _.find(round.games, function(game) {
-              var _ref;
-              if (gameId === ((_ref = game.nextGame) != null ? _ref.gameId : void 0)) {
-                return _.find(game.teams, function(team) {
-                  if (team.teamId === teamId) {
-                    return previousTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position];
-                  }
-                });
-              }
+        if (gameId && teamId) {
+          _.find(this.model.get('regions'), function(region) {
+            return _.find(region.rounds, function(round) {
+              return _.find(round.games, function(game) {
+                var _ref;
+                if (gameId === ((_ref = game.nextGame) != null ? _ref.gameId : void 0)) {
+                  return _.find(game.teams, function(team) {
+                    if (team.teamId === teamId) {
+                      return previousTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position];
+                    }
+                  });
+                }
+              });
             });
           });
-        });
-        if (previousTeamView[actionAttr]) {
-          previousTeamView[actionAttr].apply(previousTeamView, actionAttrArgs);
         }
-        if (previousTeamView) previousTeamViewArr.push(previousTeamView);
-        if (previousTeamView && previousTeamView.model.get('nextGame')) {
-          return this.recurNextTeamViews(previousTeamView, actionAttr, actionAttrArgs, previousTeamViewArr);
+        if (previousTeamView) {
+          if ((_ref = previousTeamView[actionAttr]) != null) {
+            _ref.apply(previousTeamView, actionAttrArgs);
+          }
+          previousTeamViewArr.push(previousTeamView);
+          return this.recurPreviousTeamViews(previousTeamView, actionAttr, actionAttrArgs, previousTeamViewArr);
         } else {
           return previousTeamViewArr;
         }

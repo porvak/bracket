@@ -73,12 +73,12 @@ define [
     @dropViews = @recurNextTeamViews(baseView,'showDropZone')
 
 
-  hideDropZones:() ->
-    if @dropViews.length > 0
+  hideDropZones:(baseView) ->
+    if not @dropViews
+      @dropViews = @recurNextTeamViews(baseView,'hideDropZone')
+    else
       @dropViews.forEach (view) ->
         view.hideDropZone()
-    else
-      @dropViews = @recurNextGames(model,'hideDropZone')
 
 
   teamDrop: (baseView,ui) ->
@@ -140,81 +140,65 @@ define [
 
 
   checkBrokenLinks: (baseView) ->
-    #if game exists in previous round
-    locator = baseView.model.get('locator')
-    teamId = baseView.model.get('teamId')
-    region = parseInt(locator.substr(0,1),10)
-    round = parseInt(locator.substr(2,1),10)
-    game = parseInt(locator.substr(4,1),10)
-    position = parseInt(locator.substr(6,1),10)
+    nextViewArr = @recurNextTeamViews(baseView)
+    if nextViewArr.length is 0
+      return
 
-    i=0
-    inNextRound=false
-    while !inNextRound && i<17
-      if @teamViews["#{region}-#{round+1}-#{i}-#{0}"]
-        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{0}"].model.get('teamId')
-        inNextRound = true if teamId == @teamViews["#{region}-#{round+1}-#{i}-#{1}"].model.get('teamId')
-      i++
-
-    if inNextRound
-      i=0
-      inPreviousRound=false
-      while !inPreviousRound && i<17
-        if @teamViews["#{region}-#{round-1}-#{i}-#{0}"]
-          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{0}"].model.get('teamId')
-          inPreviousRound = true if teamId == @teamViews["#{region}-#{round-1}-#{i}-#{1}"].model.get('teamId')
-        i++
-
-      if inPreviousRound
-        @recurNextTeamViews(baseView,'brokenLink',[teamId])
+    previousViewArr = @recurPreviousTeamViews(baseView)
+    if previousViewArr.length > 0
+      @recurNextTeamViews(baseView,'brokenLink',[baseView.model.get('teamId')])
 
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
-    nextGame = baseView.model.get('nextGame')
     nextTeamView = null
     nextTeamViewArr = nextTeamViewArr or []
+    nextGame = baseView?.model.get('nextGame')
 
-    #Find the next game location
-    _.find(@model.get('regions'), (region) =>
-        _.find(region.rounds, (round) =>
-            _.find(round.games, (game) =>
-                if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-                  nextTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
-            )
-        )
-    )
+    if nextGame
+      #Find the next game location
+      _.find(@model.get('regions'), (region) =>
+          _.find(region.rounds, (round) =>
+              _.find(round.games, (game) =>
+                  if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
+                    nextTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
+              )
+          )
+      )
 
-    nextTeamView[actionAttr].apply(nextTeamView, actionAttrArgs) if nextTeamView[actionAttr]
+    if nextTeamView
+      nextTeamViewArr.push(nextTeamView)
+      nextTeamView[actionAttr]?.apply(nextTeamView, actionAttrArgs)
 
-    if nextTeamView then nextTeamViewArr.push(nextTeamView)
-
-    if nextTeamView and nextTeamView.model.get('nextGame')
+    if nextTeamView?.model.get('nextGame')
       @recurNextTeamViews(nextTeamView,actionAttr,actionAttrArgs,nextTeamViewArr)
-    else nextTeamViewArr
+    else
+      nextTeamViewArr
+
 
   recurPreviousTeamViews: (baseView,actionAttr,actionAttrArgs,previousTeamViewArr) ->
     previousTeamView = null
     previousTeamViewArr = previousTeamViewArr or []
+
     gameId = baseView.model.get('gameId')
     teamId = baseView.model.get('teamId')
 
-    #Find the next game location
-    _.find(@model.get('regions'), (region) =>
-      _.find(region.rounds, (round) =>
-        _.find(round.games, (game) =>
-          if gameId is game.nextGame?.gameId
-            _.find(game.teams, (team) =>
-              if team.teamId is teamId
-                previousTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"]
-            )
+    if gameId and teamId
+      #Find the next game location
+      _.find(@model.get('regions'), (region) =>
+        _.find(region.rounds, (round) =>
+          _.find(round.games, (game) =>
+            if gameId is game.nextGame?.gameId
+              _.find(game.teams, (team) =>
+                if team.teamId is teamId
+                  previousTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"]
+              )
+          )
         )
       )
-    )
 
-    previousTeamView[actionAttr].apply(previousTeamView, actionAttrArgs) if previousTeamView[actionAttr]
-
-    if previousTeamView then previousTeamViewArr.push(previousTeamView)
-
-    if previousTeamView and previousTeamView.model.get('nextGame')
-      @recurNextTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
-    else previousTeamViewArr
+    if previousTeamView
+      previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
+      previousTeamViewArr.push(previousTeamView)
+      @recurPreviousTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
+    else
+      previousTeamViewArr
