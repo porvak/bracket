@@ -45,7 +45,7 @@ define [
             team.gameId = game.gameId
             team.nextGame = (if game.nextGame then game.nextGame else null)
             team.pickable = true if team.teamId
-            team.locator = "#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"
+            team.locator = "#{region.regionId}-#{game.gameId}-#{team.position}"
 
             teamView = new TeamView(
               model:new TeamModel(team)
@@ -155,15 +155,7 @@ define [
     nextGame = baseView?.model.get('nextGame')
 
     if nextGame
-      #Find the next game location
-      _.find(@model.get('regions'), (region) =>
-          _.find(region.rounds, (round) =>
-              _.find(round.games, (game) =>
-                  if game.gameId is nextGame.gameId and region.regionId is nextGame.regionId
-                    nextTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{nextGame.position}"]
-              )
-          )
-      )
+      nextTeamView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
 
     if nextTeamView
       nextTeamViewArr.push(nextTeamView)
@@ -179,22 +171,9 @@ define [
     previousTeamView = null
     previousTeamViewArr = previousTeamViewArr or []
 
-    gameId = baseView.model.get('gameId')
-    teamId = baseView.model.get('teamId')
-
-    if gameId and teamId
-      #Find the next game location
-      _.find(@model.get('regions'), (region) =>
-        _.find(region.rounds, (round) =>
-          _.find(round.games, (game) =>
-            if gameId is game.nextGame?.gameId
-              _.find(game.teams, (team) =>
-                if team.teamId is teamId
-                  previousTeamView = @teamViews["#{region.regionId}-#{round.roundId}-#{game.gameId}-#{team.position}"]
-              )
-          )
-        )
-      )
+    previousGame = baseView.model.get('previousGame')
+    if previousGame
+      previousTeamView = @teamViews["#{previousGame.regionId}-#{previousGame.gameId}-#{previousGame.position}"]
 
     if previousTeamView
       previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)

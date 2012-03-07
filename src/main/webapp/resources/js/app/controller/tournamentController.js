@@ -43,7 +43,7 @@
                         team.gameId = game.gameId;
                         team.nextGame = (game.nextGame ? game.nextGame : null);
                         if (team.teamId) team.pickable = true;
-                        team.locator = "" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position;
+                        team.locator = "" + region.regionId + "-" + game.gameId + "-" + team.position;
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });
@@ -147,21 +147,12 @@
         }
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
-        var nextGame, nextTeamView, _ref,
-          _this = this;
+        var nextGame, nextTeamView, _ref;
         nextTeamView = null;
         nextTeamViewArr = nextTeamViewArr || [];
         nextGame = baseView != null ? baseView.model.get('nextGame') : void 0;
         if (nextGame) {
-          _.find(this.model.get('regions'), function(region) {
-            return _.find(region.rounds, function(round) {
-              return _.find(round.games, function(game) {
-                if (game.gameId === nextGame.gameId && region.regionId === nextGame.regionId) {
-                  return nextTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + nextGame.position];
-                }
-              });
-            });
-          });
+          nextTeamView = this.teamViews["" + nextGame.regionId + "-" + nextGame.gameId + "-" + nextGame.position];
         }
         if (nextTeamView) {
           nextTeamViewArr.push(nextTeamView);
@@ -176,27 +167,12 @@
         }
       },
       recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
-        var gameId, previousTeamView, teamId, _ref,
-          _this = this;
+        var previousGame, previousTeamView, _ref;
         previousTeamView = null;
         previousTeamViewArr = previousTeamViewArr || [];
-        gameId = baseView.model.get('gameId');
-        teamId = baseView.model.get('teamId');
-        if (gameId && teamId) {
-          _.find(this.model.get('regions'), function(region) {
-            return _.find(region.rounds, function(round) {
-              return _.find(round.games, function(game) {
-                var _ref;
-                if (gameId === ((_ref = game.nextGame) != null ? _ref.gameId : void 0)) {
-                  return _.find(game.teams, function(team) {
-                    if (team.teamId === teamId) {
-                      return previousTeamView = _this.teamViews["" + region.regionId + "-" + round.roundId + "-" + game.gameId + "-" + team.position];
-                    }
-                  });
-                }
-              });
-            });
-          });
+        previousGame = baseView.model.get('previousGame');
+        if (previousGame) {
+          previousTeamView = this.teamViews["" + previousGame.regionId + "-" + previousGame.gameId + "-" + previousGame.position];
         }
         if (previousTeamView) {
           if ((_ref = previousTeamView[actionAttr]) != null) {
