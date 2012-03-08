@@ -32,7 +32,8 @@
               _ref2.forEach(function(round) {
                 var elRound, _ref3;
                 elRound = $(_this.sectionHB({
-                  "class": "round round-" + round.roundId
+                  "class": "round round-" + round.roundId,
+                  finalScoreSection: region.regionId === 5 && round.roundId === 3 ? true : void 0
                 }));
                 if ((_ref3 = round.games) != null) {
                   _ref3.forEach(function(game) {

@@ -42,6 +42,7 @@ define [
       region.rounds?.forEach (round) =>
         elRound = $(@sectionHB(
           class: "round round-#{round.roundId}"
+          finalScoreSection: true if region.regionId is 5 and round.roundId is 3
         ))
 
         round.games?.forEach (game) =>
