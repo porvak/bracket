@@ -2,7 +2,6 @@ package com.porvak.bracket.repository.impl;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.porvak.bracket.config.ComponentConfig;
 import com.porvak.bracket.config.DataConfig;
@@ -17,7 +16,7 @@ import com.porvak.bracket.domain.Round;
 import com.porvak.bracket.domain.Status;
 import com.porvak.bracket.domain.Team;
 import com.porvak.bracket.domain.Tournament;
-import com.porvak.bracket.domain.User;
+import com.porvak.bracket.domain.UserPick;
 import com.porvak.bracket.domain.UserPicks;
 import com.porvak.bracket.domain.user.UserTournament;
 import com.porvak.bracket.repository.PoolRepository;
@@ -26,14 +25,12 @@ import com.porvak.bracket.repository.TournamentRepository;
 import com.porvak.bracket.repository.UserPickRepository;
 import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.repository.UserTournamentRepository;
-import com.porvak.bracket.socialize.account.Account;
 import com.porvak.bracket.socialize.account.MongoAccountRepository;
 import com.porvak.bracket.utils.builder.GameBuilder;
 import com.porvak.bracket.utils.builder.GameTeamBuilder;
 import com.porvak.bracket.utils.builder.RegionBuilder;
 import com.porvak.bracket.utils.builder.RoundBuilder;
 import com.porvak.bracket.utils.builder.TournamentBuilder;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -52,7 +49,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static com.google.common.base.Preconditions.*;
@@ -120,29 +116,31 @@ public class TournamentRepositoryImplTest {
     
     @Test @Ignore
     public void generateUserTournament() throws IOException {
-        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
+//        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
+//        userTournamentRepository.deleteAll();
         
         for(int i = 1; i < 2; i++){
-            Account account = userRepository.createAccount(new User(RandomStringUtils.randomAlphabetic(8), "me@nospam.com", "http://nowhere.com"));
-            UserTournament userTournament = new UserTournament(tournament);
-            userTournament.setUserId(account.getId());
-            userTournament.setPoolId(POOL_ID);
-            userTournamentRepository.save(userTournament);
+//            Account account = userRepository.createAccount(new User(RandomStringUtils.randomAlphabetic(8), "me@nospam.com", "http://nowhere.com"));
+            UserTournament userTournament = userTournamentRepository.findByUserIdAndPoolId("4f5873dba0eea86cc2f79bcf", POOL_ID);
+            UserPick userPick = new UserPick(1, 9, "4f40083f0364a565e41c1c81", 0);
 
-            for(Region region: userTournament.getRegions()){
-                Round round1 = region.getRoundById(1);
-                Round round2 = region.getRoundById(2);
-                Round round3 = region.getRoundById(3);
-                Round round4 = region.getRoundById(4);
+            userPickRepository.updateUserPick("4f5873dba0eea86cc2f79bcf", POOL_ID, userPick);
 
-                Map<Integer, Team> gameWinner = Maps.newHashMap();
-                Map<Integer, Team> regionWinner = Maps.newHashMap();
-
-                Game game = round1.findByGameId(1);
-                Team winner = getGameWinner(game, region.getRegionId());
+//            for(Region region: userTournament.getRegions()){
+//                Round round1 = region.getRoundById(1);
+//                Round round2 = region.getRoundById(2);
+//                Round round3 = region.getRoundById(3);
+//                Round round4 = region.getRoundById(4);
+//
+//                Map<Integer, Team> gameWinner = Maps.newHashMap();
+//                Map<Integer, Team> regionWinner = Maps.newHashMap();
+//
+//                Game game = round1.findByGameId(1);
+//                Team winner = getGameWinner(game, region.getRegionId());
 //                game.setUserGameWinner(winner);
 //                userTournament.addUserPick(winner, region.getRegionId());
-            }
+//            }
+
             File userFile = new File(String.format("/opt/code/github/bracket/src/test/resources/data/userTouranment_%s.json", userTournament.getTournamentId()));
             mapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userTournament);
         }
@@ -220,7 +218,7 @@ public class TournamentRepositoryImplTest {
         }
 
         List<Team> teamList = teamRepository.findAll();
-        mapper.writeValue(new File("/opt/code/github/bracket/src/test/resources/data/teamList.json"), teamList);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("/opt/code/github/bracket/src/test/resources/data/teamList.json"), teamList);
     }
 
     private Tournament getTournamentById(String id) {
