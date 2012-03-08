@@ -7,20 +7,34 @@ define [
   Backbone.View.extend
 
     initialize: (options) ->
-      @model.on('change', @update, @)
+      @model.on('change', @render, @)
       @teamHB = handlebars.compile strTeamTemplate
       @render()
 
     render: ->
-      @$el = $(@teamHB(@model.toJSON()))
-      @$el.addClass 'pickable' if @model.get 'pickable'
+      if not @model.get('teamId')
+        userPick = @model.get('userPick')
+        if userPick and userPick.id   #TODO Change to teamId
+          displayTeam = userPick
+          displayTeam.teamId = userPick.id  #TODO Change to teamId
+        else
+          displayTeam = @model.toJSON()
+      else
+        displayTeam = @model.toJSON()
 
+      if @$el.html()
+        @$el.html($(@teamHB(displayTeam)).html())
+      else
+        @$el = $(@teamHB(displayTeam))
+
+      @$el.addClass 'pickable' if @model.get 'pickable'
       @setupDrag() if @model.get 'teamId'
       @setupDrop()
+      @checkWrongPick()
 
-    update: ->
-      @$el.html($(@teamHB(@model.toJSON())).html())
-      @setupDrag() if @model.get 'teamId'
+    checkWrongPick: ->
+      if @model.get('userPick') and @model.get('teamId') and @model.get('teamId') isnt @model.get('userPick')?.id #TODO change to teamid
+        @$el.find('.team').addClass('lineThrough')
 
     setupDrag: ->
       @$el.draggable

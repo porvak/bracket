@@ -23,8 +23,9 @@ define [
 
 
   render: ->
-    if @model.get('pickStatus') isnt "OPEN"
-      $('.navbar.leaderboard').removeClass('hidden')
+    # TODO UNCOMMENT WHEN TOURNY STARTS
+#    if @model.get('pickStatus') isnt "OPEN"
+    $('.navbar.leaderboard').removeClass('hidden')
 
     console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
@@ -98,35 +99,25 @@ define [
       @dropViews.forEach (view) ->
         view.hideDropZone()
 
-  advanceTeam:(startingView) ->
-    return if not startingView?.model.get('teamId')
-    nextGame = startingView?.model.get('nextGame')
-    endingView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
-    if startingView and endingView
-      @chainSaveCallbacks([
-        view:endingView
-        model:
-          name:startingView.model.get('name')
-          teamId:startingView.model.get('teamId')
-          seed:startingView.model.get('seed')
-      ])
-      @checkRemoveFutureWins(endingView)
+  advanceTeam:(landingView) ->
+    return if not landingView?.model.get('teamId')
+    nextGame = landingView?.model.get('nextGame')
+    baseView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
+    if landingView and baseView
+      @teamDrop(baseView,'',landingView)
 
   removeTeam:(startingView) ->
-    return if not startingView?.model.get('teamId')
+    teamId = startingView?.model.get('userPick')?.id     #TODO change to teamId
+    return if not teamId
 
-    @checkRemoveFutureWins(startingView)
-    startingView.model.set(
-      name:null
-      teamId:null
-      seed:null
-    )
+    @checkRemoveFutureWins(startingView,true)
 
-  teamDrop: (baseView,ui) ->
+  teamDrop: (baseView,ui,landingView) ->
     postError = false
     pendingSaveArr = []
 
-    landingView = @teamViews["#{ui.draggable.data('locator')}"]
+    if ui
+      landingView = @teamViews["#{ui.draggable.data('locator')}"]
 
     if @validDropZone(baseView,landingView)
       lastLandingView = _.find @dropViews, (dropView,i) =>
@@ -135,9 +126,15 @@ define [
         pendingSaveArr.push(
           view:eachView
           model:
-            name:landingView.model.get('name')
-            teamId:landingView.model.get('teamId')
-            seed:landingView.model.get('seed')
+            userPick:
+              name:landingView.model.get('name')
+              id:landingView.model.get('teamId')   #TODO Change to teamId
+              seed:landingView.model.get('seed')
+              regionId:landingView.model.get('regionId')
+            previousGame:
+              regionId: landingView.model.get('regionId'),
+              gameId: landingView.model.get('gameId'),
+              position: landingView.model.get('position')
         )
 
         _.isEqual baseView, dropView
@@ -176,7 +173,7 @@ define [
     view = _.first(pendingDeleteArr)?.view
 
     pendingDeleteArr.forEach((userPick) ->
-      userPick.view.model.set(userPick.model)
+      userPick.model.set(userPick.model)
     )
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
@@ -211,11 +208,17 @@ define [
     else
       previousTeamViewArr
 
-  checkRemoveFutureWins: (baseView) ->
+  checkRemoveFutureWins: (baseView,includeBaseView) ->
     nextViewArr = @recurNextTeamViews(baseView)
     return if nextViewArr.length is 0
 
-    pendingSaveArr = []
+    pendingSaveArr = if includeBaseView then [
+        view:baseView
+        model:
+          userPick:null
+      ]
+    else
+      []
     previousViewArr = @recurPreviousTeamViews(baseView)
     if previousViewArr.length > 0
       prevTeamId = _.first(previousViewArr).model.get('teamId')
@@ -224,15 +227,16 @@ define [
             pendingSaveArr.push
               view:view
               model:
-                name:null
-                teamId:null
-                seed:null
+                userPick:null
       )
 
       @chainDeleteCallbacks(pendingSaveArr) if pendingSaveArr.length > 0
 
   validDropZone: (baseView,landingView) ->
     return false if !landingView
+
+    if @dropViews.length is 0
+      @dropViews = @recurNextTeamViews(landingView)
 
     _.find @dropViews, (dropView) ->
       _.isEqual baseView, dropView

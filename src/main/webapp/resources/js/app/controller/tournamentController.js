@@ -14,9 +14,7 @@
       render: function() {
         var elBracket, scoreView, _ref,
           _this = this;
-        if (this.model.get('pickStatus') !== "OPEN") {
-          $('.navbar.leaderboard').removeClass('hidden');
-        }
+        $('.navbar.leaderboard').removeClass('hidden');
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
           model: new ScoreModel({
@@ -104,44 +102,29 @@
           });
         }
       },
-      advanceTeam: function(startingView) {
-        var endingView, nextGame;
-        if (!(startingView != null ? startingView.model.get('teamId') : void 0)) {
+      advanceTeam: function(landingView) {
+        var baseView, nextGame;
+        if (!(landingView != null ? landingView.model.get('teamId') : void 0)) {
           return;
         }
-        nextGame = startingView != null ? startingView.model.get('nextGame') : void 0;
-        endingView = this.teamViews["" + nextGame.regionId + "-" + nextGame.gameId + "-" + nextGame.position];
-        if (startingView && endingView) {
-          this.chainSaveCallbacks([
-            {
-              view: endingView,
-              model: {
-                name: startingView.model.get('name'),
-                teamId: startingView.model.get('teamId'),
-                seed: startingView.model.get('seed')
-              }
-            }
-          ]);
-          return this.checkRemoveFutureWins(endingView);
+        nextGame = landingView != null ? landingView.model.get('nextGame') : void 0;
+        baseView = this.teamViews["" + nextGame.regionId + "-" + nextGame.gameId + "-" + nextGame.position];
+        if (landingView && baseView) {
+          return this.teamDrop(baseView, '', landingView);
         }
       },
       removeTeam: function(startingView) {
-        if (!(startingView != null ? startingView.model.get('teamId') : void 0)) {
-          return;
-        }
-        this.checkRemoveFutureWins(startingView);
-        return startingView.model.set({
-          name: null,
-          teamId: null,
-          seed: null
-        });
+        var teamId, _ref;
+        teamId = startingView != null ? (_ref = startingView.model.get('userPick')) != null ? _ref.id : void 0 : void 0;
+        if (!teamId) return;
+        return this.checkRemoveFutureWins(startingView, true);
       },
-      teamDrop: function(baseView, ui) {
-        var landingView, lastLandingView, pendingSaveArr, postError,
+      teamDrop: function(baseView, ui, landingView) {
+        var lastLandingView, pendingSaveArr, postError,
           _this = this;
         postError = false;
         pendingSaveArr = [];
-        landingView = this.teamViews["" + (ui.draggable.data('locator'))];
+        if (ui) landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
           lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
@@ -149,9 +132,17 @@
             pendingSaveArr.push({
               view: eachView,
               model: {
-                name: landingView.model.get('name'),
-                teamId: landingView.model.get('teamId'),
-                seed: landingView.model.get('seed')
+                userPick: {
+                  name: landingView.model.get('name'),
+                  id: landingView.model.get('teamId'),
+                  seed: landingView.model.get('seed'),
+                  regionId: landingView.model.get('regionId')
+                },
+                previousGame: {
+                  regionId: landingView.model.get('regionId'),
+                  gameId: landingView.model.get('gameId'),
+                  position: landingView.model.get('position')
+                }
               }
             });
             return _.isEqual(baseView, dropView);
@@ -190,7 +181,7 @@
         var view, _ref;
         view = (_ref = _.first(pendingDeleteArr)) != null ? _ref.view : void 0;
         return pendingDeleteArr.forEach(function(userPick) {
-          return userPick.view.model.set(userPick.model);
+          return userPick.model.set(userPick.model);
         });
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
@@ -231,11 +222,18 @@
           return previousTeamViewArr;
         }
       },
-      checkRemoveFutureWins: function(baseView) {
+      checkRemoveFutureWins: function(baseView, includeBaseView) {
         var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
         nextViewArr = this.recurNextTeamViews(baseView);
         if (nextViewArr.length === 0) return;
-        pendingSaveArr = [];
+        pendingSaveArr = includeBaseView ? [
+          {
+            view: baseView,
+            model: {
+              userPick: null
+            }
+          }
+        ] : [];
         previousViewArr = this.recurPreviousTeamViews(baseView);
         if (previousViewArr.length > 0) {
           prevTeamId = _.first(previousViewArr).model.get('teamId');
@@ -244,9 +242,7 @@
               return pendingSaveArr.push({
                 view: view,
                 model: {
-                  name: null,
-                  teamId: null,
-                  seed: null
+                  userPick: null
                 }
               });
             }
@@ -258,6 +254,9 @@
       },
       validDropZone: function(baseView, landingView) {
         if (!landingView) return false;
+        if (this.dropViews.length === 0) {
+          this.dropViews = this.recurNextTeamViews(landingView);
+        }
         return _.find(this.dropViews, function(dropView) {
           return _.isEqual(baseView, dropView);
         });

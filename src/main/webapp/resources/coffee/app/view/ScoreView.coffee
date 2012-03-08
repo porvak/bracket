@@ -26,6 +26,7 @@ define [
       "click .submit-score": "submitScore"
       "click .edit-score": "enableEdit"
       "blur #combined input": "submitScore"
+      "click #combined input": "enableEdit"
 
     submitScore: ->
       score = parseInt(@$el.find('input').val(),10)

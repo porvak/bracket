@@ -228,3 +228,7 @@ body{
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
+
+.lineThrough {
+    text-decoration: line-through;
+}

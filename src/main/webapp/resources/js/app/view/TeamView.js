@@ -3,19 +3,38 @@
   define(['lib/backbone', 'lib/jquery', 'lib/handlebars', 'text!html/teamTemplate.html'], function(Backbone, $, handlebars, strTeamTemplate) {
     return Backbone.View.extend({
       initialize: function(options) {
-        this.model.on('change', this.update, this);
+        this.model.on('change', this.render, this);
         this.teamHB = handlebars.compile(strTeamTemplate);
         return this.render();
       },
       render: function() {
-        this.$el = $(this.teamHB(this.model.toJSON()));
+        var displayTeam, userPick;
+        if (!this.model.get('teamId')) {
+          userPick = this.model.get('userPick');
+          if (userPick && userPick.id) {
+            displayTeam = userPick;
+            displayTeam.teamId = userPick.id;
+          } else {
+            displayTeam = this.model.toJSON();
+          }
+        } else {
+          displayTeam = this.model.toJSON();
+        }
+        if (this.$el.html()) {
+          this.$el.html($(this.teamHB(displayTeam)).html());
+        } else {
+          this.$el = $(this.teamHB(displayTeam));
+        }
         if (this.model.get('pickable')) this.$el.addClass('pickable');
         if (this.model.get('teamId')) this.setupDrag();
-        return this.setupDrop();
+        this.setupDrop();
+        return this.checkWrongPick();
       },
-      update: function() {
-        this.$el.html($(this.teamHB(this.model.toJSON())).html());
-        if (this.model.get('teamId')) return this.setupDrag();
+      checkWrongPick: function() {
+        var _ref;
+        if (this.model.get('userPick') && this.model.get('teamId') && this.model.get('teamId') !== ((_ref = this.model.get('userPick')) != null ? _ref.id : void 0)) {
+          return this.$el.find('.team').addClass('lineThrough');
+        }
       },
       setupDrag: function() {
         var _this = this;
