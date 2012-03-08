@@ -2,14 +2,17 @@ package com.porvak.bracket.controller;
 
 import com.porvak.bracket.domain.Pool;
 import com.porvak.bracket.domain.UserPick;
-import com.porvak.bracket.domain.UserPicks;
 import com.porvak.bracket.repository.PoolRepository;
 import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.service.PoolService;
 import com.porvak.bracket.socialize.account.Account;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
@@ -56,7 +61,7 @@ public class PoolController extends AbstractBracketController {
         UserPick userPick = new UserPick(userPickMap);
         poolService.addUserPick(account.getId(), poolId, userPick);
 
-        LOGGER.debug("Added user[{}] pick: poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPick});
+        LOGGER.debug("Added userpick for userId: [{}] poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPick});
     }
 
     @ResponseStatus(CREATED)
@@ -73,12 +78,12 @@ public class PoolController extends AbstractBracketController {
      * @param currentUser
      * @return
      */
-    @ResponseBody
-    @RequestMapping(value = "/api/pool/{poolId}/user/picks", method = GET)
-    public UserPicks getUserPicks(@PathVariable("poolId")String poolId, Principal currentUser){
-        Account account = getUserAccount(currentUser);
-        return userPicksRepository.findByUserIdAndPoolId(account.getId(), poolId);
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/api/pool/{poolId}/user/picks", method = GET)
+//    public UserPicks getUserPicks(@PathVariable("poolId")String poolId, Principal currentUser){
+//        Account account = getUserAccount(currentUser);
+//        return poolService.addUserPick(account.getId(), POOL_ID,  );userPicksRepository.findByUserIdAndPoolId(account.getId(), poolId);
+//    }
 
     /**
      * Retrieve pool information for given pool
@@ -90,5 +95,11 @@ public class PoolController extends AbstractBracketController {
     @RequestMapping(value = "/api/pool/{poolId}", method = GET)
     public Pool getPool(@PathVariable("poolId") String poolId){
         return poolRepository.findOne(poolId);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({NullPointerException.class, IOException.class, JsonGenerationException.class, JsonMappingException.class})
+    public void handleException(HttpServletResponse response, Exception x) {
+        LOGGER.warn("Unexpected Exception in Pool Controller", x);
     }
 }

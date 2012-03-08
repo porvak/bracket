@@ -52,7 +52,7 @@ public class RoundBuilder {
         round.setRoundName(roundName);
 
         if(games != null && !games.isEmpty()){
-            round.setGames(games);
+//            round.setGames(games);
         }
 
         return round;

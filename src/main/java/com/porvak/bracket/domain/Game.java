@@ -2,14 +2,22 @@ package com.porvak.bracket.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.*;
 
-public class Game extends AbstractBracket{
+public class Game extends AbstractBracket implements Comparable<Game>{
 
     private int gameId;
     private GameStatus status;
-    private GameTeam[] teams;
+//    @Transient
+//    private GameTeam[] teams;
+    
+    @JsonIgnore
+    @Field("teams")
+    private Map<Integer, GameTeam> teamMap;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Team userGameWinner;
@@ -18,7 +26,7 @@ public class Game extends AbstractBracket{
     private GamePointer nextGame;
 
     public Game() {
-        teams = new GameTeam[2];
+//        teams = new GameTeam[2];
     }
 
     public int getGameId() {
@@ -38,7 +46,10 @@ public class Game extends AbstractBracket{
     }
 
     public GameTeam[] getTeams() {
-        return teams;
+        GameTeam[] teamArray = new GameTeam[2];
+        teamArray[0] = teamMap.get(0);
+        teamArray[1] = teamMap.get(1);
+        return teamArray;
     }
     
     public void setNextGame(GamePointer nextGame){
@@ -51,13 +62,13 @@ public class Game extends AbstractBracket{
 
     public GameTeam getTeamByPosition(int position){
         validatePosition(position);
-        return teams[position];
+        return teamMap.get(position);
     }
 
     public void addTeam(GameTeam team){
         team = checkNotNull(team, "Team cannot be null");
         validatePosition(team.getPosition());
-        teams[team.getPosition()] =  team;
+        teamMap.put(team.getPosition(), team);
     }
 
     /**
@@ -67,11 +78,13 @@ public class Game extends AbstractBracket{
      */
     @JsonIgnore
     public GameTeam getWinningTeam(){
-        if(teams[0] != null && teams[0].isWinner()){
-            return teams[0];
+        GameTeam team0 = teamMap.get(0);
+        GameTeam team1 = teamMap.get(1);
+        if(team0 != null && team0.isWinner()){
+            return team0;
         }
-        else if(teams[1] != null && teams[1].isWinner()){
-            return teams[1];
+        else if(team1 != null && team1.isWinner()){
+            return team1;
         }
         
         return null;
@@ -89,4 +102,21 @@ public class Game extends AbstractBracket{
         checkArgument(position == 0 || position == 1, "Team position must be 0 or 1. Received %s", position);
     }
 
+    public Map<Integer, GameTeam> getTeamMap() {
+        return teamMap;
+    }
+
+    public void setTeamMap(Map<Integer, GameTeam> teamMap) {
+        this.teamMap = teamMap;
+    }
+
+    @Override
+    public int compareTo(Game o) {
+        if(gameId > o.getGameId())
+            return 1;
+        else if(gameId < o.getGameId())
+            return -1;
+        else
+            return 0;
+    }
 }

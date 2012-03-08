@@ -52,7 +52,7 @@ public class UserPick extends AbstractBracket{
         int regionId = Integer.valueOf(checkNotNull(userPickMap.get("regionId")).toString());
         int gameId = Integer.valueOf(checkNotNull(userPickMap.get("gameId")).toString());
         String teamId = checkNotNull(userPickMap.get("teamId")).toString();
-        int positionId = Integer.valueOf(checkNotNull(userPickMap.get("positionId")).toString());
+        int positionId = Integer.valueOf(checkNotNull(userPickMap.get("position")).toString());
         init(regionId, gameId, teamId, positionId);
     }
 
