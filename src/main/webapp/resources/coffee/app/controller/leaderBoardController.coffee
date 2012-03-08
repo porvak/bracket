@@ -4,7 +4,14 @@ define [
   'app/view/LeaderBoardView'
 ], ($,_,LeaderBoardView) ->
   init: ->
-    $('.leaderboard').click(@toggle)
+    $('.navbar.leaderboard').click(@toggle)
+    $('.navbar.leaderboard').mousedown( ->
+        $('.navbar.leaderboard').addClass('selected')
+    )
+    $('.navbar.leaderboard').mouseup( ->
+        $('.navbar.leaderboard').removeClass('selected')
+    )
+
 
 
   toggle: ->
@@ -13,3 +20,4 @@ define [
     else
       @leaderBoard =  new  LeaderBoardView()
       @leaderBoard.toggle()
+

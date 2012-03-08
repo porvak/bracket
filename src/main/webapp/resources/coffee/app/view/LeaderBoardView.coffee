@@ -27,12 +27,26 @@ define [
 
       leaderBoardObj = $(@leaderBoardHB())
       leaderBoardObj.find('tbody').append(@els)
+
       @$el.html(leaderBoardObj)
+
+      @$el.find('table').dataTable(
+        "bJQueryUI": true,
+        "sScrollY": "260px",
+        "bPaginate": false
+      )
+
+
     toggle: ->
       if @$el.dialog('option','autoOpen')
         @$el.dialog({
-         autoOpen: false,
-         title: 'LeaderBoard'
+          autoOpen: false,
+          title: 'LeaderBoard'
+          height: 400
+          width: 600
+          position: ['center',50]
+          modal:true
+          resizable:false
         })
 
       if @$el.dialog('isOpen')

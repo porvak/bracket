@@ -3,7 +3,13 @@
   define(['lib/jquery', 'lib/underscore', 'app/view/LeaderBoardView'], function($, _, LeaderBoardView) {
     return {
       init: function() {
-        return $('.leaderboard').click(this.toggle);
+        $('.navbar.leaderboard').click(this.toggle);
+        $('.navbar.leaderboard').mousedown(function() {
+          return $('.navbar.leaderboard').addClass('selected');
+        });
+        return $('.navbar.leaderboard').mouseup(function() {
+          return $('.navbar.leaderboard').removeClass('selected');
+        });
       },
       toggle: function() {
         if (this.leaderBoard) {

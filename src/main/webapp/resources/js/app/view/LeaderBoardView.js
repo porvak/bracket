@@ -20,13 +20,23 @@
         }));
         leaderBoardObj = $(this.leaderBoardHB());
         leaderBoardObj.find('tbody').append(this.els);
-        return this.$el.html(leaderBoardObj);
+        this.$el.html(leaderBoardObj);
+        return this.$el.find('table').dataTable({
+          "bJQueryUI": true,
+          "sScrollY": "260px",
+          "bPaginate": false
+        });
       },
       toggle: function() {
         if (this.$el.dialog('option', 'autoOpen')) {
           this.$el.dialog({
             autoOpen: false,
-            title: 'LeaderBoard'
+            title: 'LeaderBoard',
+            height: 400,
+            width: 600,
+            position: ['center', 50],
+            modal: true,
+            resizable: false
           });
         }
         if (this.$el.dialog('isOpen')) {
