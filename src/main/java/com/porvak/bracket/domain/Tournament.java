@@ -7,6 +7,15 @@ public class Tournament extends AbstractBracket{
     private String name;
     private TournamentType type;
     private List<Region> regions;
+    private Status pickStatus;
+
+    public Status getPickStatus() {
+        return pickStatus;
+    }
+
+    public void setPickStatus(Status pickStatus) {
+        this.pickStatus = pickStatus;
+    }
 
     public String getId() {
         return id;

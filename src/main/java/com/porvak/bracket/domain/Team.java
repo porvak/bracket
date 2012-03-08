@@ -3,6 +3,8 @@ package com.porvak.bracket.domain;
 public class Team extends AbstractBracket{
     private String id;
     private String name;
+    private int seed;
+    private int regionId;
     
     public Team(){
     }
@@ -10,6 +12,13 @@ public class Team extends AbstractBracket{
     public Team(String id, String name){
         this.id = id;
         this.name = name;
+    }
+
+    public Team(GameTeam gameTeam, int regionId) {
+        this.id = gameTeam.getId();
+        this.name = gameTeam.getName();
+        this.seed = gameTeam.getSeed();
+        this.regionId = regionId;
     }
 
     public String getId() {
@@ -26,5 +35,22 @@ public class Team extends AbstractBracket{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+
     }
 }
