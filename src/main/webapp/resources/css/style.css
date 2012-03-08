@@ -25,10 +25,6 @@ body{
     margin: 0 auto;
 }
 
-.saving {
-    background-color: red;
-}
-
 /*** Regions ***/
 .region {
 	height: 50%;
