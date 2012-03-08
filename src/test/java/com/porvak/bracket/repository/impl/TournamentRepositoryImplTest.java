@@ -6,7 +6,6 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.porvak.bracket.config.ComponentConfig;
 import com.porvak.bracket.config.DataConfig;
-import com.porvak.bracket.config.TestSecurityConfig;
 import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.domain.Game;
 import com.porvak.bracket.domain.GamePointer;
@@ -56,10 +55,10 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.google.common.base.Preconditions.*;
-import static com.porvak.bracket.domain.BracketConstants.POOL_ID;
+import static com.porvak.bracket.domain.BracketConstants.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class})
 public class TournamentRepositoryImplTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TournamentRepositoryImplTest.class);
@@ -94,7 +93,7 @@ public class TournamentRepositoryImplTest {
         populateGameTeams();
     }
 
-    @Test
+    @Test @Ignore
     public void testUserPicks() throws IOException {
         String poolId = "4f3c8297a0eea26b78d77538";
         String userId = "2";
@@ -108,7 +107,7 @@ public class TournamentRepositoryImplTest {
         }
     }
     
-    @Test
+    @Test @Ignore
     public void getUserPicks() throws IOException {
         for(UserPicks userPicksDataSet: userPicksRepository.findAll()){
             String userPickJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userPicksDataSet);
@@ -117,11 +116,11 @@ public class TournamentRepositoryImplTest {
             LOGGER.debug("{}", userPickJson);
         }
     }
-
-    @Test
+    
+    @Test @Ignore
     public void generateUserTournament() throws IOException {
         Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
-
+        
         for(int i = 1; i < 2; i++){
             Account account = userRepository.createAccount(new User(RandomStringUtils.randomAlphabetic(8), "me@nospam.com", "http://nowhere.com"));
             UserTournament userTournament = new UserTournament(tournament);
@@ -146,8 +145,8 @@ public class TournamentRepositoryImplTest {
             File userFile = new File(String.format("/opt/code/github/bracket/src/test/resources/data/userTouranment_%s.json", userTournament.getTournamentId()));
             mapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userTournament);
         }
-
-
+        
+        
     }
 
     private Team getGameWinner(Game game, int regionId) {
@@ -165,7 +164,7 @@ public class TournamentRepositoryImplTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testFindTournamentById() throws Exception {
 // Completed Tournament
 //        Tournament tournament = tournamentRepository.findOne("4f349bc6d170640b9c895a47");
@@ -196,7 +195,7 @@ public class TournamentRepositoryImplTest {
         mapper.writeValue(new File("/opt/code/github/bracket/src/main/resources/data/teams.json"), teamList);
     }
 
-    @Test
+    @Test @Ignore
     public void populateTeamCollectionWithSeeds() throws IOException {
         Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
         for(Region region: tournament.getRegions()){
