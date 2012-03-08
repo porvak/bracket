@@ -180,8 +180,8 @@
       chainDeleteCallbacks: function(pendingDeleteArr, callback, callbackArgs) {
         var view, _ref;
         view = (_ref = _.first(pendingDeleteArr)) != null ? _ref.view : void 0;
-        return pendingDeleteArr.forEach(function(userPick) {
-          return userPick.model.set(userPick.model);
+        return pendingDeleteArr.forEach(function(deleteObj) {
+          return deleteObj.view.model.set(deleteObj.model);
         });
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {

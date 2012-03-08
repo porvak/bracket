@@ -172,8 +172,8 @@ define [
   chainDeleteCallbacks: (pendingDeleteArr,callback,callbackArgs)->
     view = _.first(pendingDeleteArr)?.view
 
-    pendingDeleteArr.forEach((userPick) ->
-      userPick.model.set(userPick.model)
+    pendingDeleteArr.forEach((deleteObj) ->
+        deleteObj.view.model.set(deleteObj.model)
     )
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
