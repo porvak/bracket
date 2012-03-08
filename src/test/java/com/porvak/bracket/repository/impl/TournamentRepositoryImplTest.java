@@ -2,55 +2,89 @@ package com.porvak.bracket.repository.impl;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
 import com.porvak.bracket.config.ComponentConfig;
 import com.porvak.bracket.config.DataConfig;
+import com.porvak.bracket.config.TestSecurityConfig;
+import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.domain.Game;
 import com.porvak.bracket.domain.GamePointer;
 import com.porvak.bracket.domain.GameStatus;
 import com.porvak.bracket.domain.GameTeam;
 import com.porvak.bracket.domain.Region;
 import com.porvak.bracket.domain.Round;
+import com.porvak.bracket.domain.Status;
 import com.porvak.bracket.domain.Team;
 import com.porvak.bracket.domain.Tournament;
+import com.porvak.bracket.domain.User;
+import com.porvak.bracket.domain.UserPicks;
+import com.porvak.bracket.domain.user.UserTournament;
+import com.porvak.bracket.repository.PoolRepository;
 import com.porvak.bracket.repository.TeamRepository;
 import com.porvak.bracket.repository.TournamentRepository;
+import com.porvak.bracket.repository.UserPickRepository;
+import com.porvak.bracket.repository.UserPicksRepository;
+import com.porvak.bracket.repository.UserTournamentRepository;
+import com.porvak.bracket.socialize.account.Account;
+import com.porvak.bracket.socialize.account.MongoAccountRepository;
 import com.porvak.bracket.utils.builder.GameBuilder;
 import com.porvak.bracket.utils.builder.GameTeamBuilder;
 import com.porvak.bracket.utils.builder.RegionBuilder;
 import com.porvak.bracket.utils.builder.RoundBuilder;
 import com.porvak.bracket.utils.builder.TournamentBuilder;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.google.common.base.Preconditions.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static com.porvak.bracket.domain.BracketConstants.POOL_ID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class})
+@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class, TestSecurityConfig.class})
 public class TournamentRepositoryImplTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TournamentRepositoryImplTest.class);
+    private static final String BLANK_TOURNAMENT_ID = BracketConstants.TOURNAMENT_ID;
+
+    @Inject
+    PoolRepository poolRepository;
+
+    @Inject
+    UserPicksRepository userPicksRepository;
 
     @Inject
     TournamentRepository tournamentRepository;
 
     @Inject
     TeamRepository teamRepository;
+
+    @Inject
+    UserPickRepository userPickRepository;
+
+    @Inject
+    MongoAccountRepository userRepository;
+
+    @Inject
+    UserTournamentRepository userTournamentRepository;
 
     ObjectMapper mapper = new ObjectMapper();
     ListMultimap<Integer, GameTeam> gameTeamData;
@@ -60,32 +94,133 @@ public class TournamentRepositoryImplTest {
         populateGameTeams();
     }
 
-    @Test @Ignore
+    @Test
+    public void testUserPicks() throws IOException {
+        String poolId = "4f3c8297a0eea26b78d77538";
+        String userId = "2";
+        String teamId = "9999411";
+//TODO: FIX THIS
+//        UserPick userPick = new UserPick(2, 10, teamId);
+
+//        userPickRepository.updateUserPick(userId, poolId, userPick);
+        for(UserPicks userPicksDataSet: userPicksRepository.findAll()){
+            LOGGER.debug("{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userPicksDataSet));
+        }
+    }
+    
+    @Test
+    public void getUserPicks() throws IOException {
+        for(UserPicks userPicksDataSet: userPicksRepository.findAll()){
+            String userPickJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userPicksDataSet);
+            Files.write(userPickJson.getBytes(),
+                    new File(String.format("/opt/code/github/bracket/src/test/resources/data/userPick_%s.json", userPicksDataSet.getUserId())));
+            LOGGER.debug("{}", userPickJson);
+        }
+    }
+
+    @Test
+    public void generateUserTournament() throws IOException {
+        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
+
+        for(int i = 1; i < 2; i++){
+            Account account = userRepository.createAccount(new User(RandomStringUtils.randomAlphabetic(8), "me@nospam.com", "http://nowhere.com"));
+            UserTournament userTournament = new UserTournament(tournament);
+            userTournament.setUserId(account.getId());
+            userTournament.setPoolId(POOL_ID);
+            userTournamentRepository.save(userTournament);
+
+            for(Region region: userTournament.getRegions()){
+                Round round1 = region.getRoundById(1);
+                Round round2 = region.getRoundById(2);
+                Round round3 = region.getRoundById(3);
+                Round round4 = region.getRoundById(4);
+
+                Map<Integer, Team> gameWinner = Maps.newHashMap();
+                Map<Integer, Team> regionWinner = Maps.newHashMap();
+
+                Game game = round1.findByGameId(1);
+                Team winner = getGameWinner(game, region.getRegionId());
+//                game.setUserGameWinner(winner);
+//                userTournament.addUserPick(winner, region.getRegionId());
+            }
+            File userFile = new File(String.format("/opt/code/github/bracket/src/test/resources/data/userTouranment_%s.json", userTournament.getTournamentId()));
+            mapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userTournament);
+        }
+
+
+    }
+
+    private Team getGameWinner(Game game, int regionId) {
+        Pair<Integer, Integer> score = generateScore();
+        int topScore = score.getLeft();
+        int bottomScore =  score.getRight();
+
+        boolean topTeamWins = topScore > bottomScore;
+
+        if(topTeamWins){
+            return new Team(game.getTeamByPosition(0), regionId);
+        }
+        else {
+            return new Team(game.getTeamByPosition(1), regionId);
+        }
+    }
+
+    @Test
     public void testFindTournamentById() throws Exception {
 // Completed Tournament
-        Tournament tournament = tournamentRepository.findOne("4f349bc6d170640b9c895a47");
+//        Tournament tournament = tournamentRepository.findOne("4f349bc6d170640b9c895a47");
 // Default Tournament only 1st round populated
-//        Tournament tournament = tournamentRepository.findOne("4f41ce03d17060d0d8dbd4d6");
-        tournament = tournamentRepository.save(tournament);
+//        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
 //        Generate new tournament via code
-//        Tournament tournament = getTournamentById(null);
+        Tournament tournament = new BlankTournamentFactory(gameTeamData).getBlankTournamentById(BLANK_TOURNAMENT_ID);
+        tournament = tournamentRepository.save(tournament);
+        tournament.setPickStatus(Status.OPEN);
         String tournamentJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tournament);
         LOGGER.debug(tournamentJson);
         tournament = mapper.readValue(tournamentJson, Tournament.class);
-        assertThat(tournament.getRegions(), hasSize(4));
-        assertThat(tournament.getRegions().get(0).getRounds(), hasSize(4));
-        assertThat(tournament.getRegions().get(0).getRoundById(1).getGames(), hasSize(8));
+        Files.write(tournamentJson.getBytes(), new File(
+                String.format("/opt/code/github/bracket/src/test/resources/data/tournament_%s.json", tournament.getId())));
+//        assertThat(tournament.getRegions(), hasSize(5));
+//        assertThat(tournament.getRegions().get(0).getRounds(), hasSize(4));
+//        assertThat(tournament.getRegions().get(0).getRoundById(1).getGames(), hasSize(8));
     }
 
     @Test @Ignore
     public void populateTeamCollection() throws IOException {
-//        List<Team> teamList = getTeams();
-//        for (Team team : teamList) {
-//            teamRepository.save(new Team(null, team.getName()));
-//        }
+        List<Team> teamList = getTeams();
+        for (Team team : teamList) {
+            teamRepository.save(new Team(null, team.getName()));
+        }
 
-//        List<Team> teamList = teamRepository.findAll();
-//        mapper.writeValue(new File("/opt/code/github/bracket/src/main/resources/data/teams.json"), teamList);
+        teamList = teamRepository.findAll();
+        mapper.writeValue(new File("/opt/code/github/bracket/src/main/resources/data/teams.json"), teamList);
+    }
+
+    @Test
+    public void populateTeamCollectionWithSeeds() throws IOException {
+        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
+        for(Region region: tournament.getRegions()){
+            int regionId = region.getRegionId();
+            if(regionId != 5){
+                Round round1 = region.getRoundById(1);
+                for(Game game: round1.getGames()){
+                    GameTeam gameTeam0 = game.getTeamByPosition(0);
+                    GameTeam gameTeam1 = game.getTeamByPosition(1);
+                    Team team = teamRepository.findOne(gameTeam0.getId());
+                    team.setSeed(gameTeam0.getSeed());
+                    team.setRegionId(regionId);
+                    teamRepository.save(team);
+
+                    team = teamRepository.findOne(gameTeam1.getId());
+                    team.setSeed(gameTeam1.getSeed());
+                    team.setRegionId(regionId);
+                    teamRepository.save(team);
+                }
+            }
+        }
+
+        List<Team> teamList = teamRepository.findAll();
+        mapper.writeValue(new File("/opt/code/github/bracket/src/test/resources/data/teamList.json"), teamList);
     }
 
     private Tournament getTournamentById(String id) {
@@ -115,21 +250,6 @@ public class TournamentRepositoryImplTest {
                 .addRound(round4)
                 .build();
     }
-
-    private Region getDefaultRegionById(int regionId) {
-        Round round1 = getRoundById(1, regionId, null);
-        Round round2 = getDefaultRoundById(2, regionId);
-        Round round3 = getDefaultRoundById(3, regionId);
-        Round round4 = getDefaultRoundById(4, regionId);
-
-        return new RegionBuilder().withId(regionId).withName(String.format("Region %s", regionId))
-                .addRound(round1)
-                .addRound(round2)
-                .addRound(round3)
-                .addRound(round4)
-                .build();
-    }
-
 
     private Round getRoundById(int roundId, int regionId, Round previousRound) {
         switch (roundId) {
@@ -191,75 +311,8 @@ public class TournamentRepositoryImplTest {
         return null;
     }
 
-    private Round getDefaultRoundById(int roundId, int regionId) {
-        switch (roundId) {
-            case 1:
-                return new RoundBuilder()
-                        .withRoundId(roundId)
-                        .withRoundName(String.format("Round %s", roundId))
-                        .addGame(getUnplayedGame(1, new GamePointer(regionId, 9, 0)))
-                        .addGame(getUnplayedGame(2, new GamePointer(regionId, 9, 1)))
-                        .addGame(getUnplayedGame(3, new GamePointer(regionId, 10, 0)))
-                        .addGame(getUnplayedGame(4, new GamePointer(regionId, 10, 1)))
-                        .addGame(getUnplayedGame(5, new GamePointer(regionId, 11, 0)))
-                        .addGame(getUnplayedGame(6, new GamePointer(regionId, 11, 1)))
-                        .addGame(getUnplayedGame(7, new GamePointer(regionId, 12, 0)))
-                        .addGame(getUnplayedGame(8, new GamePointer(regionId, 12, 1))).build();
-            case 2:
-                return new RoundBuilder()
-                        .withRoundId(roundId)
-                        .withRoundName(String.format("Round %s", roundId))
-                        .addGame(getUnplayedGame(9, new GamePointer(regionId, 13, 0)))
-                        .addGame(getUnplayedGame(10, new GamePointer(regionId, 13, 1)))
-                        .addGame(getUnplayedGame(11, new GamePointer(regionId, 14, 0)))
-                        .addGame(getUnplayedGame(12, new GamePointer(regionId, 14, 1))).build();
-            case 3:
-                return new RoundBuilder()
-                        .withRoundId(roundId)
-                        .withRoundName(String.format("Round %s", roundId))
-                        .addGame(getUnplayedGame(13, new GamePointer(regionId, 15, 0)))
-                        .addGame(getUnplayedGame(14, new GamePointer(regionId, 15, 1))).build();
-            case 4:
-                int gameId = 0;
-                int positionId = 0;
-                switch (regionId) {
-                    case 1:
-                        gameId = 1;
-                        positionId = 0;
-                        break;
-                    case 2:
-                        gameId = 1;
-                        positionId = 1;
-                        break;
-                    case 3:
-                        gameId = 2;
-                        positionId = 0;
-                        break;
-                    case 4:
-                        gameId = 2;
-                        positionId = 1;
-
-                }
-                return new RoundBuilder()
-                        .withRoundId(roundId)
-                        .withRoundName(String.format("Round %s", roundId))
-                        .addGame(getUnplayedGame(15, new GamePointer(5, gameId, positionId))).build();
-            case 5:
-                checkArgument(regionId == 5 && roundId < 2, "region %s can not have more than 2 rounds. round [%s]", regionId, roundId);
-                return null;
-        }
-        return null;
-    }
-
-    private Game getUnplayedGame(int gameId, GamePointer nextGame){
-        return new GameBuilder().withGameId(gameId).withStatus(GameStatus.FUTURE)
-                .withNextGame(nextGame)
-                .addTeam(new GameTeam())
-                .addTeam(new GameTeam()).build();
-    }
-
     /**
-     * @param gameId           base 1. (1-15 are valid)
+     * @param gameId       base 1. (1-15 are valid)
      * @param region       base 1. (1-4 are valid)
      * @param nextGame
      * @return populate game objects
@@ -355,7 +408,7 @@ public class TournamentRepositoryImplTest {
                 checkNotNull(previousRound, "Previous round can not be null.");
                 previousGameTop = previousRound.findGameById(3);
                 previousGameBottom = previousRound.findGameById(4);
-                winningTeamTop = previousGameTop.getWinningTeam();
+                   winningTeamTop = previousGameTop.getWinningTeam();
                 winningTeamBottom = previousGameBottom.getWinningTeam();
 
                 if(winningTeamTop != null){
@@ -507,13 +560,13 @@ public class TournamentRepositoryImplTest {
     }
 
     public List<Team> getTeams() {
-        return teamRepository.findAll();
-//        try {
-//            return mapper.readValue(new ClassPathResource("/data/teams.json").getInputStream(), new TypeReference<List<Team>>() {});
-//        }
-//        catch (IOException e) {
-//            throw new RuntimeException("Unable to load /data/teams.json from classpath.", e);
-//        }
+//        return teamRepository.findAll();
+        try {
+            return mapper.readValue(new ClassPathResource("/data/teams.json").getInputStream(), new TypeReference<List<Team>>() {});
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Unable to load /data/teams.json from classpath.", e);
+        }
     }
 
     private void populateGameTeams() {
