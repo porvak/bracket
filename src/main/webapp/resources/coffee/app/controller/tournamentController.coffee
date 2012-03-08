@@ -46,6 +46,7 @@ define [
         ))
 
         round.games?.forEach (game) =>
+          game.finalVS = true if region.regionId is 5 and round.roundId is 2 and game.gameId is 3
           elGame = $(@gameHB(game))
           game.teams?.forEach (team) =>
             team.regionId = region.regionId
@@ -67,8 +68,12 @@ define [
             @teamViews[team.locator] = teamView
 
             teamZero = elGame.find('.detail.team-0')
-            if teamZero.val()
-              teamView.$el.insertAfter(teamZero)
+            finalVS = elGame.find('.detail.finalVS')
+            if teamZero.html()
+              if finalVS.html()
+                teamView.$el.insertAfter(finalVS)
+              else
+                teamView.$el.insertAfter(teamZero)
             else
               teamView.$el.insertAfter(elGame.find('.detail.state'))
 
@@ -124,7 +129,6 @@ define [
       lastLandingView = _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
-        eachView.$el.addClass('.saving')
         pendingSaveArr.push(
           view:eachView
           model:
@@ -139,6 +143,7 @@ define [
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
+    view?.$el.addClass('saving')
 
     view?.model.save(
       _.first(pendingSaveArr)?.model

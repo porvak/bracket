@@ -40,10 +40,13 @@
                 if ((_ref3 = round.games) != null) {
                   _ref3.forEach(function(game) {
                     var elGame, _ref4;
+                    if (region.regionId === 5 && round.roundId === 2 && game.gameId === 3) {
+                      game.finalVS = true;
+                    }
                     elGame = $(_this.gameHB(game));
                     if ((_ref4 = game.teams) != null) {
                       _ref4.forEach(function(team) {
-                        var teamView, teamZero;
+                        var finalVS, teamView, teamZero;
                         team.regionId = region.regionId;
                         team.roundId = round.roundId;
                         team.gameId = game.gameId;
@@ -60,8 +63,13 @@
                         teamView.on('remove', _this.removeTeam, _this);
                         _this.teamViews[team.locator] = teamView;
                         teamZero = elGame.find('.detail.team-0');
-                        if (teamZero.val()) {
-                          return teamView.$el.insertAfter(teamZero);
+                        finalVS = elGame.find('.detail.finalVS');
+                        if (teamZero.html()) {
+                          if (finalVS.html()) {
+                            return teamView.$el.insertAfter(finalVS);
+                          } else {
+                            return teamView.$el.insertAfter(teamZero);
+                          }
                         } else {
                           return teamView.$el.insertAfter(elGame.find('.detail.state'));
                         }
@@ -135,7 +143,6 @@
           lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView;
             eachView = _this.dropViews[i];
-            eachView.$el.addClass('.saving');
             pendingSaveArr.push({
               view: eachView,
               model: {
@@ -153,6 +160,7 @@
         var view, _ref, _ref2,
           _this = this;
         view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
+        if (view != null) view.$el.addClass('saving');
         return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
           wait: true,
           success: function(model, response) {
