@@ -1,6 +1,10 @@
 package com.porvak.bracket.socialize.account;
 
+import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.domain.User;
+import com.porvak.bracket.domain.user.UserTournament;
+import com.porvak.bracket.repository.TournamentRepository;
+import com.porvak.bracket.repository.UserTournamentRepository;
 import com.porvak.bracket.socialize.account.exception.SignInNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +18,14 @@ public class MongoAccountRepository implements AccountRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoAccountRepository.class);
 
 	private final MongoTemplate mongoTemplate;
+    private final TournamentRepository tournamentRepository;
+    private final UserTournamentRepository userTournamentRepository;
 
 	@Autowired
-	public MongoAccountRepository(MongoTemplate mongoTemplate) {
+	public MongoAccountRepository(MongoTemplate mongoTemplate, UserTournamentRepository userTournamentRepository, TournamentRepository tournamentRepository) {
 		this.mongoTemplate = mongoTemplate;
+        this.userTournamentRepository = userTournamentRepository;
+        this.tournamentRepository = tournamentRepository;
 	}
 
 	public Account createAccount(User user) {
@@ -29,6 +37,10 @@ public class MongoAccountRepository implements AccountRepository {
         }
 
         mongoTemplate.insert(user);
+        UserTournament userTournament = new UserTournament(tournamentRepository.findOne(BracketConstants.TOURNAMENT_ID));
+        userTournament.setPoolId(BracketConstants.POOL_ID);
+        userTournament.setUserId(user.getId());
+        userTournamentRepository.save(userTournament);
 
         return new Account(user.getId(), user.getDisplayName(), user.getEmail(), user.getProfileUrl());
 	}

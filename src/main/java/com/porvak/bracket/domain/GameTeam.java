@@ -19,6 +19,9 @@ public class GameTeam extends AbstractBracket {
     private int score;
 
     private boolean winner;
+    
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private Team userPick;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private GamePointer previousGame;
@@ -77,5 +80,17 @@ public class GameTeam extends AbstractBracket {
 
     public void setPreviousGame(GamePointer previousGame) {
         this.previousGame = previousGame;
+    }
+
+    public Team getUserPick() {
+        return userPick;
+    }
+
+    public void setUserPick(Team userPick) {
+        this.userPick = userPick;
+    }
+
+    public boolean doesUserPickExist() {
+        return userPick == null;
     }
 }

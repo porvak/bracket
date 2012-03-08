@@ -21,18 +21,22 @@ public class UserPick extends AbstractBracket{
     @JsonProperty
     private String teamId;
     
+    @JsonProperty
+    private int positionId;
+    
     @Transient
     private Map<String, Integer> userPickKey;
 
     @PersistenceConstructor
-    public UserPick(@JsonProperty("regionId") int regionId, @JsonProperty("gameId") int gameId, @JsonProperty("teamId") String teamId) {
-        init(regionId, gameId, teamId);
+    public UserPick(@JsonProperty("regionId") int regionId, @JsonProperty("gameId") int gameId, @JsonProperty("teamId") String teamId, @JsonProperty("positionId") int positionId) {
+        init(regionId, gameId, teamId, positionId);
     }
 
-    private void init(int regionId, int gameId, String teamId) {
+    private void init(int regionId, int gameId, String teamId, int positionId) {
         this.regionId = regionId;
         this.gameId = gameId;
         this.teamId = teamId;
+        this.positionId = positionId;
 
         userPickKey = Maps.newHashMap();
         userPickKey.put("regionId", regionId);
@@ -48,7 +52,8 @@ public class UserPick extends AbstractBracket{
         int regionId = Integer.valueOf(checkNotNull(userPickMap.get("regionId")).toString());
         int gameId = Integer.valueOf(checkNotNull(userPickMap.get("gameId")).toString());
         String teamId = checkNotNull(userPickMap.get("teamId")).toString();
-        init(regionId, gameId, teamId);
+        int positionId = Integer.valueOf(checkNotNull(userPickMap.get("positionId")).toString());
+        init(regionId, gameId, teamId, positionId);
     }
 
     @JsonIgnore
@@ -66,5 +71,9 @@ public class UserPick extends AbstractBracket{
 
     public String getTeamId() {
         return teamId;
+    }
+
+    public int getPositionId() {
+        return positionId;
     }
 }

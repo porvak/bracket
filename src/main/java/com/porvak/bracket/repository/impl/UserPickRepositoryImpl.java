@@ -1,13 +1,20 @@
 package com.porvak.bracket.repository.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.porvak.bracket.domain.GameTeam;
+import com.porvak.bracket.domain.Team;
 import com.porvak.bracket.domain.UserPick;
 import com.porvak.bracket.domain.UserPicks;
+import com.porvak.bracket.domain.user.UserTournament;
 import com.porvak.bracket.repository.PoolRepository;
+import com.porvak.bracket.repository.TeamRepository;
 import com.porvak.bracket.repository.UserPickRepository;
 import com.porvak.bracket.repository.UserPicksRepository;
+import com.porvak.bracket.repository.UserTournamentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,8 +22,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Nullable;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Map;
 
+import static com.google.common.base.Preconditions.*;
 import static org.springframework.data.mongodb.core.query.Criteria.*;
 import static org.springframework.data.mongodb.core.query.Query.*;
 
@@ -33,18 +44,58 @@ public class UserPickRepositoryImpl implements UserPickRepository {
 
     @Inject
     private PoolRepository poolRepository;
+    
+    @Inject
+    private UserTournamentRepository userTournamentRepository;
+
+    @Inject
+    private TeamRepository teamRepository;
+    
+    private Map<String, Team> teamByIdMap;
+
+    @PostConstruct
+    public void init(){
+
+        teamByIdMap = Maps.uniqueIndex(teamRepository.findBySeedGreaterThan(0), new Function<Team, String>() {
+                @Override
+                public String apply(@Nullable Team input) {
+                    if (input == null) {
+                        return null;
+                    }
+                    return input.getId();
+                }
+            });
+
+        checkNotNull(teamByIdMap);
+    }
 
     @Override
     public void updateUserPick(String userId, String poolId, UserPick userPick) {
-        //Check if user has made a pick before, if not create the UserPicks object.
-        UserPicks userPicks = userPicksRepository.findByUserIdAndPoolId(userId, poolId);
-        if(userPicks == null || !userPicks.hasUserPicks()){
-            insertUserPicks(userId, poolId, userPick);
-            return;
+        //Pull users tournament record
+        UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
+        
+        //Find game that user has picked
+        GameTeam userGamePick = userTournament.findTeamByUserPick(userPick);
+        if(userGamePick.doesUserPickExist()){
+            removeOldPick(userTournament.getId(), userPick);
         }
+        userGamePick.setUserPick(teamByIdMap.get(userPick.getTeamId()));
 
-        removeOldPick(userId, poolId, userPick);
+        //Check if user has made a pick before, if not create the UserPicks object.
+//        UserPicks userPicks = userPicksRepository.findByUserIdAndPoolId(userId, poolId);
+//        if(userPicks == null || !userPicks.hasUserPicks()){
+//            insertUserPicks(userId, poolId, userPick);
+//            return;
+//        }
+
+//        removeOldPick(userId, poolId, userPick);
         addNewUserPick(userId, poolId, userPick);
+    }
+
+    @Override
+    public void addTieBreaker(String userId, String poolId, int tieBreaker) {
+        Query findUserTournament = query(where("userId").is(userId).and("poolId").is(poolId));
+        WriteResult result = mongoTemplate.updateFirst(findUserTournament, new Update().set("tieBreaker", tieBreaker), UserTournament.class);
     }
 
     private void addNewUserPick(String userId, String poolId, UserPick userPick) {
@@ -67,12 +118,13 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         userPicksRepository.save(newUserPicks);
     }
 
-    private void removeOldPick(String userId, String poolId, UserPick userPick) {
+    private void removeOldPick(String userTournamentId, UserPick userPick) {
         DBObject pickToDelete = new BasicDBObject(userPick.getKey());
-        Query detailedQuery = query(where("poolId").is(poolId)
-                .and("userId").is(userId)
-                .and("picks.regionId").is(userPick.getRegionId())
-                .and("picks.gameId").is(userPick.getGameId()));
-        mongoTemplate.updateFirst(detailedQuery, new Update().pull("picks", pickToDelete), UserPicks.class);
+//TODO: FIX THIS
+//        Query detailedQuery = query(where("_id").is(userTournamentId)
+//                .and("regioins.regionId").is(userPick.getRegionId())
+//                .and()
+//                .and("picks.gameId").is(userPick.getGameId()));
+//        mongoTemplate.updateFirst(detailedQuery, new Update().pull("picks", pickToDelete), UserPicks.class);
     }
 }

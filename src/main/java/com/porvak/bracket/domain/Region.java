@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -14,10 +16,15 @@ import static com.google.common.base.Preconditions.*;
 
 public class Region extends AbstractBracket{
     @JsonProperty("regionId")
-    private int id;
+    @Field("regionId")
+    private int regionId;
+
     private String name;
+
     @JsonProperty
     private List<Round> rounds;
+
+    @Transient
     private Map<Integer, Round> indexedRounds;
 
     public Region(){
@@ -25,12 +32,12 @@ public class Region extends AbstractBracket{
         indexedRounds = Maps.newHashMap();
     }
     
-    public int getId() {
-        return id;
+    public int getRegionId() {
+        return regionId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
     }
 
     public String getName() {

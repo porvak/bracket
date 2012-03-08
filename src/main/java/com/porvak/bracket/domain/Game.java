@@ -9,8 +9,10 @@ public class Game extends AbstractBracket{
 
     private int gameId;
     private GameStatus status;
-
     private GameTeam[] teams;
+
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private Team userGameWinner;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private GamePointer nextGame;
@@ -73,6 +75,14 @@ public class Game extends AbstractBracket{
         }
         
         return null;
+    }
+
+    public Team getUserGameWinner() {
+        return userGameWinner;
+    }
+
+    public void setUserGameWinner(Team userGameWinner) {
+        this.userGameWinner = userGameWinner;
     }
 
     public static void validatePosition(int position){

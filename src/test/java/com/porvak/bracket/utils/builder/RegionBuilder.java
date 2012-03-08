@@ -39,7 +39,7 @@ public class RegionBuilder {
     
     public Region build(){
         Region region = new Region();
-        region.setId(id);
+        region.setRegionId(id);
         region.setName(name);
         for (Round round : rounds) {
             region.addRound(round);

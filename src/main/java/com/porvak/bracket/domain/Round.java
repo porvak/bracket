@@ -1,6 +1,9 @@
 package com.porvak.bracket.domain;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import org.springframework.data.annotation.Transient;
 
@@ -15,6 +18,28 @@ public class Round extends AbstractBracket {
     
     @Transient
     private Map<Integer, Game> indexedGames;
+    
+    public Game findByGameId(int id){
+        Optional<Game> result = Iterators.tryFind(games.iterator(), new GameByIdPredicate(id));
+        if(result.isPresent()){
+            return result.get();
+        }
+        else{
+            return null;
+        }
+    }
+
+    private static class GameByIdPredicate implements Predicate<Game>{
+        private final int gameId;
+        private GameByIdPredicate(final int gameId){
+            this.gameId = gameId;
+        }
+        
+        @Override
+        public boolean apply(@Nullable Game input) {
+            return input != null && gameId == input.getGameId();
+        }
+    }
     
     public Game findGameById(int id){
         if(indexedGames == null && games != null){
@@ -55,6 +80,11 @@ public class Round extends AbstractBracket {
     public List<Game> getGames() {
         return games;
     }
+    
+//    @Transient
+//    public void setGame(Game game){
+//
+//    }
 
     public void setGames(List<Game> games) {
         this.games = games;

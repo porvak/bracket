@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import java.security.Principal;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -56,6 +57,13 @@ public class PoolController extends AbstractBracketController {
         poolService.addUserPick(account.getId(), poolId, userPick);
 
         LOGGER.debug("Added user[{}] pick: poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPick});
+    }
+
+    @ResponseStatus(CREATED)
+    @RequestMapping(value = "/api/pool/{poolId}/user/tiebreaker", method = POST)
+    public void saveUserTieBreaker(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> tieBreakerScore, Principal currentUser){
+        Account account = getUserAccount(currentUser);
+        poolService.addTieBreaker(account.getId(), poolId, Integer.parseInt(checkNotNull(tieBreakerScore.get("tieBreaker"), "Tie Breaker can not be null.").toString()));
     }
 
     /**
