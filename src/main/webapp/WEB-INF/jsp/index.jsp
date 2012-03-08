@@ -29,7 +29,7 @@
     <header class="clear_fix">
         <h1>The Bracket <strong>App</strong></h1>
         <nav>
-            <a href="#" class="navbar leaderboard">Leaderboard</a>
+            <a href="#" class="navbar leaderboard hidden">Leaderboard</a>
         </nav>
         <div class="login">
             <c:if test="${not empty account.displayName}">

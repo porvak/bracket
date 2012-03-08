@@ -14,6 +14,9 @@
       render: function() {
         var elBracket, scoreView, _ref,
           _this = this;
+        if (this.model.get('pickStatus') !== "OPEN") {
+          $('.navbar.leaderboard').removeClass('hidden');
+        }
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
           model: new ScoreModel({
