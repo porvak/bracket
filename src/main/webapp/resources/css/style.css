@@ -20,7 +20,7 @@ body{
 
 #main{
 	position: relative;
-    width: 80em;
+    width: 90em;
     height: 90em;
     margin: 0 auto;
 }
@@ -32,7 +32,7 @@ body{
 /*** Regions ***/
 .region {
 	height: 50%;
-	width: 40%;
+	width: 37%;
 	position: absolute;
 	text-align: center;
 	font-size: 1.7em;

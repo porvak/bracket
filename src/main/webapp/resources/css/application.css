@@ -230,14 +230,15 @@ header nav a.selected {
 .region.region-5 {
   /*background-color: #f5f5f5;*/
 
-  height: 15%;
-  width: 30%;
-  top: 45%;
-  left: 35%;
+  height: 60%;
+  width: 25%;
+  top: 22.5%;
+  left: 37.5%;
 }
 .region.region-5 h2 {
-  top: -1.45em;
+  top: 30%;
   width: 100%;
+  z-index: 1;
 }
 .region.region-5 .round-1 {
   position: relative;
@@ -246,7 +247,7 @@ header nav a.selected {
 .region.region-5 .round-1 .game-1, .region.region-5 .round-1 .game-2 {
   position: absolute;
   height: 100%;
-  width: 40%;
+  width: 37.5%;
 }
 .region.region-5 .round-1 .game-1 {
   left: 0;
@@ -272,14 +273,16 @@ header nav a.selected {
   margin-left: 3px;
 }
 .region.region-5 .round.round-2 {
-  top: 50%;
-  margin-top: -1.4em;
-  height: 1.4em;
+  top: 45%;
+  height: 2.4em;
+  margin-top: -2.4em;
+  width: 100%;
+  text-align: center;
 }
 .region.region-5 .round.round-2 .team-1, .region.region-5 .round.round-2 .team-0 {
   position: absolute;
   width: 40%;
-  top: 0;
+  top: 1.0em;
   bottom: auto;
 }
 .region.region-5 .round.round-2 .team-0 {
@@ -305,28 +308,42 @@ header nav a.selected {
   /*position: absolute;*/
 
   height: inherit;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  width: 90%;
+  margin: 0 auto;
   /*top: 50%;*/
 
   /*height: 1.4em;*/
 
 }
+.region.region-5 .round.round-2 .game .pickable {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background: none;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-5 .round.round-2 .game .pickable .pick_icon {
+  display: none;
+}
 .region.region-5 .round.round-3 {
   top: 50%;
-  margin-top: 5px;
+  margin-top: -2.5em;
   height: auto;
 }
 .region.region-5 .round.round-3 .game {
   margin: 0 auto;
   width: 60%;
-  height: 2em;
+  height: 2.4em;
   padding: 5px;
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
   background-color: #FFF;
 }
 .region.region-5 .round.round-3 .game .team-0, .region.region-5 .round.round-3 .game .team-1 {
-  top: 0;
+  top: 50%;
   padding: 0;
-  height: 100%;
+  height: 50%;
   bottom: auto;
   background: none;
   box-shadow: none;
@@ -336,6 +353,16 @@ header nav a.selected {
 .region.region-5 .round.round-3 .game .pick_icon {
   display: none;
 }
+.region.region-5 .round.round-3 h3 {
+  position: relative;
+  top: 1.8em;
+  font-size: .95em;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  margin: 0 auto;
+  padding: 5px;
+  width: 50%;
+}
 .region.region-5 .round {
   position: absolute;
   height: 100%;
@@ -344,6 +371,17 @@ header nav a.selected {
 }
 .region.region-5 .round .game {
   margin-top: 0;
+}
+#combined {
+  position: relative;
+  top: 4.2em;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  width: 60%;
+  margin: 0 auto;
+}
+#combined label {
+  font-size: .75em;
 }
 div.game {
   padding: 4px 0px;
@@ -420,6 +458,15 @@ div.game .pickable div.pick_icon {
 }
 div.game .pickable div.pick_icon:hover {
   background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+}
+.clear-pickable-style {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background: none;
+}
+.clear-pickable-style .pick_icon {
+  display: none;
 }
 /*Drop zone for highlighting a team*/
 .team-1.highlight-team-drop, .team-0.highlight-team-drop {

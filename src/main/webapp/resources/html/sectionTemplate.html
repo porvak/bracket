@@ -3,7 +3,10 @@
         <h2>{{header}}</h2>
     {{/if}}
     {{#if finalScoreSection}}
-        <input type="text" value="{{finalScore}}"/>
+        <h3>National Champion</h3>
     {{/if}}
     {{elements}}
+    {{#if finalScoreSection}}
+        <div id="combined"><label>Combined Score</label><input type="text" maxlength="3" size="3" value="{{finalScore}}"/></div>
+    {{/if}}
 </div>
