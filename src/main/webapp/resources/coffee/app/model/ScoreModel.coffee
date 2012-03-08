@@ -5,7 +5,4 @@ define [
   Backbone.Model.extend(
     url: ->
        "#{jsonUri.root}/api/pool/#{jsonUri.poolId}/user/tiebreaker"
-
-#   {"tieBreaker": 22}
-
   )

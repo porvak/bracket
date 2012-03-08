@@ -1,6 +1,9 @@
 <div class="game game-{{gameId}}">
     <div class="details">
         <div class="detail state"></div>
+        {{#if finalVS}}
+            <div class="detail finalVS">VS</div>
+        {{/if}}
         <div class="detail links"></div>
     </div>
 </div>
