@@ -26,7 +26,7 @@ define [
     console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
     scoreView = new ScoreView(
-      model:new ScoreModel()  #TODO insert initial saved score here
+      model:new ScoreModel(tieBreaker:@model.get('tieBreaker'))
     )
 
     elBracket = $(@sectionHB(

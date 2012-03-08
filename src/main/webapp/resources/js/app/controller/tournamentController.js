@@ -16,7 +16,9 @@
           _this = this;
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
-          model: new ScoreModel()
+          model: new ScoreModel({
+            tieBreaker: this.model.get('tieBreaker')
+          })
         });
         elBracket = $(this.sectionHB({
           "class": "regions"

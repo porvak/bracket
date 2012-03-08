@@ -178,3 +178,45 @@ body{
 .team-delete.hidden {
     display:none;
 }
+
+.submit-score {
+    background: url("../../resources/images/save.png") no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    float: right;
+    margin-top:4px;
+    margin-right:4px;
+    cursor: pointer;
+}
+
+.edit-score {
+    background: url("../../resources/images/edit.png") no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    float: right;
+    margin-top:4px;
+    margin-right:4px;
+    cursor: pointer;
+}
+
+.score-locked {
+    border: none;
+    font-size: 12px;
+    text-align: right;
+    color: #5c123a;
+    background-color: #fdfeff;
+}
+
+.score-unlocked {
+    font-size: 12px;
+    text-align: right;
+    color: #5c123a;
+    background-color: #f3f4f5;
+}
+
+
+.hidden{
+    display:none;
+}
