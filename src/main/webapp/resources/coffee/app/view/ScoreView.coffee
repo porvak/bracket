@@ -28,14 +28,12 @@ define [
       "blur #combined input": "submitScore"
 
     submitScore: ->
-      score = @$el.find('input').val()
+      score = parseInt(@$el.find('input').val(),10)
       if score >= 0
         @$el.addClass('saving')
-        console.log("Saving: http://#{window.location.host + @model.url()}\nJSON:#{JSON.stringify({tieBreaker:parseInt(score,10)})}\n\n")
-
-        @model.save
-            tieBreaker:parseInt(score,10)
-            ,
+        @model.save(
+            tieBreaker:score
+          ,
             wait:true
             success: (model,response) =>
               console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
@@ -46,7 +44,7 @@ define [
                 alert 'Please sign in using twitter.'
               if response.status is 500
                 console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-
+        )
         @disableEdit()
 
 

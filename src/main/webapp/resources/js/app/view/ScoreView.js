@@ -26,14 +26,12 @@
       submitScore: function() {
         var score,
           _this = this;
-        score = this.$el.find('input').val();
+        score = parseInt(this.$el.find('input').val(), 10);
         if (score >= 0) {
           this.$el.addClass('saving');
-          console.log("Saving: http://" + (window.location.host + this.model.url()) + "\nJSON:" + (JSON.stringify({
-            tieBreaker: parseInt(score, 10)
-          })) + "\n\n");
           this.model.save({
-            tieBreaker: parseInt(score, 10),
+            tieBreaker: score
+          }, {
             wait: true,
             success: function(model, response) {
               console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
