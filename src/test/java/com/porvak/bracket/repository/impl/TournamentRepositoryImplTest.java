@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.porvak.bracket.config.ComponentConfig;
 import com.porvak.bracket.config.DataConfig;
+import com.porvak.bracket.config.TestSecurityConfig;
 import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.domain.Game;
 import com.porvak.bracket.domain.GamePointer;
@@ -58,7 +59,7 @@ import static com.google.common.base.Preconditions.*;
 import static com.porvak.bracket.domain.BracketConstants.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class})
+@ContextConfiguration(classes = {DataConfig.class, ComponentConfig.class, TestSecurityConfig.class})
 public class TournamentRepositoryImplTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TournamentRepositoryImplTest.class);
@@ -172,8 +173,8 @@ public class TournamentRepositoryImplTest {
 //        Tournament tournament = tournamentRepository.findOne(BLANK_TOURNAMENT_ID);
 //        Generate new tournament via code
         Tournament tournament = new BlankTournamentFactory(gameTeamData).getBlankTournamentById(BLANK_TOURNAMENT_ID);
-        tournament = tournamentRepository.save(tournament);
         tournament.setPickStatus(Status.OPEN);
+        tournament = tournamentRepository.save(tournament);
         String tournamentJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tournament);
         LOGGER.debug(tournamentJson);
         tournament = mapper.readValue(tournamentJson, Tournament.class);

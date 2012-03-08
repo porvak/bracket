@@ -1,7 +1,8 @@
 package com.porvak.bracket.controller;
 
-import com.porvak.bracket.domain.Tournament;
-import com.porvak.bracket.repository.TournamentRepository;
+import com.porvak.bracket.service.TournamentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import java.security.Principal;
 
+import static com.porvak.bracket.domain.BracketConstants.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 public class HomeController extends AbstractBracketController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+
     @Inject
-    private TournamentRepository tournamentRepository;
+    private TournamentService tournamentService;
 
     @Inject
     private ConnectionRepository connectionRepository;
@@ -35,8 +39,12 @@ public class HomeController extends AbstractBracketController {
 
     @ResponseBody
     @RequestMapping(value = "/api/pub/tournament/{id}", method = GET)
-    public Tournament getTournamentById(@PathVariable("id") String id){
-        return tournamentRepository.findOne(id);
+    public Object getTournamentById(@PathVariable("id") String id, Principal currentUser){
+        if(currentUser == null){
+            return tournamentService.getTournament(id);
+        }
+
+        return tournamentService.getUserTournament(POOL_ID, getUserAccount(currentUser).getId());
     }
     
 }
