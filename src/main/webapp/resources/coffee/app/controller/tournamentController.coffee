@@ -5,9 +5,12 @@ define [
   'app/model/TournamentModel'
   'app/model/TeamModel'
   'app/view/TeamView'
+  'app/model/ScoreModel'
+  'app/view/ScoreView'
   'text!html/sectionTemplate.html'
   'text!html/gameTemplate.html'
-], ($, _, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) ->
+  'text!html/scoreTemplate.html'
+], ($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate) ->
 
   init: ->
     @model = new TournamentModel
@@ -22,6 +25,10 @@ define [
   render: ->
     console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
+    scoreView = new ScoreView(
+      model:new ScoreModel()  #TODO insert initial saved score here
+    )
+
     elBracket = $(@sectionHB(
       class: "regions"
     ))
@@ -35,7 +42,6 @@ define [
       region.rounds?.forEach (round) =>
         elRound = $(@sectionHB(
           class: "round round-#{round.roundId}"
-          finalScoreSection:true if region.regionId is 5 and round.roundId is 3
         ))
 
         round.games?.forEach (game) =>
@@ -66,6 +72,7 @@ define [
               teamView.$el.insertAfter(elGame.find('.detail.state'))
 
           elRound.append(elGame)
+          elRound.append(scoreView.$el) if region.regionId is 5 and round.roundId is 3
         elRegion.append(elRound)
       elBracket.append(elRegion)
 
@@ -74,7 +81,6 @@ define [
 
   findShowDropViews: (baseView) ->
     @dropViews = @recurNextTeamViews(baseView,'showDropZone')
-
 
   hideDropZones:(baseView) ->
     if not @dropViews
@@ -107,7 +113,6 @@ define [
       seed:null
     )
 
-
   teamDrop: (baseView,ui) ->
     postError = false
     pendingSaveArr = []
@@ -130,7 +135,6 @@ define [
         _.isEqual baseView, dropView
 
     @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView])
-
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
@@ -166,34 +170,6 @@ define [
       userPick.view.model.set(userPick.model)
     )
 
-
-  validDropZone: (baseView,landingView) ->
-    return false if !landingView
-
-    _.find @dropViews, (dropView) ->
-      _.isEqual baseView, dropView
-
-
-  checkRemoveFutureWins: (baseView) ->
-    nextViewArr = @recurNextTeamViews(baseView)
-    return if nextViewArr.length is 0
-
-    pendingSaveArr = []
-    previousViewArr = @recurPreviousTeamViews(baseView)
-    if previousViewArr.length > 0
-      prevTeamId = _.first(previousViewArr).model.get('teamId')
-      nextViewArr.forEach((view) ->
-        if view.model.get('teamId') is prevTeamId
-          pendingSaveArr.push
-            view:view
-            model:
-              name:null
-              teamId:null
-              seed:null
-      )
-
-      @chainDeleteCallbacks(pendingSaveArr) if pendingSaveArr.length > 0
-
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
     nextTeamView = null
     nextTeamViewArr = nextTeamViewArr or []
@@ -211,7 +187,6 @@ define [
     else
       nextTeamViewArr
 
-
   recurPreviousTeamViews: (baseView,actionAttr,actionAttrArgs,previousTeamViewArr) ->
     previousTeamView = null
     previousTeamViewArr = previousTeamViewArr or []
@@ -226,3 +201,29 @@ define [
       @recurPreviousTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
     else
       previousTeamViewArr
+
+  checkRemoveFutureWins: (baseView) ->
+    nextViewArr = @recurNextTeamViews(baseView)
+    return if nextViewArr.length is 0
+
+    pendingSaveArr = []
+    previousViewArr = @recurPreviousTeamViews(baseView)
+    if previousViewArr.length > 0
+      prevTeamId = _.first(previousViewArr).model.get('teamId')
+      nextViewArr.forEach((view) ->
+          if view.model.get('teamId') is prevTeamId
+            pendingSaveArr.push
+              view:view
+              model:
+                name:null
+                teamId:null
+                seed:null
+      )
+
+      @chainDeleteCallbacks(pendingSaveArr) if pendingSaveArr.length > 0
+
+  validDropZone: (baseView,landingView) ->
+    return false if !landingView
+
+    _.find @dropViews, (dropView) ->
+      _.isEqual baseView, dropView

@@ -1,6 +1,6 @@
 (function() {
 
-  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, strSectionTemplate, strGameTemplate) {
+  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'app/model/ScoreModel', 'app/view/ScoreView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html', 'text!html/scoreTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate) {
     return {
       init: function() {
         this.model = new TournamentModel;
@@ -12,9 +12,12 @@
         return this.gameHB = handlebars.compile(strGameTemplate);
       },
       render: function() {
-        var elBracket, _ref,
+        var elBracket, scoreView, _ref,
           _this = this;
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
+        scoreView = new ScoreView({
+          model: new ScoreModel()
+        });
         elBracket = $(this.sectionHB({
           "class": "regions"
         }));
@@ -29,8 +32,7 @@
               _ref2.forEach(function(round) {
                 var elRound, _ref3;
                 elRound = $(_this.sectionHB({
-                  "class": "round round-" + round.roundId,
-                  finalScoreSection: region.regionId === 5 && round.roundId === 3 ? true : void 0
+                  "class": "round round-" + round.roundId
                 }));
                 if ((_ref3 = round.games) != null) {
                   _ref3.forEach(function(game) {
@@ -62,7 +64,10 @@
                         }
                       });
                     }
-                    return elRound.append(elGame);
+                    elRound.append(elGame);
+                    if (region.regionId === 5 && round.roundId === 3) {
+                      return elRound.append(scoreView.$el);
+                    }
                   });
                 }
                 return elRegion.append(elRound);
@@ -174,37 +179,6 @@
           return userPick.view.model.set(userPick.model);
         });
       },
-      validDropZone: function(baseView, landingView) {
-        if (!landingView) return false;
-        return _.find(this.dropViews, function(dropView) {
-          return _.isEqual(baseView, dropView);
-        });
-      },
-      checkRemoveFutureWins: function(baseView) {
-        var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
-        nextViewArr = this.recurNextTeamViews(baseView);
-        if (nextViewArr.length === 0) return;
-        pendingSaveArr = [];
-        previousViewArr = this.recurPreviousTeamViews(baseView);
-        if (previousViewArr.length > 0) {
-          prevTeamId = _.first(previousViewArr).model.get('teamId');
-          nextViewArr.forEach(function(view) {
-            if (view.model.get('teamId') === prevTeamId) {
-              return pendingSaveArr.push({
-                view: view,
-                model: {
-                  name: null,
-                  teamId: null,
-                  seed: null
-                }
-              });
-            }
-          });
-          if (pendingSaveArr.length > 0) {
-            return this.chainDeleteCallbacks(pendingSaveArr);
-          }
-        }
-      },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
         var nextGame, nextTeamView, _ref;
         nextTeamView = null;
@@ -242,6 +216,37 @@
         } else {
           return previousTeamViewArr;
         }
+      },
+      checkRemoveFutureWins: function(baseView) {
+        var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
+        nextViewArr = this.recurNextTeamViews(baseView);
+        if (nextViewArr.length === 0) return;
+        pendingSaveArr = [];
+        previousViewArr = this.recurPreviousTeamViews(baseView);
+        if (previousViewArr.length > 0) {
+          prevTeamId = _.first(previousViewArr).model.get('teamId');
+          nextViewArr.forEach(function(view) {
+            if (view.model.get('teamId') === prevTeamId) {
+              return pendingSaveArr.push({
+                view: view,
+                model: {
+                  name: null,
+                  teamId: null,
+                  seed: null
+                }
+              });
+            }
+          });
+          if (pendingSaveArr.length > 0) {
+            return this.chainDeleteCallbacks(pendingSaveArr);
+          }
+        }
+      },
+      validDropZone: function(baseView, landingView) {
+        if (!landingView) return false;
+        return _.find(this.dropViews, function(dropView) {
+          return _.isEqual(baseView, dropView);
+        });
       }
     };
   });

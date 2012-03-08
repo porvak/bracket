@@ -2,9 +2,8 @@ define [
   'lib/backbone'
   'lib/jquery'
   'lib/handlebars'
-  'app/controller/tournamentController'
   'text!html/teamTemplate.html'
-], (Backbone, $, handlebars, tournamentController, strTeamTemplate) ->
+], (Backbone, $, handlebars, strTeamTemplate) ->
   Backbone.View.extend
 
     initialize: (options) ->
