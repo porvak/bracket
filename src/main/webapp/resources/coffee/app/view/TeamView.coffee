@@ -39,10 +39,17 @@ define [
         drop: (event, ui) =>
           @trigger('drop', @, ui)
 
-    events: {"click .detail": "click"}
+    events:
+      "click .pick_icon": "triggerAdvance"
+      "mouseenter .team": "showDelete"
+      "mouseleave .team": "hideDelete"
+      "click .team-delete": "triggerDelete"
 
-    click: (e) ->
-      console.log(@model.get('name'))
+    triggerAdvance: (e) ->
+      @trigger('advance', @)
+
+    triggerDelete: (e) ->
+      @trigger('remove', @)
 
     showDropZone: ->
       @$el.addClass "highlight-team-drop"
@@ -50,12 +57,10 @@ define [
     hideDropZone: ->
       @$el.removeClass "highlight-team-drop"
 
-    reset: (teamId) ->
-      @model.set
-        name:null
-        teamId:null
-        seed:null
+    showDelete: ->
+      if @model.get('roundId') isnt 1 or @model.get('regionId') is 5
+        @$el.find('.team-delete').removeClass "hidden"
 
-    brokenLink: (teamId) ->
-      if teamId is @model.get('teamId')
-        @reset()
+    hideDelete: ->
+      if @model.get('roundId') isnt 1 or @model.get('regionId') is 5
+        @$el.find('.team-delete').addClass "hidden"

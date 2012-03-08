@@ -41,10 +41,16 @@
         });
       },
       events: {
-        "click .detail": "click"
+        "click .pick_icon": "triggerAdvance",
+        "mouseenter .team": "showDelete",
+        "mouseleave .team": "hideDelete",
+        "click .team-delete": "triggerDelete"
       },
-      click: function(e) {
-        return console.log(this.model.get('name'));
+      triggerAdvance: function(e) {
+        return this.trigger('advance', this);
+      },
+      triggerDelete: function(e) {
+        return this.trigger('remove', this);
       },
       showDropZone: function() {
         return this.$el.addClass("highlight-team-drop");
@@ -52,15 +58,15 @@
       hideDropZone: function() {
         return this.$el.removeClass("highlight-team-drop");
       },
-      reset: function(teamId) {
-        return this.model.set({
-          name: null,
-          teamId: null,
-          seed: null
-        });
+      showDelete: function() {
+        if (this.model.get('roundId') !== 1 || this.model.get('regionId') === 5) {
+          return this.$el.find('.team-delete').removeClass("hidden");
+        }
       },
-      brokenLink: function(teamId) {
-        if (teamId === this.model.get('teamId')) return this.reset();
+      hideDelete: function() {
+        if (this.model.get('roundId') !== 1 || this.model.get('regionId') === 5) {
+          return this.$el.find('.team-delete').addClass("hidden");
+        }
       }
     });
   });
