@@ -70,6 +70,15 @@ public class PoolController extends AbstractBracketController {
         Account account = getUserAccount(currentUser);
         poolService.addTieBreaker(account.getId(), poolId, Integer.parseInt(checkNotNull(tieBreakerScore.get("tieBreaker"), "Tie Breaker can not be null.").toString()));
     }
+    
+    @ResponseStatus(OK)
+    @RequestMapping(value = "/api/pool/{poolId}/region/{regionId}/game/{gameId}/userpick/{position}", method = DELETE)
+    public void deleteUserPick(@PathVariable("poolId") String poolId, @PathVariable("regionId") int regionId, @PathVariable("gameId") int gameId, @PathVariable("position") int position, Principal currentUser){
+        Account account = getUserAccount(currentUser);
+        poolService.removeUserPick(account.getId(), poolId, regionId, gameId, position);
+    }
+
+
 
     /**
      * Return a users pick for a specific pool
