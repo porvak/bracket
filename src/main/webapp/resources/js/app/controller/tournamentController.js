@@ -120,18 +120,12 @@
         var deleteCallbackArr, nextTeamViewArr, teamId, _ref;
         teamId = startingView != null ? (_ref = startingView.model.get('userPick')) != null ? _ref.teamId : void 0 : void 0;
         if (!teamId) return;
-        deleteCallbackArr = [
-          {
-            view: startingView
-          }
-        ];
+        deleteCallbackArr = [startingView];
         nextTeamViewArr = this.recurNextTeamViews(startingView);
         nextTeamViewArr.forEach(function(view) {
           var _ref2;
           if (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === teamId) {
-            return deleteCallbackArr.push({
-              view: view
-            });
+            return deleteCallbackArr.push(view);
           }
         });
         return this.chainDeleteCallbacks(deleteCallbackArr);
@@ -194,15 +188,24 @@
           }
         }) : void 0;
       },
-      chainDeleteCallbacks: function(pendingDeleteArr, callback, callbackArgs) {
-        var view, _ref;
-        view = (_ref = _.first(pendingDeleteArr)) != null ? _ref.view : void 0;
-        return pendingDeleteArr.forEach(function(deleteObj) {
-          return deleteObj.view.model.set({
-            userPick: null,
-            previousGame: null
-          });
-        });
+      chainDeleteCallbacks: function(pendingDeleteArr) {
+        var view,
+          _this = this;
+        view = _.first(pendingDeleteArr);
+        if (view != null) view.$el.addClass('saving');
+        return view != null ? view.model.deletePick({
+          success: function() {
+            view.$el.removeClass('saving');
+            if (pendingDeleteArr.length > 1) {
+              return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
+            }
+          },
+          error: function() {
+            return pendingDeleteArr.forEach(function(view) {
+              return view.$el.removeClass('saving');
+            });
+          }
+        }) : void 0;
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
         var nextGame, nextTeamView, _ref;
@@ -253,9 +256,7 @@
           nextViewArr.forEach(function(view) {
             var _ref2;
             if (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === prevTeamId || view.model.get('teamId') === prevTeamId) {
-              return pendingDeleteArr.push({
-                view: view
-              });
+              return pendingDeleteArr.push(view);
             }
           });
           if (pendingDeleteArr.length > 0) {

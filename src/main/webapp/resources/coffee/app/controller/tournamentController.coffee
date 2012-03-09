@@ -110,16 +110,12 @@ define [
     teamId = startingView?.model.get('userPick')?.teamId
     return if not teamId
 
-    deleteCallbackArr = [
-      view:startingView
-    ]
+    deleteCallbackArr = [startingView]
     nextTeamViewArr = @recurNextTeamViews(startingView)
 
     nextTeamViewArr.forEach((view) ->
       if view.model.get('userPick')?.teamId is teamId
-        deleteCallbackArr.push(
-          view:view
-        )
+        deleteCallbackArr.push(view)
     )
 
     @chainDeleteCallbacks(deleteCallbackArr)
@@ -182,15 +178,23 @@ define [
       }
     )
 
-  chainDeleteCallbacks: (pendingDeleteArr,callback,callbackArgs)->
-    view = _.first(pendingDeleteArr)?.view
+  chainDeleteCallbacks: (pendingDeleteArr)->
+    view = _.first(pendingDeleteArr)
+    view?.$el.addClass('saving')
 
-    pendingDeleteArr.forEach((deleteObj) ->
-        deleteObj.view.model.set(
-          userPick:null
-          previousGame:null
+    view?.model.deletePick({
+      success: () =>
+        view.$el.removeClass('saving')
+        if pendingDeleteArr.length > 1 #if there are more views
+          @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
+
+      error: () =>
+        pendingDeleteArr.forEach((view) ->
+            view.$el.removeClass('saving')
         )
-    )
+    })
+
+
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
     nextTeamView = null
@@ -235,9 +239,7 @@ define [
       prevTeamId = (firstView.model.get('userPick')?.teamId or firstView.model.get('teamId'))
       nextViewArr.forEach((view) ->
           if (view.model.get('userPick')?.teamId is prevTeamId or view.model.get('teamId') is prevTeamId)
-            pendingDeleteArr.push(
-              view:view
-            )
+            pendingDeleteArr.push(view)
       )
 
       @chainDeleteCallbacks(pendingDeleteArr) if pendingDeleteArr.length > 0
