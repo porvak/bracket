@@ -14,9 +14,9 @@ define [
     render: ->
       if not @model.get('teamId')
         userPick = @model.get('userPick')
-        if userPick and userPick.id   #TODO Change to teamId
+        if userPick and userPick.teamId   #TODO Change to teamId
           displayTeam = userPick
-          displayTeam.teamId = userPick.id  #TODO Change to teamId
+          displayTeam.teamId = userPick.teamId  #TODO Change to teamId
         else
           displayTeam = @model.toJSON()
       else
@@ -28,12 +28,12 @@ define [
         @$el = $(@teamHB(displayTeam))
 
       @$el.addClass 'pickable' if @model.get 'pickable'
-      @setupDrag() if @model.get 'teamId'
+      @setupDrag() if (@model.get('teamId') or @model.get('userPick')?.teamId)
       @setupDrop()
       @checkWrongPick()
 
     checkWrongPick: ->
-      if @model.get('userPick') and @model.get('teamId') and @model.get('teamId') isnt @model.get('userPick')?.id #TODO change to teamid
+      if @model.get('userPick') and @model.get('teamId') and @model.get('teamId') isnt @model.get('userPick')?.teamId
         @$el.find('.team').addClass('lineThrough')
 
     setupDrag: ->

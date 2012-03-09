@@ -23,9 +23,8 @@ define [
 
 
   render: ->
-    # TODO UNCOMMENT WHEN TOURNY STARTS
-#    if @model.get('pickStatus') isnt "OPEN"
-    $('.navbar.leaderboard').removeClass('hidden')
+    if @model.get('pickStatus') isnt "OPEN"
+      $('.navbar.leaderboard').removeClass('hidden')
 
     console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
@@ -53,6 +52,7 @@ define [
           game.finalVS = true if region.regionId is 5 and round.roundId is 2 and game.gameId is 3
           elGame = $(@gameHB(game))
           game.teams?.forEach (team) =>
+            return if not team
             team.regionId = region.regionId
             team.roundId = round.roundId
             team.gameId = game.gameId
@@ -107,10 +107,10 @@ define [
       @teamDrop(baseView,'',landingView)
 
   removeTeam:(startingView) ->
-    teamId = startingView?.model.get('userPick')?.id     #TODO change to teamId
+    teamId = startingView?.model.get('userPick')?.teamId
     return if not teamId
+    #TODO
 
-    @checkRemoveFutureWins(startingView,true)
 
   teamDrop: (baseView,ui,landingView) ->
     postError = false
@@ -127,9 +127,9 @@ define [
           view:eachView
           model:
             userPick:
-              name:landingView.model.get('name')
-              id:landingView.model.get('teamId')   #TODO Change to teamId
-              seed:landingView.model.get('seed')
+              name:(landingView.model.get('name') or landingView.model.get('userPick')?.name)
+              teamId:(landingView.model.get('teamId') or landingView.model.get('userPick')?.teamId)
+              seed:(landingView.model.get('seed') or landingView.model.get('userPick')?.seed)
               regionId:landingView.model.get('regionId')
             previousGame:
               regionId: landingView.model.get('regionId'),
@@ -139,7 +139,7 @@ define [
 
         _.isEqual baseView, dropView
 
-    @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView])
+      @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView])
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
@@ -196,10 +196,16 @@ define [
   recurPreviousTeamViews: (baseView,actionAttr,actionAttrArgs,previousTeamViewArr) ->
     previousTeamView = null
     previousTeamViewArr = previousTeamViewArr or []
+    regionId = baseView.model.get('regionId')
+    gameId = baseView.model.get('gameId')
+    teamId = (baseView.model.get('teamId') or baseView.model.get('userPick')?.teamId)
 
-    previousGame = baseView.model.get('previousGame')
-    if previousGame
-      previousTeamView = @teamViews["#{previousGame.regionId}-#{previousGame.gameId}-#{previousGame.position}"]
+    previousTeamView = _.find(@teamViews,(guessView) ->
+        guessTeamId = (guessView.model.get('teamId') or guessView.model.get('userPick')?.teamId)
+        guessRegionId = guessView.model.get('regionId')
+        guessNextGameId = guessView.model.get('nextGame')?.gameId
+        regionId is guessRegionId and teamId is guessTeamId and gameId is guessNextGameId
+    )
 
     if previousTeamView
       previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
@@ -208,17 +214,11 @@ define [
     else
       previousTeamViewArr
 
-  checkRemoveFutureWins: (baseView,includeBaseView) ->
+  checkRemoveFutureWins: (baseView) ->
     nextViewArr = @recurNextTeamViews(baseView)
     return if nextViewArr.length is 0
 
-    pendingSaveArr = if includeBaseView then [
-        view:baseView
-        model:
-          userPick:null
-      ]
-    else
-      []
+    pendingSaveArr = []
     previousViewArr = @recurPreviousTeamViews(baseView)
     if previousViewArr.length > 0
       prevTeamId = _.first(previousViewArr).model.get('teamId')

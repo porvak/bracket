@@ -14,7 +14,9 @@
       render: function() {
         var elBracket, scoreView, _ref,
           _this = this;
-        $('.navbar.leaderboard').removeClass('hidden');
+        if (this.model.get('pickStatus') !== "OPEN") {
+          $('.navbar.leaderboard').removeClass('hidden');
+        }
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
           model: new ScoreModel({
@@ -48,6 +50,7 @@
                     if ((_ref4 = game.teams) != null) {
                       _ref4.forEach(function(team) {
                         var finalVS, teamView, teamZero;
+                        if (!team) return;
                         team.regionId = region.regionId;
                         team.roundId = round.roundId;
                         team.gameId = game.gameId;
@@ -115,9 +118,8 @@
       },
       removeTeam: function(startingView) {
         var teamId, _ref;
-        teamId = startingView != null ? (_ref = startingView.model.get('userPick')) != null ? _ref.id : void 0 : void 0;
-        if (!teamId) return;
-        return this.checkRemoveFutureWins(startingView, true);
+        teamId = startingView != null ? (_ref = startingView.model.get('userPick')) != null ? _ref.teamId : void 0 : void 0;
+        if (!teamId) {}
       },
       teamDrop: function(baseView, ui, landingView) {
         var lastLandingView, pendingSaveArr, postError,
@@ -127,15 +129,15 @@
         if (ui) landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
           lastLandingView = _.find(this.dropViews, function(dropView, i) {
-            var eachView;
+            var eachView, _ref, _ref2, _ref3;
             eachView = _this.dropViews[i];
             pendingSaveArr.push({
               view: eachView,
               model: {
                 userPick: {
-                  name: landingView.model.get('name'),
-                  id: landingView.model.get('teamId'),
-                  seed: landingView.model.get('seed'),
+                  name: landingView.model.get('name') || ((_ref = landingView.model.get('userPick')) != null ? _ref.name : void 0),
+                  teamId: landingView.model.get('teamId') || ((_ref2 = landingView.model.get('userPick')) != null ? _ref2.teamId : void 0),
+                  seed: landingView.model.get('seed') || ((_ref3 = landingView.model.get('userPick')) != null ? _ref3.seed : void 0),
                   regionId: landingView.model.get('regionId')
                 },
                 previousGame: {
@@ -147,8 +149,8 @@
             });
             return _.isEqual(baseView, dropView);
           });
+          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView]);
         }
-        return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView]);
       },
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
         var view, _ref, _ref2,
@@ -205,16 +207,22 @@
         }
       },
       recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
-        var previousGame, previousTeamView, _ref;
+        var gameId, previousTeamView, regionId, teamId, _ref, _ref2;
         previousTeamView = null;
         previousTeamViewArr = previousTeamViewArr || [];
-        previousGame = baseView.model.get('previousGame');
-        if (previousGame) {
-          previousTeamView = this.teamViews["" + previousGame.regionId + "-" + previousGame.gameId + "-" + previousGame.position];
-        }
+        regionId = baseView.model.get('regionId');
+        gameId = baseView.model.get('gameId');
+        teamId = baseView.model.get('teamId') || ((_ref = baseView.model.get('userPick')) != null ? _ref.teamId : void 0);
+        previousTeamView = _.find(this.teamViews, function(guessView) {
+          var guessNextGameId, guessRegionId, guessTeamId, _ref2, _ref3;
+          guessTeamId = guessView.model.get('teamId') || ((_ref2 = guessView.model.get('userPick')) != null ? _ref2.teamId : void 0);
+          guessRegionId = guessView.model.get('regionId');
+          guessNextGameId = (_ref3 = guessView.model.get('nextGame')) != null ? _ref3.gameId : void 0;
+          return regionId === guessRegionId && teamId === guessTeamId && gameId === guessNextGameId;
+        });
         if (previousTeamView) {
-          if ((_ref = previousTeamView[actionAttr]) != null) {
-            _ref.apply(previousTeamView, actionAttrArgs);
+          if ((_ref2 = previousTeamView[actionAttr]) != null) {
+            _ref2.apply(previousTeamView, actionAttrArgs);
           }
           previousTeamViewArr.push(previousTeamView);
           return this.recurPreviousTeamViews(previousTeamView, actionAttr, actionAttrArgs, previousTeamViewArr);
@@ -222,18 +230,11 @@
           return previousTeamViewArr;
         }
       },
-      checkRemoveFutureWins: function(baseView, includeBaseView) {
+      checkRemoveFutureWins: function(baseView) {
         var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
         nextViewArr = this.recurNextTeamViews(baseView);
         if (nextViewArr.length === 0) return;
-        pendingSaveArr = includeBaseView ? [
-          {
-            view: baseView,
-            model: {
-              userPick: null
-            }
-          }
-        ] : [];
+        pendingSaveArr = [];
         previousViewArr = this.recurPreviousTeamViews(baseView);
         if (previousViewArr.length > 0) {
           prevTeamId = _.first(previousViewArr).model.get('teamId');

@@ -8,12 +8,12 @@
         return this.render();
       },
       render: function() {
-        var displayTeam, userPick;
+        var displayTeam, userPick, _ref;
         if (!this.model.get('teamId')) {
           userPick = this.model.get('userPick');
-          if (userPick && userPick.id) {
+          if (userPick && userPick.teamId) {
             displayTeam = userPick;
-            displayTeam.teamId = userPick.id;
+            displayTeam.teamId = userPick.teamId;
           } else {
             displayTeam = this.model.toJSON();
           }
@@ -26,13 +26,15 @@
           this.$el = $(this.teamHB(displayTeam));
         }
         if (this.model.get('pickable')) this.$el.addClass('pickable');
-        if (this.model.get('teamId')) this.setupDrag();
+        if (this.model.get('teamId') || ((_ref = this.model.get('userPick')) != null ? _ref.teamId : void 0)) {
+          this.setupDrag();
+        }
         this.setupDrop();
         return this.checkWrongPick();
       },
       checkWrongPick: function() {
         var _ref;
-        if (this.model.get('userPick') && this.model.get('teamId') && this.model.get('teamId') !== ((_ref = this.model.get('userPick')) != null ? _ref.id : void 0)) {
+        if (this.model.get('userPick') && this.model.get('teamId') && this.model.get('teamId') !== ((_ref = this.model.get('userPick')) != null ? _ref.teamId : void 0)) {
           return this.$el.find('.team').addClass('lineThrough');
         }
       },
