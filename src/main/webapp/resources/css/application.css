@@ -369,13 +369,19 @@ header nav a.selected {
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
+  font-size: .85em;
+}
+.region.region-5 .round.round-3 .game .team-0 .team,
+.region.region-5 .round.round-3 .game .team-1 .team {
+  width: auto;
 }
 .region.region-5 .round.round-3 .game .pick_icon {
   display: none;
 }
 .region.region-5 .round.round-3 h3 {
+  color: #1e4164;
   position: relative;
-  top: 1.8em;
+  top: 1.3em;
   font-size: .95em;
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
   background-color: #FFF;
