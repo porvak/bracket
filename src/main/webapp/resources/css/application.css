@@ -387,7 +387,8 @@ header nav a.selected {
   background-color: #FFF;
   margin: 0 auto;
   padding: 5px;
-  width: 50%;
+  width: 55%;
+  font-weight: bold;
 }
 .region.region-5 .round {
   position: absolute;
