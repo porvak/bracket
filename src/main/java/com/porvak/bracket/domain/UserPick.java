@@ -50,15 +50,10 @@ public class UserPick extends AbstractBracket{
      * @param userPickMap
      */
     public UserPick(Map<String, Object> userPickMap) {
+        LinkedHashMap userPick = (LinkedHashMap<String, Object>) userPickMap.get("userPick");
+        String teamId = checkNotNull(userPick.get("teamId").toString());
 
-        Object userPickObj = userPickMap.get("userPick");
-        LinkedHashMap userPick = (LinkedHashMap<String, Object>)userPickObj;
-
-        String name = checkNotNull(userPick.get("name").toString());
-        String teamId = checkNotNull(userPick.get("teamId").toString());  //TODO change this to teamId
-        String seed = checkNotNull(userPick.get("seed").toString());
-
-        int regionId = Integer.valueOf(userPick.get("regionId").toString());
+        int regionId = Integer.valueOf(userPickMap.get("regionId").toString());
         int gameId = Integer.valueOf(checkNotNull(userPickMap.get("gameId")).toString());
         int positionId = Integer.valueOf(checkNotNull(userPickMap.get("position")).toString());
         init(regionId, gameId, teamId, positionId);
