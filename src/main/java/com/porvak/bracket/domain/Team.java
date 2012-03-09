@@ -1,6 +1,10 @@
 package com.porvak.bracket.domain;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class Team extends AbstractBracket{
+
+    @JsonProperty("teamId")
     private String id;
     private String name;
     private int seed;

@@ -55,7 +55,7 @@ public class UserPick extends AbstractBracket{
         LinkedHashMap userPick = (LinkedHashMap<String, Object>)userPickObj;
 
         String name = checkNotNull(userPick.get("name").toString());
-        String teamId = checkNotNull(userPick.get("id").toString());  //TODO change this to teamId
+        String teamId = checkNotNull(userPick.get("teamId").toString());  //TODO change this to teamId
         String seed = checkNotNull(userPick.get("seed").toString());
 
         int regionId = Integer.valueOf(userPick.get("regionId").toString());
