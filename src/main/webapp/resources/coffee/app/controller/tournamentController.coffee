@@ -100,11 +100,27 @@ define [
         view.hideDropZone()
 
   advanceTeam:(landingView) ->
-    return if not landingView?.model.get('teamId')
+    return if not (landingView?.model.get('teamId') or landingView?.model.get('userPick')?.teamId)
     nextGame = landingView?.model.get('nextGame')
     baseView = @teamViews["#{nextGame.regionId}-#{nextGame.gameId}-#{nextGame.position}"]
+    pendingSaveArr = []
     if landingView and baseView
-      @teamDrop(baseView,'',landingView)
+      pendingSaveArr.push(
+        view:baseView
+        model:
+          userPick:
+            name:(landingView.model.get('name') or landingView.model.get('userPick')?.name)
+            teamId:(landingView.model.get('teamId') or landingView.model.get('userPick')?.teamId)
+            seed:(landingView.model.get('seed') or landingView.model.get('userPick')?.seed)
+            regionId:landingView.model.get('regionId')
+          previousGame:
+            regionId: landingView.model.get('regionId'),
+            gameId: landingView.model.get('gameId'),
+            position: landingView.model.get('position')
+      )
+      @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[baseView,baseView.model.get('previousGame')])
+
+
 
   removeTeam:(startingView) ->
     teamId = startingView?.model.get('userPick')?.teamId

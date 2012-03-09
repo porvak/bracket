@@ -106,14 +106,31 @@
         }
       },
       advanceTeam: function(landingView) {
-        var baseView, nextGame;
-        if (!(landingView != null ? landingView.model.get('teamId') : void 0)) {
+        var baseView, nextGame, pendingSaveArr, _ref, _ref2, _ref3, _ref4;
+        if (!((landingView != null ? landingView.model.get('teamId') : void 0) || (landingView != null ? (_ref = landingView.model.get('userPick')) != null ? _ref.teamId : void 0 : void 0))) {
           return;
         }
         nextGame = landingView != null ? landingView.model.get('nextGame') : void 0;
         baseView = this.teamViews["" + nextGame.regionId + "-" + nextGame.gameId + "-" + nextGame.position];
+        pendingSaveArr = [];
         if (landingView && baseView) {
-          return this.teamDrop(baseView, '', landingView);
+          pendingSaveArr.push({
+            view: baseView,
+            model: {
+              userPick: {
+                name: landingView.model.get('name') || ((_ref2 = landingView.model.get('userPick')) != null ? _ref2.name : void 0),
+                teamId: landingView.model.get('teamId') || ((_ref3 = landingView.model.get('userPick')) != null ? _ref3.teamId : void 0),
+                seed: landingView.model.get('seed') || ((_ref4 = landingView.model.get('userPick')) != null ? _ref4.seed : void 0),
+                regionId: landingView.model.get('regionId')
+              },
+              previousGame: {
+                regionId: landingView.model.get('regionId'),
+                gameId: landingView.model.get('gameId'),
+                position: landingView.model.get('position')
+              }
+            }
+          });
+          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [baseView, baseView.model.get('previousGame')]);
         }
       },
       removeTeam: function(startingView) {

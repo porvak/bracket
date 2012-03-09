@@ -13,7 +13,9 @@
           userPick = this.model.get('userPick');
           if (userPick && userPick.teamId) {
             displayTeam = userPick;
+            displayTeam.locator = this.model.get('locator');
             displayTeam.position = this.model.get('position');
+            displayTeam.teamId = userPick.teamId;
           } else {
             displayTeam = this.model.toJSON();
           }

@@ -16,7 +16,9 @@ define [
         userPick = @model.get('userPick')
         if userPick and userPick.teamId
           displayTeam = userPick
+          displayTeam.locator = @model.get('locator')
           displayTeam.position = @model.get('position')
+          displayTeam.teamId = userPick.teamId
         else
           displayTeam = @model.toJSON()
       else
