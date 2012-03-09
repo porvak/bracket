@@ -13,6 +13,7 @@ public final class BracketConstants {
     private static Map<Integer, Integer> gameRoundFinalsMap = Maps.newHashMap();
 
     static {
+        // ROUND 1
         gameRoundMap.put(1, 1);
         gameRoundMap.put(2, 1);
         gameRoundMap.put(3, 1);
@@ -22,21 +23,27 @@ public final class BracketConstants {
         gameRoundMap.put(7, 1);
         gameRoundMap.put(8, 1);
 
+        // ROUND 2
         gameRoundMap.put(9, 2);
         gameRoundMap.put(10, 2);
         gameRoundMap.put(11, 2);
         gameRoundMap.put(12, 2);
 
+        // ROUND 3
         gameRoundMap.put(13, 3);
         gameRoundMap.put(14, 3);
 
-        gameRoundMap.put(15, 3);
+        // ROUND 4
+        gameRoundMap.put(15, 4);
 
+        // FINALS - ROUND 1
         gameRoundFinalsMap.put(1, 1);
         gameRoundFinalsMap.put(2, 1);
 
+        // FINALS - ROUND 2
         gameRoundFinalsMap.put(3, 2);
 
+        // FINALS - ROUND 3
         gameRoundFinalsMap.put(4, 3);
     }
     
