@@ -117,9 +117,24 @@
         }
       },
       removeTeam: function(startingView) {
-        var teamId, _ref;
+        var deleteCallbackArr, nextTeamViewArr, teamId, _ref;
         teamId = startingView != null ? (_ref = startingView.model.get('userPick')) != null ? _ref.teamId : void 0 : void 0;
-        if (!teamId) {}
+        if (!teamId) return;
+        deleteCallbackArr = [
+          {
+            view: startingView
+          }
+        ];
+        nextTeamViewArr = this.recurNextTeamViews(startingView);
+        nextTeamViewArr.forEach(function(view) {
+          var _ref2;
+          if (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === teamId) {
+            return deleteCallbackArr.push({
+              view: view
+            });
+          }
+        });
+        return this.chainDeleteCallbacks(deleteCallbackArr);
       },
       teamDrop: function(baseView, ui, landingView) {
         var lastLandingView, pendingSaveArr, postError,
@@ -149,7 +164,7 @@
             });
             return _.isEqual(baseView, dropView);
           });
-          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView]);
+          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
         }
       },
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
@@ -183,7 +198,10 @@
         var view, _ref;
         view = (_ref = _.first(pendingDeleteArr)) != null ? _ref.view : void 0;
         return pendingDeleteArr.forEach(function(deleteObj) {
-          return deleteObj.view.model.set(deleteObj.model);
+          return deleteObj.view.model.set({
+            userPick: null,
+            previousGame: null
+          });
         });
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
@@ -206,29 +224,42 @@
           return nextTeamViewArr;
         }
       },
-      recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
-        return [];
+      recurPreviousTeamViews: function(previousGame, actionAttr, actionAttrArgs, previousTeamViewArr) {
+        var previousTeamView, _ref;
+        previousTeamView = null;
+        previousTeamViewArr = previousTeamViewArr || [];
+        if (previousGame) {
+          previousTeamView = this.teamViews["" + previousGame.regionId + "-" + previousGame.gameId + "-" + previousGame.position];
+        }
+        if (previousTeamView) {
+          if ((_ref = previousTeamView[actionAttr]) != null) {
+            _ref.apply(previousTeamView, actionAttrArgs);
+          }
+          previousTeamViewArr.push(previousTeamView);
+          return this.recurPreviousTeamViews(previousTeamView.model.get('previousGame'), actionAttr, actionAttrArgs, previousTeamViewArr);
+        } else {
+          return previousTeamViewArr;
+        }
       },
-      checkRemoveFutureWins: function(baseView) {
-        var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;
+      checkRemoveFutureWins: function(baseView, previousGame) {
+        var firstView, nextViewArr, pendingDeleteArr, prevTeamId, previousViewArr, _ref;
         nextViewArr = this.recurNextTeamViews(baseView);
         if (nextViewArr.length === 0) return;
-        pendingSaveArr = [];
-        previousViewArr = this.recurPreviousTeamViews(baseView);
+        pendingDeleteArr = [];
+        previousViewArr = this.recurPreviousTeamViews(previousGame);
         if (previousViewArr.length > 0) {
-          prevTeamId = _.first(previousViewArr).model.get('teamId');
+          firstView = _.first(previousViewArr);
+          prevTeamId = ((_ref = firstView.model.get('userPick')) != null ? _ref.teamId : void 0) || firstView.model.get('teamId');
           nextViewArr.forEach(function(view) {
-            if (view.model.get('teamId') === prevTeamId) {
-              return pendingSaveArr.push({
-                view: view,
-                model: {
-                  userPick: null
-                }
+            var _ref2;
+            if (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === prevTeamId || view.model.get('teamId') === prevTeamId) {
+              return pendingDeleteArr.push({
+                view: view
               });
             }
           });
-          if (pendingSaveArr.length > 0) {
-            return this.chainDeleteCallbacks(pendingSaveArr);
+          if (pendingDeleteArr.length > 0) {
+            return this.chainDeleteCallbacks(pendingDeleteArr);
           }
         }
       },

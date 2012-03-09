@@ -109,7 +109,20 @@ define [
   removeTeam:(startingView) ->
     teamId = startingView?.model.get('userPick')?.teamId
     return if not teamId
-    #TODO
+
+    deleteCallbackArr = [
+      view:startingView
+    ]
+    nextTeamViewArr = @recurNextTeamViews(startingView)
+
+    nextTeamViewArr.forEach((view) ->
+      if view.model.get('userPick')?.teamId is teamId
+        deleteCallbackArr.push(
+          view:view
+        )
+    )
+
+    @chainDeleteCallbacks(deleteCallbackArr)
 
 
   teamDrop: (baseView,ui,landingView) ->
@@ -139,7 +152,7 @@ define [
 
         _.isEqual baseView, dropView
 
-      @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView])
+      @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView,baseView.model.get('previousGame')])
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
@@ -173,7 +186,10 @@ define [
     view = _.first(pendingDeleteArr)?.view
 
     pendingDeleteArr.forEach((deleteObj) ->
-        deleteObj.view.model.set(deleteObj.model)
+        deleteObj.view.model.set(
+          userPick:null
+          previousGame:null
+        )
     )
 
   recurNextTeamViews: (baseView,actionAttr,actionAttrArgs,nextTeamViewArr) ->
@@ -193,45 +209,38 @@ define [
     else
       nextTeamViewArr
 
-  recurPreviousTeamViews: (baseView,actionAttr,actionAttrArgs,previousTeamViewArr) ->
-#    previousTeamView = null
-#    previousTeamViewArr = previousTeamViewArr or []
-#    regionId = baseView.model.get('regionId')
-#    gameId = baseView.model.get('gameId')
-#    teamId = (baseView.model.get('teamId') or baseView.model.get('userPick')?.teamId)
-#
-#    previousTeamView = _.find(@teamViews,(guessView) ->
-#        guessTeamId = (guessView.model.get('teamId') or guessView.model.get('userPick')?.teamId)
-#        guessRegionId = guessView.model.get('regionId')
-#        guessNextGameId = guessView.model.get('nextGame')?.gameId
-#        regionId is guessRegionId and teamId is guessTeamId and gameId is guessNextGameId
-#    )
-#
-#    if previousTeamView
-#      previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
-#      previousTeamViewArr.push(previousTeamView)
-#      @recurPreviousTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
-#    else
-#      previousTeamViewArr
-    return []
+  recurPreviousTeamViews: (previousGame,actionAttr,actionAttrArgs,previousTeamViewArr) ->
+    previousTeamView = null
+    previousTeamViewArr = previousTeamViewArr or []
 
-  checkRemoveFutureWins: (baseView) ->
+    if previousGame
+      previousTeamView = @teamViews["#{previousGame.regionId}-#{previousGame.gameId}-#{previousGame.position}"]
+
+    if previousTeamView
+      previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
+      previousTeamViewArr.push(previousTeamView)
+      @recurPreviousTeamViews(previousTeamView.model.get('previousGame'),actionAttr,actionAttrArgs,previousTeamViewArr)
+    else
+      previousTeamViewArr
+
+  checkRemoveFutureWins: (baseView,previousGame) ->
     nextViewArr = @recurNextTeamViews(baseView)
     return if nextViewArr.length is 0
 
-    pendingSaveArr = []
-    previousViewArr = @recurPreviousTeamViews(baseView)
+    pendingDeleteArr = []
+    previousViewArr = @recurPreviousTeamViews(previousGame)
     if previousViewArr.length > 0
-      prevTeamId = _.first(previousViewArr).model.get('teamId')
+      firstView = _.first(previousViewArr)
+
+      prevTeamId = (firstView.model.get('userPick')?.teamId or firstView.model.get('teamId'))
       nextViewArr.forEach((view) ->
-          if view.model.get('teamId') is prevTeamId
-            pendingSaveArr.push
+          if (view.model.get('userPick')?.teamId is prevTeamId or view.model.get('teamId') is prevTeamId)
+            pendingDeleteArr.push(
               view:view
-              model:
-                userPick:null
+            )
       )
 
-      @chainDeleteCallbacks(pendingSaveArr) if pendingSaveArr.length > 0
+      @chainDeleteCallbacks(pendingDeleteArr) if pendingDeleteArr.length > 0
 
   validDropZone: (baseView,landingView) ->
     return false if !landingView
