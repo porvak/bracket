@@ -27,7 +27,7 @@ define [
       $('.navbar.leaderboard').removeClass('hidden')
       $('#scoreboard').removeClass('hidden')
 
-    console.log("GET: http://#{window.location.host + @model.url()}\n\n")
+#    console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
     scoreView = new ScoreView(
       model:new ScoreModel(tieBreaker:@model.get('tieBreaker'))
@@ -176,7 +176,7 @@ define [
       {
         wait:true
         success: (model,response) =>
-          console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+#          console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
           view.$el.removeClass('saving')
           if pendingSaveArr.length > 1 #if there are more views
             @chainSaveCallbacks(_.last(pendingSaveArr,pendingSaveArr.length-1),callback,callbackArgs) #save the rest of the views
@@ -189,8 +189,8 @@ define [
           )
           if response.status is 404
             alert 'Please sign in using twitter.'
-          if response.status is 500
-            console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+#          if response.status is 500
+#            console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
       }
     )
 

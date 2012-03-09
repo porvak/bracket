@@ -18,7 +18,6 @@
           $('.navbar.leaderboard').removeClass('hidden');
           $('#scoreboard').removeClass('hidden');
         }
-        console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
           model: new ScoreModel({
             tieBreaker: this.model.get('tieBreaker')
@@ -186,7 +185,6 @@
         return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
           wait: true,
           success: function(model, response) {
-            console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
             view.$el.removeClass('saving');
             if (pendingSaveArr.length > 1) {
               return _this.chainSaveCallbacks(_.last(pendingSaveArr, pendingSaveArr.length - 1), callback, callbackArgs);
@@ -198,9 +196,8 @@
             pendingSaveArr.forEach(function(viewObj) {
               return viewObj.view.$el.removeClass('saving');
             });
-            if (response.status === 404) alert('Please sign in using twitter.');
-            if (response.status === 500) {
-              return console.log("POST ERROR: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+            if (response.status === 404) {
+              return alert('Please sign in using twitter.');
             }
           }
         }) : void 0;

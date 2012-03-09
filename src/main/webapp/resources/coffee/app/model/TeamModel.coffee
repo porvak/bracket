@@ -13,11 +13,11 @@ define [
         url: url,
         type:"DELETE"
         success: (model,response) ->
-          console.log("DELETE: http://#{window.location.host + "#{url}"}\n\n")
+#          console.log("DELETE: http://#{window.location.host + "#{url}"}\n\n")
           cfg.success?(response)
 
         error:(model,response) =>
-          console.log("DELETE ERROR: http://#{window.location.host + "#{url}"}\n\n")
+#          console.log("DELETE ERROR: http://#{window.location.host + "#{url}"}\n\n")
           cfg.error?(response)
       })
 

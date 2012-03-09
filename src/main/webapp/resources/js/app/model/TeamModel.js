@@ -13,11 +13,9 @@
           url: url,
           type: "DELETE",
           success: function(model, response) {
-            console.log("DELETE: http://" + (window.location.host + ("" + url)) + "\n\n");
             return typeof cfg.success === "function" ? cfg.success(response) : void 0;
           },
           error: function(model, response) {
-            console.log("DELETE ERROR: http://" + (window.location.host + ("" + url)) + "\n\n");
             return typeof cfg.error === "function" ? cfg.error(response) : void 0;
           }
         });

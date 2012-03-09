@@ -37,7 +37,6 @@
             }, {
               wait: true,
               success: function(model, response) {
-                console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
                 _this.$el.removeClass('saving');
                 _this.score = score;
                 _this.saving = false;
@@ -46,10 +45,7 @@
               error: function(model, response) {
                 _this.$el.removeClass('saving');
                 if (response.status === 404) {
-                  alert('Please sign in using twitter.');
-                }
-                if (response.status === 500) {
-                  return console.log("POST ERROR: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+                  return alert('Please sign in using twitter.');
                 }
               }
             });

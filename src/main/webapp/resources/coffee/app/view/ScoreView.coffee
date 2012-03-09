@@ -40,7 +40,7 @@ define [
             ,
               wait:true
               success: (model,response) =>
-                console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+#                console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
                 @$el.removeClass('saving')
                 @score = score
                 @saving = false
@@ -50,8 +50,8 @@ define [
                 @$el.removeClass('saving')
                 if response.status is 404
                   alert 'Please sign in using twitter.'
-                if response.status is 500
-                  console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+#                if response.status is 500
+#                  console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
           )
       else
         @disableEdit()
