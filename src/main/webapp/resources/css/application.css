@@ -339,11 +339,12 @@ header nav a.selected {
   display: none;
 }
 .region.region-5 .round.round-2 .finalVS {
+  font-weight: bold;
+  font-family: 'Blokletters-Viltstift', Arial, sans-serif;
   top: 1.0em;
   position: absolute;
   left: 47.5%;
   width: 5%;
-  font-weight: bold;
 }
 .region.region-5 .round.round-3 {
   top: 50%;
