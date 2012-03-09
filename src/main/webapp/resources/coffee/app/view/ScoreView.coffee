@@ -30,23 +30,33 @@ define [
 
     submitScore: ->
       score = parseInt(@$el.find('input').val(),10)
-      if score >= 0
-        @$el.addClass('saving')
-        @model.save(
-            tieBreaker:score
-          ,
-            wait:true
-            success: (model,response) =>
-              console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-              @$el.removeClass('saving')
-            error: (model, response) =>
-              @$el.removeClass('saving')
-              if response.status is 404
-                alert 'Please sign in using twitter.'
-              if response.status is 500
-                console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-        )
+
+      if score isnt @score
+        if score >= 0 and not @saving
+          @$el.addClass('saving')
+          @saving = true
+          @model.save(
+              tieBreaker:score
+            ,
+              wait:true
+              success: (model,response) =>
+                console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+                @$el.removeClass('saving')
+                @score = score
+                @saving = false
+                @disableEdit()
+
+              error: (model, response) =>
+                @$el.removeClass('saving')
+                if response.status is 404
+                  alert 'Please sign in using twitter.'
+                if response.status is 500
+                  console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+          )
+      else
         @disableEdit()
+
+
 
 
     enableEdit: (e) ->

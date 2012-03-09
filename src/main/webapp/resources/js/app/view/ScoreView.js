@@ -28,24 +28,33 @@
         var score,
           _this = this;
         score = parseInt(this.$el.find('input').val(), 10);
-        if (score >= 0) {
-          this.$el.addClass('saving');
-          this.model.save({
-            tieBreaker: score
-          }, {
-            wait: true,
-            success: function(model, response) {
-              console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
-              return _this.$el.removeClass('saving');
-            },
-            error: function(model, response) {
-              _this.$el.removeClass('saving');
-              if (response.status === 404) alert('Please sign in using twitter.');
-              if (response.status === 500) {
-                return console.log("POST ERROR: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+        if (score !== this.score) {
+          if (score >= 0 && !this.saving) {
+            this.$el.addClass('saving');
+            this.saving = true;
+            return this.model.save({
+              tieBreaker: score
+            }, {
+              wait: true,
+              success: function(model, response) {
+                console.log("POST: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+                _this.$el.removeClass('saving');
+                _this.score = score;
+                _this.saving = false;
+                return _this.disableEdit();
+              },
+              error: function(model, response) {
+                _this.$el.removeClass('saving');
+                if (response.status === 404) {
+                  alert('Please sign in using twitter.');
+                }
+                if (response.status === 500) {
+                  return console.log("POST ERROR: http://" + (window.location.host + model.url()) + "\nJSON:" + (JSON.stringify(model.toJSON())) + "\n\n");
+                }
               }
-            }
-          });
+            });
+          }
+        } else {
           return this.disableEdit();
         }
       },
