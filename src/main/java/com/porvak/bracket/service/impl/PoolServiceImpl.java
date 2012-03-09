@@ -22,12 +22,16 @@ public class PoolServiceImpl implements PoolService {
     public void addUserPick(String userId, String poolId, UserPick userPick){
         Assert.noNullElements(new Object[]{userId, poolId, userPick}, String.format("No null elements allowed for " +
                 "userId:[%s], poolId:[%s], userPick:[%s]", userId, poolId, userPick));
-//TODO: FIX THIS
         userPickRepository.updateUserPick(userId, poolId, userPick);
     }
 
     @Override
     public void addTieBreaker(String userId, String poolId, int tieBreaker) {
         userPickRepository.addTieBreaker(userId, poolId, tieBreaker);
+    }
+
+    @Override
+    public void removeUserPick(String userId, String poolId, int regionId, int gameId, int position) {
+          userPickRepository.removeUserPick(userId, poolId, regionId, gameId, position);
     }
 }

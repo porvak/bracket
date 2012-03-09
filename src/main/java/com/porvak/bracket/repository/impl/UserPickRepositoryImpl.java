@@ -121,4 +121,15 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         Query findUserTournament = query(where("userId").is(userId).and("poolId").is(poolId));
         WriteResult result = mongoTemplate.updateFirst(findUserTournament, new Update().set("tieBreaker", tieBreaker), UserTournament.class);
     }
+
+    @Override
+    public void removeUserPick(String userId, String poolId, int regionId, int gameId, int position) {
+        UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
+        Query basicQuery = query(where("_id").is(userTournament.getId()));
+
+        int roundId = getDbRoundIdForGame(gameId, regionId);
+        String userPickLocation = String.format("regions.%s.rounds.%s.games.%s.teams.%s.userPick", regionId, roundId,
+                getDbGameId(roundId, gameId, regionId), position);
+        WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().unset(userPickLocation), UserTournament.class);
+    }
 }
