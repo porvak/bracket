@@ -27,7 +27,10 @@ define [
       else
         @$el = $(@teamHB(displayTeam))
 
-      @$el.addClass 'pickable' if @model.get 'pickable'
+      if @model.get('teamId') or @model.get('userPick')?.teamId
+        @$el.addClass 'pickable'
+      else
+        @$el.removeClass 'pickable'
       @setupDrag() if (@model.get('teamId') or @model.get('userPick')?.teamId)
       @setupDrop()
       @checkWrongPick()

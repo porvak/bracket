@@ -8,7 +8,7 @@
         return this.render();
       },
       render: function() {
-        var displayTeam, userPick, _ref;
+        var displayTeam, userPick, _ref, _ref2;
         if (!this.model.get('teamId')) {
           userPick = this.model.get('userPick');
           if (userPick && userPick.teamId) {
@@ -25,8 +25,12 @@
         } else {
           this.$el = $(this.teamHB(displayTeam));
         }
-        if (this.model.get('pickable')) this.$el.addClass('pickable');
         if (this.model.get('teamId') || ((_ref = this.model.get('userPick')) != null ? _ref.teamId : void 0)) {
+          this.$el.addClass('pickable');
+        } else {
+          this.$el.removeClass('pickable');
+        }
+        if (this.model.get('teamId') || ((_ref2 = this.model.get('userPick')) != null ? _ref2.teamId : void 0)) {
           this.setupDrag();
         }
         this.setupDrop();

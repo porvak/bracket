@@ -7,16 +7,18 @@ define [
        "#{jsonUri.root}/api/pool/#{jsonUri.poolId}/user/pick"
 
     deletePick: (cfg) ->
+      url = "#{jsonUri.root}/api/pool/#{jsonUri.poolId}/region/#{@get('regionId')}/game/#{@get('gameId')}/userpick/#{@get('position')}?"
+
       $.ajax({
-        url: "#{jsonUri.root}/api/pool/#{jsonUri.poolId}/region/#{@get('regionId')}/game/#{@get('gameId')}/userpick/#{@get('position')}?",
+        url: url,
         type:"DELETE"
         success: (model,response) ->
-          cfg.success?()
+          console.log("DELETE: http://#{window.location.host + "#{url}"}\n\n")
+          cfg.success?(response)
 
         error:(model,response) =>
-
-          cfg.error?()
-
+          console.log("DELETE ERROR: http://#{window.location.host + "#{url}"}\n\n")
+          cfg.error?(response)
       })
 
 
