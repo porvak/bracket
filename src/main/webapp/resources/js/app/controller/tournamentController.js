@@ -196,6 +196,10 @@
         return view != null ? view.model.deletePick({
           success: function() {
             view.$el.removeClass('saving');
+            view.model.set({
+              userPick: null,
+              previousGame: null
+            });
             if (pendingDeleteArr.length > 1) {
               return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
             }

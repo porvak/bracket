@@ -185,6 +185,10 @@ define [
     view?.model.deletePick({
       success: () =>
         view.$el.removeClass('saving')
+        view.model.set(
+          userPick:null
+          previousGame:null
+        )
         if pendingDeleteArr.length > 1 #if there are more views
           @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
 
