@@ -400,11 +400,12 @@ header nav a.selected {
 }
 #combined {
   position: relative;
-  top: 4.2em;
+  top: 1.6em;
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
   background-color: #FFF;
   width: 60%;
   margin: 0 auto;
+  padding: .2em;
 }
 #combined label {
   font-size: .75em;
