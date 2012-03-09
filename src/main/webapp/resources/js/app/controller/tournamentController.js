@@ -16,6 +16,7 @@
           _this = this;
         if (this.model.get('pickStatus') !== "OPEN") {
           $('.navbar.leaderboard').removeClass('hidden');
+          $('#scoreboard').removeClass('hidden');
         }
         console.log("GET: http://" + (window.location.host + this.model.url()) + "\n\n");
         scoreView = new ScoreView({
@@ -50,7 +51,6 @@
                     if ((_ref4 = game.teams) != null) {
                       _ref4.forEach(function(team) {
                         var finalVS, teamView, teamZero;
-                        if (!team) return;
                         team.regionId = region.regionId;
                         team.roundId = round.roundId;
                         team.gameId = game.gameId;
@@ -207,28 +207,7 @@
         }
       },
       recurPreviousTeamViews: function(baseView, actionAttr, actionAttrArgs, previousTeamViewArr) {
-        var gameId, previousTeamView, regionId, teamId, _ref, _ref2;
-        previousTeamView = null;
-        previousTeamViewArr = previousTeamViewArr || [];
-        regionId = baseView.model.get('regionId');
-        gameId = baseView.model.get('gameId');
-        teamId = baseView.model.get('teamId') || ((_ref = baseView.model.get('userPick')) != null ? _ref.teamId : void 0);
-        previousTeamView = _.find(this.teamViews, function(guessView) {
-          var guessNextGameId, guessRegionId, guessTeamId, _ref2, _ref3;
-          guessTeamId = guessView.model.get('teamId') || ((_ref2 = guessView.model.get('userPick')) != null ? _ref2.teamId : void 0);
-          guessRegionId = guessView.model.get('regionId');
-          guessNextGameId = (_ref3 = guessView.model.get('nextGame')) != null ? _ref3.gameId : void 0;
-          return regionId === guessRegionId && teamId === guessTeamId && gameId === guessNextGameId;
-        });
-        if (previousTeamView) {
-          if ((_ref2 = previousTeamView[actionAttr]) != null) {
-            _ref2.apply(previousTeamView, actionAttrArgs);
-          }
-          previousTeamViewArr.push(previousTeamView);
-          return this.recurPreviousTeamViews(previousTeamView, actionAttr, actionAttrArgs, previousTeamViewArr);
-        } else {
-          return previousTeamViewArr;
-        }
+        return [];
       },
       checkRemoveFutureWins: function(baseView) {
         var nextViewArr, pendingSaveArr, prevTeamId, previousViewArr;

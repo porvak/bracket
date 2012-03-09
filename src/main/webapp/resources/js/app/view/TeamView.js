@@ -13,7 +13,7 @@
           userPick = this.model.get('userPick');
           if (userPick && userPick.teamId) {
             displayTeam = userPick;
-            displayTeam.teamId = userPick.teamId;
+            displayTeam.position = this.model.get('position');
           } else {
             displayTeam = this.model.toJSON();
           }

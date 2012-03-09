@@ -61,7 +61,7 @@
     <div id="leaderBoard"></div>
     <div id="main" role="main">
         <div id="bracketNode">
-            <div id="scoreboard">
+            <div id="scoreboard" class="hidden">
                 <h2>MY SCOREBOARD</h2>
                     <ul class="stats">
                         <li>

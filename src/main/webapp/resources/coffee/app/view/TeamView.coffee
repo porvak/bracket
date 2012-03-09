@@ -14,9 +14,9 @@ define [
     render: ->
       if not @model.get('teamId')
         userPick = @model.get('userPick')
-        if userPick and userPick.teamId   #TODO Change to teamId
+        if userPick and userPick.teamId
           displayTeam = userPick
-          displayTeam.teamId = userPick.teamId  #TODO Change to teamId
+          displayTeam.position = @model.get('position')
         else
           displayTeam = @model.toJSON()
       else

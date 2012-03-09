@@ -25,6 +25,7 @@ define [
   render: ->
     if @model.get('pickStatus') isnt "OPEN"
       $('.navbar.leaderboard').removeClass('hidden')
+      $('#scoreboard').removeClass('hidden')
 
     console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
@@ -52,7 +53,6 @@ define [
           game.finalVS = true if region.regionId is 5 and round.roundId is 2 and game.gameId is 3
           elGame = $(@gameHB(game))
           game.teams?.forEach (team) =>
-            return if not team
             team.regionId = region.regionId
             team.roundId = round.roundId
             team.gameId = game.gameId
@@ -194,25 +194,26 @@ define [
       nextTeamViewArr
 
   recurPreviousTeamViews: (baseView,actionAttr,actionAttrArgs,previousTeamViewArr) ->
-    previousTeamView = null
-    previousTeamViewArr = previousTeamViewArr or []
-    regionId = baseView.model.get('regionId')
-    gameId = baseView.model.get('gameId')
-    teamId = (baseView.model.get('teamId') or baseView.model.get('userPick')?.teamId)
-
-    previousTeamView = _.find(@teamViews,(guessView) ->
-        guessTeamId = (guessView.model.get('teamId') or guessView.model.get('userPick')?.teamId)
-        guessRegionId = guessView.model.get('regionId')
-        guessNextGameId = guessView.model.get('nextGame')?.gameId
-        regionId is guessRegionId and teamId is guessTeamId and gameId is guessNextGameId
-    )
-
-    if previousTeamView
-      previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
-      previousTeamViewArr.push(previousTeamView)
-      @recurPreviousTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
-    else
-      previousTeamViewArr
+#    previousTeamView = null
+#    previousTeamViewArr = previousTeamViewArr or []
+#    regionId = baseView.model.get('regionId')
+#    gameId = baseView.model.get('gameId')
+#    teamId = (baseView.model.get('teamId') or baseView.model.get('userPick')?.teamId)
+#
+#    previousTeamView = _.find(@teamViews,(guessView) ->
+#        guessTeamId = (guessView.model.get('teamId') or guessView.model.get('userPick')?.teamId)
+#        guessRegionId = guessView.model.get('regionId')
+#        guessNextGameId = guessView.model.get('nextGame')?.gameId
+#        regionId is guessRegionId and teamId is guessTeamId and gameId is guessNextGameId
+#    )
+#
+#    if previousTeamView
+#      previousTeamView[actionAttr]?.apply(previousTeamView, actionAttrArgs)
+#      previousTeamViewArr.push(previousTeamView)
+#      @recurPreviousTeamViews(previousTeamView,actionAttr,actionAttrArgs,previousTeamViewArr)
+#    else
+#      previousTeamViewArr
+    return []
 
   checkRemoveFutureWins: (baseView) ->
     nextViewArr = @recurNextTeamViews(baseView)
