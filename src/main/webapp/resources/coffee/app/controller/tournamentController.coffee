@@ -145,6 +145,7 @@ define [
       landingView = @teamViews["#{ui.draggable.data('locator')}"]
 
     if @validDropZone(baseView,landingView)
+      previousGameView = landingView
       lastLandingView = _.find @dropViews, (dropView,i) =>
         eachView = @dropViews[i]
 
@@ -157,10 +158,12 @@ define [
               seed:(landingView.model.get('seed') or landingView.model.get('userPick')?.seed)
               regionId:landingView.model.get('regionId')
             previousGame:
-              regionId: landingView.model.get('regionId'),
-              gameId: landingView.model.get('gameId'),
-              position: landingView.model.get('position')
+              regionId: previousGameView.model.get('regionId'),
+              gameId: previousGameView.model.get('gameId'),
+              position: previousGameView.model.get('position')
         )
+
+        previousGameView = eachView
 
         _.isEqual baseView, dropView
 

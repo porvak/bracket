@@ -147,12 +147,13 @@
         return this.chainDeleteCallbacks(deleteCallbackArr);
       },
       teamDrop: function(baseView, ui, landingView) {
-        var lastLandingView, pendingSaveArr, postError,
+        var lastLandingView, pendingSaveArr, postError, previousGameView,
           _this = this;
         postError = false;
         pendingSaveArr = [];
         if (ui) landingView = this.teamViews["" + (ui.draggable.data('locator'))];
         if (this.validDropZone(baseView, landingView)) {
+          previousGameView = landingView;
           lastLandingView = _.find(this.dropViews, function(dropView, i) {
             var eachView, _ref, _ref2, _ref3;
             eachView = _this.dropViews[i];
@@ -166,12 +167,13 @@
                   regionId: landingView.model.get('regionId')
                 },
                 previousGame: {
-                  regionId: landingView.model.get('regionId'),
-                  gameId: landingView.model.get('gameId'),
-                  position: landingView.model.get('position')
+                  regionId: previousGameView.model.get('regionId'),
+                  gameId: previousGameView.model.get('gameId'),
+                  position: previousGameView.model.get('position')
                 }
               }
             });
+            previousGameView = eachView;
             return _.isEqual(baseView, dropView);
           });
           return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
