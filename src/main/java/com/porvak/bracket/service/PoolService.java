@@ -1,9 +1,9 @@
 package com.porvak.bracket.service;
 
-import com.porvak.bracket.domain.UserPick;
+import java.util.Map;
 
 public interface PoolService {
-    void addUserPick(String userId, String poolId, UserPick userPick);
+    void addUserPick(String userId, String poolId, Map<String, Object> userPick);
 
     void addTieBreaker(String userId, String poolId, int tieBreaker);
 

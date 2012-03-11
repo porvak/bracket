@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.porvak.bracket.domain.GamePointer;
 import com.porvak.bracket.domain.Team;
 import com.porvak.bracket.domain.UserPick;
 import com.porvak.bracket.domain.user.UserTournament;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.*;
@@ -35,6 +36,9 @@ import static org.springframework.data.mongodb.core.query.Query.*;
 public class UserPickRepositoryImpl implements UserPickRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPickRepositoryImpl.class);
+    public static final String USER_PICK_LOCATION = "regions.%s.rounds.%s.games.%s.teams.%s.userPick";
+    public static final String PREVIOUS_GAME_LOCATION = "regions.%s.rounds.%s.games.%s.teams.%s.previousGame.position";
+    public static final String USER_PICKED_GAME_WINNER_LOCATION = "regions.%s.rounds.%s.games.%s.userPickedGameWinner";
 
     @Inject
     private MongoTemplate mongoTemplate;
@@ -73,47 +77,15 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         //Pull users tournament record
         UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
         
-        //Find game that user has picked
-//        GameTeam userGamePick = userTournament.findTeamByUserPick(userPick);
-//        if(userGamePick.doesUserPickExist()){
-//            removeOldPick(userTournament, userPick);
-//        }
-//        userGamePick.setUserPick(teamByIdMap.get(userPick.getTeamId()));
-
-        //Check if user has made a pick before, if not create the UserPicks object.
-//        UserPicks userPicks = userPicksRepository.findByUserIdAndPoolId(userId, poolId);
-//        if(userPicks == null || !userPicks.hasUserPicks()){
-//            insertUserPicks(userId, poolId, userPick);
-//            return;
-//        }
-
-//        removeOldPick(userId, poolId, userPick);
-        DBObject dbObject = new BasicDBObject();
-
         Team team = teamByIdMap.get(userPick.getTeamId());
+        DBObject dbObject = new BasicDBObject();
         mongoTemplate.getConverter().write(team, dbObject);
 
         Query basicQuery = query(where("_id").is(userTournament.getId()));
         int roundId = getDbRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
-        String userPickLocation = String.format("regions.%s.rounds.%s.games.%s.teams.%s.userPick", userPick.getRegionId(), roundId,
+        String userPickLocation = String.format(USER_PICK_LOCATION, userPick.getRegionId(), roundId,
                 getDbGameId(roundId, userPick.getGameId(), userPick.getRegionId()), userPick.getPositionId());
-
-        String previousGameLocation = String.format("regions.%s.rounds.%s.games.%s.teams.%s.userPick", userPick.getRegionId(), roundId,
-                getDbGameId(roundId, userPick.getGameId(), userPick.getRegionId()), userPick.getPositionId());
-
         WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().set(userPickLocation, dbObject), UserTournament.class);
-//        addGameWinnerForPreviousGame(userTournament, userId, poolId, userPick, dbObject);
-    }
-
-    private void removeOldPick(UserTournament userTournament, UserPick userPick) {
-        DBObject pickToDelete = new BasicDBObject(userPick.getKey());
-//TODO: FIX THIS
-        Query detailedQuery = query(where("_id").is(userTournament.getId())
-                .and("regions.regionId").is(userPick.getRegionId()));
-        List<Map> result = mongoTemplate.find(detailedQuery, Map.class);
-//                .and("regions.rounds.roundId").is(userPick.get)
-//                .and("picks.gameId").is(userPick.getGameId()));
-//        mongoTemplate.updateFirst(detailedQuery, new Update().pull("picks", pickToDelete), UserPicks.class);
     }
 
     @Override
@@ -127,9 +99,60 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
         Query basicQuery = query(where("_id").is(userTournament.getId()));
 
-        int roundId = getDbRoundIdForGame(gameId, regionId);
-        String userPickLocation = String.format("regions.%s.rounds.%s.games.%s.teams.%s.userPick", regionId, roundId,
-                getDbGameId(roundId, gameId, regionId), position);
+        int dbRoundId = getDbRoundIdForGame(gameId, regionId);
+        int dbGameId = getDbGameId(dbRoundId, gameId, regionId);
+        String userPickLocation = String.format(USER_PICK_LOCATION, regionId, dbRoundId, dbGameId, position);
+        LOGGER.debug("Removing userPickLocation [{}]", userPickLocation);
+
         WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().unset(userPickLocation), UserTournament.class);
+
+        // Also, remove corresponding userPickedGameWinner
+        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(dbRoundId).findGameById(dbGameId).getTeamByPosition(position).getPreviousGame();
+
+        int previousDbRoundId = getDbRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
+        int previousDbGameId = getDbGameId(previousDbRoundId, previousGame.getGameId(), previousGame.getRegionId());
+
+        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousDbRoundId, previousDbGameId);
+        LOGGER.debug("Removing userPickedGameWinnerLocation [{}]", userPickGameWinnerLocation);
+        result = mongoTemplate.updateFirst(basicQuery, new Update().unset(userPickGameWinnerLocation), UserTournament.class);
+    }
+
+    @Override
+    public void updatePreviousGame(String userId, String poolId, Map<String, Object> userPickMap) {
+        UserPick userPick = new UserPick(userPickMap);
+        LinkedHashMap previousGameMap = (LinkedHashMap<String, Object>) userPickMap.get("previousGame");
+        int previousGamePosition = Integer.valueOf(checkNotNull(previousGameMap.get("position")).toString());
+
+        int roundId = getDbRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
+        String previousGameLocation = String.format(PREVIOUS_GAME_LOCATION, userPick.getRegionId(), roundId,
+                getDbGameId(roundId, userPick.getGameId(), userPick.getRegionId()), userPick.getPositionId());
+
+        UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
+        Query basicQuery = query(where("_id").is(userTournament.getId()));
+        WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().set(previousGameLocation, previousGamePosition), UserTournament.class);
+    }
+
+    @Override
+    public void addGameWinner(String userId, String poolId, Map<String, Object> userPickMap) {
+        UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
+        int regionId = Integer.valueOf(checkNotNull(userPickMap.get("regionId")).toString());
+        int gameId = Integer.valueOf(checkNotNull(userPickMap.get("gameId")).toString());
+        int position = Integer.valueOf(checkNotNull(userPickMap.get("position")).toString());
+        int dbRoundId = getDbRoundIdForGame(gameId, regionId);
+        int dbGameId = getDbGameId(dbRoundId, gameId, regionId);
+        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(dbRoundId).findGameById(dbGameId).getTeamByPosition(position).getPreviousGame();
+
+        int previousDbRoundId = getDbRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
+        int previousDbGameId = getDbGameId(previousDbRoundId, previousGame.getGameId(), previousGame.getRegionId());
+
+        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousDbRoundId, previousDbGameId);
+
+        Team team = teamByIdMap.get(new UserPick(userPickMap).getTeamId());
+        DBObject dbObject = new BasicDBObject();
+        mongoTemplate.getConverter().write(team, dbObject);
+
+        Query basicQuery = query(where("_id").is(userTournament.getId()));
+        LOGGER.debug("Going to add [{}] to [{}] with region: [{}], gameId: [{}] and previousGame: [{}]", new Object[]{dbObject.toString(), userPickGameWinnerLocation, regionId, gameId, poolId, previousGame});
+        WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().set(userPickGameWinnerLocation, dbObject), UserTournament.class);
     }
 }

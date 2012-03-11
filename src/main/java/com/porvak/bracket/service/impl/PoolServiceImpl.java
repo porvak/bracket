@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 @Service
 public class PoolServiceImpl implements PoolService {
@@ -19,10 +20,13 @@ public class PoolServiceImpl implements PoolService {
     private PoolRepository poolRepository;
 
     @Override
-    public void addUserPick(String userId, String poolId, UserPick userPick){
-        Assert.noNullElements(new Object[]{userId, poolId, userPick}, String.format("No null elements allowed for " +
-                "userId:[%s], poolId:[%s], userPick:[%s]", userId, poolId, userPick));
-        userPickRepository.updateUserPick(userId, poolId, userPick);
+    public void addUserPick(String userId, String poolId, Map<String, Object> userPickMap){
+        Assert.noNullElements(new Object[]{userId, poolId, userPickMap}, String.format("No null elements allowed for " +
+                "userId:[%s], poolId:[%s], userPickMap:[%s]", userId, poolId, userPickMap));
+
+        userPickRepository.updateUserPick(userId, poolId, new UserPick(userPickMap));
+        userPickRepository.updatePreviousGame(userId, poolId, userPickMap);
+        userPickRepository.addGameWinner(userId, poolId, userPickMap);
     }
 
     @Override

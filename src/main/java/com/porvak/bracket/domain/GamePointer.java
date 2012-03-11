@@ -3,6 +3,11 @@ package com.porvak.bracket.domain;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Used as a pointer to the next/previous game.
  */
@@ -37,5 +42,13 @@ public class GamePointer {
 
     public int getPosition() {
         return position;
+    }
+    
+    public static GamePointer buildFromMap(Map<String, Object> userPickMap){
+        LinkedHashMap previousGameMap = (LinkedHashMap<String, Object>) userPickMap.get("previousGame");
+        int regionId = Integer.valueOf(previousGameMap.get("regionId").toString());
+        int gameId = Integer.valueOf(checkNotNull(previousGameMap.get("gameId")).toString());
+        int positionId = Integer.valueOf(checkNotNull(previousGameMap.get("position")).toString());
+        return new GamePointer(regionId, gameId, positionId);
     }
 }

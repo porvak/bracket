@@ -1,7 +1,6 @@
 package com.porvak.bracket.controller;
 
 import com.porvak.bracket.domain.Pool;
-import com.porvak.bracket.domain.UserPick;
 import com.porvak.bracket.repository.PoolRepository;
 import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.service.PoolService;
@@ -58,10 +57,9 @@ public class PoolController extends AbstractBracketController {
     public void saveUserPick(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> userPickMap, Principal currentUser){
         //TODO: validate that the given user has rights to save this pick
         Account account = getUserAccount(currentUser);
-        UserPick userPick = new UserPick(userPickMap);
-        poolService.addUserPick(account.getId(), poolId, userPick);
+        poolService.addUserPick(account.getId(), poolId, userPickMap);
 
-        LOGGER.debug("Added userpick for userId: [{}] poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPick});
+        LOGGER.debug("Added userpick for userId: [{}] poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPickMap});
     }
 
     @ResponseStatus(CREATED)
@@ -77,22 +75,6 @@ public class PoolController extends AbstractBracketController {
         Account account = getUserAccount(currentUser);
         poolService.removeUserPick(account.getId(), poolId, regionId, gameId, position);
     }
-
-
-
-    /**
-     * Return a users pick for a specific pool
-     *
-     * @param poolId
-     * @param currentUser
-     * @return
-     */
-//    @ResponseBody
-//    @RequestMapping(value = "/api/pool/{poolId}/user/picks", method = GET)
-//    public UserPicks getUserPicks(@PathVariable("poolId")String poolId, Principal currentUser){
-//        Account account = getUserAccount(currentUser);
-//        return poolService.addUserPick(account.getId(), POOL_ID,  );userPicksRepository.findByUserIdAndPoolId(account.getId(), poolId);
-//    }
 
     /**
      * Retrieve pool information for given pool
