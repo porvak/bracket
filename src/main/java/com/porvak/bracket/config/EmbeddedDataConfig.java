@@ -39,7 +39,7 @@ import java.net.UnknownHostException;
 
 @Configuration
 @ImportResource("classpath:/com/porvak/bracket/config/mongo-repo.xml")
-public class DataConfig extends AbstractMongoConfiguration {
+public class EmbeddedDataConfig extends AbstractMongoConfiguration {
 
     @Inject
     private Environment environment;
