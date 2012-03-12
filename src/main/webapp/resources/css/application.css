@@ -527,12 +527,12 @@ div.game div.detail .pick_icon {
 }
 div.game .pickable {
   background: #d3d6d8;
-  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
-  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
-  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #d3d6d8 60%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #d3d6d8));
+  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #d3d6d8 60%);
+  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #d3d6d8 60%);
+  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #d3d6d8 60%);
+  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #d3d6d8 60%);
   /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
 
   box-shadow: 1px 1px 1px 1px #aaaaaa;
