@@ -230,7 +230,7 @@ header nav a.selected {
 }
 .region.region-1 div.game div.details,
 .region.region-3 div.game div.details {
-  margin-right: 1%;
+  margin-right: 3%;
 }
 .region.region-2 h2,
 .region.region-4 h2 {
@@ -242,7 +242,7 @@ header nav a.selected {
 }
 .region.region-2 div.game div.details,
 .region.region-4 div.game div.details {
-  margin-left: 1%;
+  margin-left: 3%;
 }
 .region.region-2 div.game div.detail div.pick_icon,
 .region.region-4 div.game div.detail div.pick_icon {
@@ -256,7 +256,7 @@ header nav a.selected {
 .region.region-3 div.details,
 .region.region-2 div.details,
 .region.region-4 div.details {
-  width: 98%;
+  width: 97%;
 }
 .region.region-1 div.details .team-0,
 .region.region-3 div.details .team-0,
