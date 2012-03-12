@@ -7,11 +7,12 @@ define [
   'app/view/TeamView'
   'app/model/ScoreModel'
   'app/view/ScoreView'
+  'app/view/PercentCompleteView'
   'text!html/sectionTemplate.html'
   'text!html/gameTemplate.html'
   'text!html/scoreTemplate.html'
   'text!html/browserDetectTemplate.html'
-], ($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate,strBrowserDetectTemplate) ->
+], ($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, PercentCompleteView, strSectionTemplate, strGameTemplate, strScoreTemplate,strBrowserDetectTemplate) ->
 
   init: ->
     @model = new TournamentModel
@@ -22,6 +23,7 @@ define [
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
     @browserDetectHB = handlebars.compile(strBrowserDetectTemplate)
+    @percentView = new PercentCompleteView()
 
     if $.browser.msie and $.browser.version isnt '9.0'
       $(@browserDetectHB({})).dialog({
@@ -42,7 +44,7 @@ define [
 
 #    console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 
-    scoreView = new ScoreView(
+    @scoreView = new ScoreView(
       model:new ScoreModel(tieBreaker:@model.get('tieBreaker'))
     )
 
@@ -95,11 +97,17 @@ define [
               teamView.$el.insertAfter(elGame.find('.detail.state'))
 
           elRound.append(elGame)
-          elRound.append(scoreView.$el) if region.regionId is 5 and round.roundId is 3
+          elRound.append(@scoreView.$el) if region.regionId is 5 and round.roundId is 3
         elRegion.append(elRound)
       elBracket.append(elRegion)
 
     $('#bracketNode').append(elBracket)
+    @updatePercent()
+    @scoreView.model.on('change',@updatePercent,@)
+
+  updatePercent: ->
+    if @model.get('pickStatus') is "OPEN"
+      @percentView.render(@teamViews,@scoreView)
 
 
   findShowDropViews: (baseView) ->
@@ -132,6 +140,8 @@ define [
             position: landingView.model.get('position')
       )
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[baseView,baseView.model.get('previousGame')])
+      @updatePercent()
+
 
 
 
@@ -181,6 +191,7 @@ define [
         _.isEqual baseView, dropView
 
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView,baseView.model.get('previousGame')])
+      @updatePercent()
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view

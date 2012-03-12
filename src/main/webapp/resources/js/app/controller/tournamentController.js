@@ -1,6 +1,6 @@
 (function() {
 
-  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'app/model/ScoreModel', 'app/view/ScoreView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html', 'text!html/scoreTemplate.html', 'text!html/browserDetectTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate, strBrowserDetectTemplate) {
+  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'app/model/ScoreModel', 'app/view/ScoreView', 'app/view/PercentCompleteView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html', 'text!html/scoreTemplate.html', 'text!html/browserDetectTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, PercentCompleteView, strSectionTemplate, strGameTemplate, strScoreTemplate, strBrowserDetectTemplate) {
     return {
       init: function() {
         this.model = new TournamentModel;
@@ -11,6 +11,7 @@
         this.sectionHB = handlebars.compile(strSectionTemplate);
         this.gameHB = handlebars.compile(strGameTemplate);
         this.browserDetectHB = handlebars.compile(strBrowserDetectTemplate);
+        this.percentView = new PercentCompleteView();
         if ($.browser.msie && $.browser.version !== '9.0') {
           $(this.browserDetectHB({})).dialog({
             title: 'The Bracket App',
@@ -24,13 +25,13 @@
         }
       },
       render: function() {
-        var elBracket, scoreView, _ref,
+        var elBracket, _ref,
           _this = this;
         if (this.model.get('pickStatus') !== "OPEN") {
           $('.navbar.leaderboard').removeClass('hidden');
           $('#scoreboard').removeClass('hidden');
         }
-        scoreView = new ScoreView({
+        this.scoreView = new ScoreView({
           model: new ScoreModel({
             tieBreaker: this.model.get('tieBreaker')
           })
@@ -92,7 +93,7 @@
                     }
                     elRound.append(elGame);
                     if (region.regionId === 5 && round.roundId === 3) {
-                      return elRound.append(scoreView.$el);
+                      return elRound.append(_this.scoreView.$el);
                     }
                   });
                 }
@@ -102,7 +103,14 @@
             return elBracket.append(elRegion);
           });
         }
-        return $('#bracketNode').append(elBracket);
+        $('#bracketNode').append(elBracket);
+        this.updatePercent();
+        return this.scoreView.model.on('change', this.updatePercent, this);
+      },
+      updatePercent: function() {
+        if (this.model.get('pickStatus') === "OPEN") {
+          return this.percentView.render(this.teamViews, this.scoreView);
+        }
       },
       findShowDropViews: function(baseView) {
         return this.dropViews = this.recurNextTeamViews(baseView, 'showDropZone');
@@ -141,7 +149,8 @@
               }
             }
           });
-          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [baseView, baseView.model.get('previousGame')]);
+          this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [baseView, baseView.model.get('previousGame')]);
+          return this.updatePercent();
         }
       },
       removeTeam: function(startingView) {
@@ -188,7 +197,8 @@
             previousGameView = eachView;
             return _.isEqual(baseView, dropView);
           });
-          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
+          this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
+          return this.updatePercent();
         }
       },
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
