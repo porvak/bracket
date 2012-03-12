@@ -23,7 +23,7 @@ define [
     @gameHB = handlebars.compile(strGameTemplate)
     @browserDetectHB = handlebars.compile(strBrowserDetectTemplate)
 
-    if $.browser.msie
+    if $.browser.msie and $.browser.version isnt '9.0'
       $(@browserDetectHB({})).dialog({
         title: 'The Bracket App'
         height: 200

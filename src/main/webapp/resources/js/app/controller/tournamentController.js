@@ -11,7 +11,7 @@
         this.sectionHB = handlebars.compile(strSectionTemplate);
         this.gameHB = handlebars.compile(strGameTemplate);
         this.browserDetectHB = handlebars.compile(strBrowserDetectTemplate);
-        if ($.browser.msie) {
+        if ($.browser.msie && $.browser.version !== '9.0') {
           $(this.browserDetectHB({})).dialog({
             title: 'The Bracket App',
             height: 200,
