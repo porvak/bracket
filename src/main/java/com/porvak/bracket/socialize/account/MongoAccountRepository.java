@@ -2,9 +2,7 @@ package com.porvak.bracket.socialize.account;
 
 import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.domain.User;
-import com.porvak.bracket.domain.user.UserTournament;
-import com.porvak.bracket.repository.TournamentRepository;
-import com.porvak.bracket.repository.UserTournamentRepository;
+import com.porvak.bracket.service.TournamentService;
 import com.porvak.bracket.socialize.account.exception.SignInNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +16,12 @@ public class MongoAccountRepository implements AccountRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoAccountRepository.class);
 
 	private final MongoTemplate mongoTemplate;
-    private final TournamentRepository tournamentRepository;
-    private final UserTournamentRepository userTournamentRepository;
+    private final TournamentService tournamentService;
 
 	@Autowired
-	public MongoAccountRepository(MongoTemplate mongoTemplate, UserTournamentRepository userTournamentRepository, TournamentRepository tournamentRepository) {
+	public MongoAccountRepository(MongoTemplate mongoTemplate, TournamentService tournamentService) {
 		this.mongoTemplate = mongoTemplate;
-        this.userTournamentRepository = userTournamentRepository;
-        this.tournamentRepository = tournamentRepository;
+        this.tournamentService = tournamentService;
 	}
 
 	public Account createAccount(User user) {
@@ -37,10 +33,7 @@ public class MongoAccountRepository implements AccountRepository {
         }
 
         mongoTemplate.insert(user);
-        UserTournament userTournament = new UserTournament(tournamentRepository.findOne(BracketConstants.TOURNAMENT_ID));
-        userTournament.setPoolId(BracketConstants.POOL_ID);
-        userTournament.setUserId(user.getId());
-        userTournamentRepository.save(userTournament);
+        tournamentService.createUserTournament(BracketConstants.POOL_ID, user.getId());
 
         return new Account(user.getId(), user.getDisplayName(), user.getEmail(), user.getProfileUrl());
 	}

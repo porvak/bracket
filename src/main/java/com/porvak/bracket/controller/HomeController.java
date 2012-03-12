@@ -1,6 +1,8 @@
 package com.porvak.bracket.controller;
 
+import com.porvak.bracket.domain.BracketConstants;
 import com.porvak.bracket.service.TournamentService;
+import com.porvak.bracket.socialize.account.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.ConnectionRepository;
@@ -31,7 +33,9 @@ public class HomeController extends AbstractBracketController {
     public String home(Principal currentUser, Model model) {
         if (currentUser != null) {
             model.addAttribute("twitter_status", connectionRepository.findConnections("twitter").size() > 0 ? "Yes" : "No");
-            model.addAttribute(getUserAccount(currentUser));
+            Account userAccount = getUserAccount(currentUser);
+            model.addAttribute(userAccount);
+            tournamentService.createUserTournament(BracketConstants.POOL_ID, userAccount.getId());
         }
 
         return "index";
