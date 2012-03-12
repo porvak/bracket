@@ -1,6 +1,7 @@
 package com.porvak.bracket.config;
 
 import com.porvak.bracket.socialize.signin.AccountExposingHandlerInterceptor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.joda.time.DateTimeZone;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -41,10 +42,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AccountExposingHandlerInterceptor());
         WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
-        webContentInterceptor.setUseCacheControlNoStore(true);
-        webContentInterceptor.setUseCacheControlHeader(true);
-        webContentInterceptor.setUseExpiresHeader(true);
-        webContentInterceptor.setCacheSeconds(0);
+        webContentInterceptor.setUseCacheControlNoStore(BooleanUtils.toBoolean(environment.getProperty("web.useCacheControlNoStore", "true")));
+        webContentInterceptor.setUseCacheControlHeader(BooleanUtils.toBoolean(environment.getProperty("web.useCacheControlHeader", "true")));
+        webContentInterceptor.setUseExpiresHeader(BooleanUtils.toBoolean(environment.getProperty("web.useExpiresHeader", "true")));
+        webContentInterceptor.setCacheSeconds(Integer.parseInt(environment.getProperty("web.useCacheSeconds", "0")));
         registry.addInterceptor(webContentInterceptor);
     }
 
@@ -53,7 +54,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(0);
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(Integer.parseInt(environment.getProperty("web.useCacheSeconds", "0")));
     }
 
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -75,9 +76,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
-        if (environment.acceptsProfiles("embedded")) {
-            messageSource.setCacheSeconds(0);
-        }
+        messageSource.setCacheSeconds(Integer.parseInt(environment.getProperty("web.useCacheSeconds", "0")));
         return messageSource;
     }
 
