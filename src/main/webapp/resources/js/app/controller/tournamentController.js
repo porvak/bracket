@@ -1,6 +1,6 @@
 (function() {
 
-  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'app/model/ScoreModel', 'app/view/ScoreView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html', 'text!html/scoreTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate) {
+  define(['lib/jquery', 'lib/underscore', 'lib/handlebars', 'app/model/TournamentModel', 'app/model/TeamModel', 'app/view/TeamView', 'app/model/ScoreModel', 'app/view/ScoreView', 'text!html/sectionTemplate.html', 'text!html/gameTemplate.html', 'text!html/scoreTemplate.html', 'text!html/browserDetectTemplate.html'], function($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate, strBrowserDetectTemplate) {
     return {
       init: function() {
         this.model = new TournamentModel;
@@ -9,7 +9,19 @@
         this.teamViews = {};
         this.dropViews = [];
         this.sectionHB = handlebars.compile(strSectionTemplate);
-        return this.gameHB = handlebars.compile(strGameTemplate);
+        this.gameHB = handlebars.compile(strGameTemplate);
+        this.browserDetectHB = handlebars.compile(strBrowserDetectTemplate);
+        if ($.browser.msie) {
+          $(this.browserDetectHB({})).dialog({
+            title: 'The Bracket App',
+            height: 200,
+            width: 600,
+            position: ['center', 50],
+            modal: true,
+            resizable: false
+          });
+          return $('#ie-detect').focus();
+        }
       },
       render: function() {
         var elBracket, scoreView, _ref,

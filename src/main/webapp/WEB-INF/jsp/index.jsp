@@ -88,10 +88,22 @@
         </div>
     </div>
 
-
-    <footer>
-    </footer>
-
-
+    <div style="height:9em;width:100%;"></div>
+    <div style="
+        width: 100%;
+        height:1.5em; background: -moz-linear-gradient(top, #6C6C6C 0%, #6C6C6C 0%, black 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6C6C6C), color-stop(0%, #6C6C6C), color-stop(100%, black));
+        background: -webkit-linear-gradient(top, #6C6C6C 0%, #6C6C6C 0%, black 100%);
+        background: -o-linear-gradient(top, #6C6C6C 0%, #6C6C6C 0%, black 100%);
+        background: -ms-linear-gradient(top, #6C6C6C 0%, #6C6C6C 0%, black 100%);
+        background: linear-gradient(top, #6C6C6C 0%, #6C6C6C 0%, black 100%);
+        color: #EFE9E5;
+    ">
+        <div style="float: right; width:100%; text-align: right; color:#EFE9E5; padding-top:3px;">
+            <a style="color: #EFE9E5; padding-left: 5px; padding-right: 5px" href="https://twitter.com/#!/porvak">@porvak</a>
+            <a style="color: #EFE9E5; padding-left: 5px; padding-right: 5px" href="https://twitter.com/#!/y3sh">@y3sh</a>
+            <a style="color: #EFE9E5; padding-left: 5px; padding-right: 15px" href="https://github.com/porvak/bracket">Fork me on GitHub</a>
+        </div>
+    </div>
 </body>
 </html>

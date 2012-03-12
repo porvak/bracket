@@ -10,7 +10,8 @@ define [
   'text!html/sectionTemplate.html'
   'text!html/gameTemplate.html'
   'text!html/scoreTemplate.html'
-], ($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate) ->
+  'text!html/browserDetectTemplate.html'
+], ($, _, handlebars, TournamentModel, TeamModel, TeamView, ScoreModel, ScoreView, strSectionTemplate, strGameTemplate, strScoreTemplate,strBrowserDetectTemplate) ->
 
   init: ->
     @model = new TournamentModel
@@ -20,6 +21,18 @@ define [
     @dropViews = []
     @sectionHB = handlebars.compile(strSectionTemplate)
     @gameHB = handlebars.compile(strGameTemplate)
+    @browserDetectHB = handlebars.compile(strBrowserDetectTemplate)
+
+    if $.browser.msie
+      $(@browserDetectHB({})).dialog({
+        title: 'The Bracket App'
+        height: 200
+        width: 600
+        position: ['center',50]
+        modal:true
+        resizable:false
+      })
+      $('#ie-detect').focus()
 
 
   render: ->
