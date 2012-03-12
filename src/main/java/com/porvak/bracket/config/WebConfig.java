@@ -54,7 +54,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(Integer.parseInt(environment.getProperty("web.useCacheSeconds", "0")));
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(Integer.parseInt(environment.getProperty("web.resourceCacheSeconds", "0")));
     }
 
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
