@@ -55,46 +55,4 @@ public final class BracketConstants {
         return gameRoundMap.get(gameId);
     }
 
-    public static int getDbRoundIdForGame(int gameId, int regionId){
-        if(regionId == 5){
-            return gameRoundFinalsMap.get(gameId) - 1;
-        }
-
-        return gameRoundMap.get(gameId) - 1;
-    }
-
-
-    public static int getDbGameId(int dbRoundId, int gameId, int regionId) {
-        int subtractor = 0;
-        if (regionId != 5) {
-            switch (dbRoundId){
-                case 0:
-                    subtractor = 1;
-                    break;
-                case 1:
-                    subtractor = 9;
-                    break;
-                case 2:
-                    subtractor = 13;
-                    break;
-                case 3:
-                    subtractor = 15;
-                    break;
-            }
-        }
-        else{
-            switch (dbRoundId){
-                case 0:
-                    subtractor = 1;
-                    break;
-                case 1:
-                    subtractor = 3;
-                    break;
-                case 2:
-                    subtractor = 4;
-                    break;
-            }
-        }
-        return gameId - subtractor;
-    }
 }

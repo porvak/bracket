@@ -74,9 +74,8 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         mongoTemplate.getConverter().write(team, dbObject);
 
         Query basicQuery = query(where("_id").is(userTournament.getId()));
-        int roundId = getDbRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
-        String userPickLocation = String.format(USER_PICK_LOCATION, userPick.getRegionId(), roundId,
-                getDbGameId(roundId, userPick.getGameId(), userPick.getRegionId()), userPick.getPositionId());
+        int roundId = getRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
+        String userPickLocation = String.format(USER_PICK_LOCATION, userPick.getRegionId(), roundId, userPick.getGameId(), userPick.getPositionId());
         WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().set(userPickLocation, dbObject), UserTournament.class);
     }
 
@@ -91,20 +90,18 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
         Query basicQuery = query(where("_id").is(userTournament.getId()));
 
-        int dbRoundId = getDbRoundIdForGame(gameId, regionId);
-        int dbGameId = getDbGameId(dbRoundId, gameId, regionId);
-        String userPickLocation = String.format(USER_PICK_LOCATION, regionId, dbRoundId, dbGameId, position);
+        int roundId = getRoundIdForGame(gameId, regionId);
+        String userPickLocation = String.format(USER_PICK_LOCATION, regionId, roundId, gameId, position);
         LOGGER.debug("Removing userPickLocation [{}]", userPickLocation);
 
         WriteResult result = mongoTemplate.updateFirst(basicQuery, new Update().unset(userPickLocation), UserTournament.class);
 
         // Also, remove corresponding userPickedGameWinner
-        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(dbRoundId).findGameById(dbGameId).getTeamByPosition(position).getPreviousGame();
+        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(roundId).findGameById(gameId).getTeamByPosition(position).getPreviousGame();
 
-        int previousDbRoundId = getDbRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
-        int previousDbGameId = getDbGameId(previousDbRoundId, previousGame.getGameId(), previousGame.getRegionId());
+        int previousRoundId = getRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
 
-        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousDbRoundId, previousDbGameId);
+        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousRoundId, previousGame.getGameId());
         LOGGER.debug("Removing userPickedGameWinnerLocation [{}]", userPickGameWinnerLocation);
         result = mongoTemplate.updateFirst(basicQuery, new Update().unset(userPickGameWinnerLocation), UserTournament.class);
     }
@@ -115,9 +112,8 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         LinkedHashMap previousGameMap = (LinkedHashMap<String, Object>) userPickMap.get("previousGame");
         int previousGamePosition = Integer.valueOf(checkNotNull(previousGameMap.get("position")).toString());
 
-        int roundId = getDbRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
-        String previousGameLocation = String.format(PREVIOUS_GAME_LOCATION, userPick.getRegionId(), roundId,
-                getDbGameId(roundId, userPick.getGameId(), userPick.getRegionId()), userPick.getPositionId());
+        int roundId = getRoundIdForGame(userPick.getGameId(), userPick.getRegionId());
+        String previousGameLocation = String.format(PREVIOUS_GAME_LOCATION, userPick.getRegionId(), roundId, userPick.getGameId(), userPick.getPositionId());
 
         UserTournament userTournament = checkNotNull(userTournamentRepository.findByUserIdAndPoolId(userId, poolId));
         Query basicQuery = query(where("_id").is(userTournament.getId()));
@@ -130,14 +126,12 @@ public class UserPickRepositoryImpl implements UserPickRepository {
         int regionId = Integer.valueOf(checkNotNull(userPickMap.get("regionId")).toString());
         int gameId = Integer.valueOf(checkNotNull(userPickMap.get("gameId")).toString());
         int position = Integer.valueOf(checkNotNull(userPickMap.get("position")).toString());
-        int dbRoundId = getDbRoundIdForGame(gameId, regionId);
-        int dbGameId = getDbGameId(dbRoundId, gameId, regionId);
-        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(dbRoundId).findGameById(dbGameId).getTeamByPosition(position).getPreviousGame();
+        int roundId = getRoundIdForGame(gameId, regionId);
+        GamePointer previousGame = userTournament.getRegionMap().get(regionId).getRoundById(roundId).findGameById(gameId).getTeamByPosition(position).getPreviousGame();
 
-        int previousDbRoundId = getDbRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
-        int previousDbGameId = getDbGameId(previousDbRoundId, previousGame.getGameId(), previousGame.getRegionId());
+        int previousRoundId = getRoundIdForGame(previousGame.getGameId(), previousGame.getRegionId());
 
-        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousDbRoundId, previousDbGameId);
+        String userPickGameWinnerLocation = String.format(USER_PICKED_GAME_WINNER_LOCATION, previousGame.getRegionId(), previousRoundId, previousGame.getGameId());
 
         Team team = teamByIdMap.get(new UserPick(userPickMap).getTeamId());
         DBObject dbObject = new BasicDBObject();
