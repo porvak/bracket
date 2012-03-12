@@ -246,7 +246,7 @@ header {
         div.game {
             .gameBackgroundLeft;
             div.details {
-                margin-right: 3px;
+                margin-right: 1%;
             }
         }
     }
@@ -257,13 +257,21 @@ header {
         div.game {
             .gameBackgroundRight;
             div.details {
-                margin-left: 3px;
+                margin-left: 1%;
             }
             div.detail div.pick_icon {
                 .pickIconBackgroundRight;
             }
         }
     }
+	&.region-1, &.region-3, &.region-2, &.region-4 {
+		div.details {
+			width: 98%;
+			.team-0, .team-1 {
+				.border-radius(5px);
+			}
+		}
+	}
 
     @bottomRegionOffset: 5%;
     &.region-3, &.region-4 {
