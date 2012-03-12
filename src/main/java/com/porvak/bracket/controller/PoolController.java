@@ -2,7 +2,6 @@ package com.porvak.bracket.controller;
 
 import com.porvak.bracket.domain.Pool;
 import com.porvak.bracket.repository.PoolRepository;
-import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.service.PoolService;
 import com.porvak.bracket.socialize.account.Account;
 import org.codehaus.jackson.JsonGenerationException;
@@ -32,9 +31,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class PoolController extends AbstractBracketController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PoolController.class);
-
-    @Inject
-    private UserPicksRepository userPicksRepository;
 
     @Inject
     private PoolService poolService;

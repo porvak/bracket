@@ -1,24 +1,25 @@
 package com.porvak.bracket.domain;
 
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 
 public class Round extends AbstractBracket implements Comparable<Round>{
     private int roundId;
     private String roundName;
 
-//    @Transient
-//    private List<Game> games;
-    
     @JsonIgnore
     @Field("games")
-    private SortedMap<Integer, Game> gameMap;
+    private Map<Integer, Game> gameMap;
 
-    public Round(){}
+    public Round(){
+        gameMap = Maps.newHashMap();
+    }
     
     public Game findGameById(int id){
         return gameMap.get(id);
@@ -41,7 +42,9 @@ public class Round extends AbstractBracket implements Comparable<Round>{
     }
 
     public List<Game> getGames() {
-        return ImmutableSortedSet.copyOf(gameMap.values()).asList();
+        List<Game> gamesList = Lists.newLinkedList(gameMap.values());
+        Collections.sort(gamesList);
+        return gamesList;
     }
 
     public void addGame(Game game){

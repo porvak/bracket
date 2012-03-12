@@ -1,11 +1,12 @@
 package com.porvak.bracket.domain;
 
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,22 +48,13 @@ public class Region extends AbstractBracket{
     }
     
     public List<Round> getRounds(){
-        return ImmutableSortedSet.copyOf(roundMap.values()).asList();
+        List<Round> roundList = Lists.newArrayList(roundMap.values());
+        Collections.sort(roundList);
+        return roundList;
     }
 
     public Round getRoundById(int id){
         return roundMap.get(id);
-//        if (indexedRounds == null || indexedRounds.size() == 0) {
-//            indexedRounds = Maps.uniqueIndex(rounds, new Function<Round, Integer>() {
-//                public Integer apply(@Nullable Round input) {
-//                    if(input == null || input.getRoundId() == 0){
-//                        return null;
-//                    }
-//                    return input.getRoundId();
-//                }
-//            });
-//        }
-//        return indexedRounds.get(id);
     }
 
     public void addRound(Round round) {

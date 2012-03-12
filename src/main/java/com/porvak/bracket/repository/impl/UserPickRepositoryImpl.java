@@ -9,10 +9,8 @@ import com.porvak.bracket.domain.GamePointer;
 import com.porvak.bracket.domain.Team;
 import com.porvak.bracket.domain.UserPick;
 import com.porvak.bracket.domain.user.UserTournament;
-import com.porvak.bracket.repository.PoolRepository;
 import com.porvak.bracket.repository.TeamRepository;
 import com.porvak.bracket.repository.UserPickRepository;
-import com.porvak.bracket.repository.UserPicksRepository;
 import com.porvak.bracket.repository.UserTournamentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +41,6 @@ public class UserPickRepositoryImpl implements UserPickRepository {
     @Inject
     private MongoTemplate mongoTemplate;
 
-    @Inject
-    private UserPicksRepository userPicksRepository;
-
-    @Inject
-    private PoolRepository poolRepository;
-    
     @Inject
     private UserTournamentRepository userTournamentRepository;
 

@@ -1,5 +1,6 @@
 package com.porvak.bracket.domain;
 
+import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -12,9 +13,7 @@ public class Game extends AbstractBracket implements Comparable<Game>{
 
     private int gameId;
     private GameStatus status;
-//    @Transient
-//    private GameTeam[] teams;
-    
+
     @JsonIgnore
     @Field("teams")
     private Map<Integer, GameTeam> teamMap;
@@ -26,7 +25,7 @@ public class Game extends AbstractBracket implements Comparable<Game>{
     private GamePointer nextGame;
 
     public Game() {
-//        teams = new GameTeam[2];
+        teamMap = Maps.newLinkedHashMap();
     }
 
     public int getGameId() {
