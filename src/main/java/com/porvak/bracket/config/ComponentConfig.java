@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
@@ -20,7 +21,14 @@ public class ComponentConfig {
 
     @Configuration
     @PropertySource("classpath:com/porvak/bracket/config/application.properties")
-    static class Standard {
+    @Profile("embedded")
+    static class Embedded {
+    }
+
+    @Configuration
+    @PropertySource("file:${cloud.config}/application.properties")
+    @Profile("cloud")
+    static class Cloud {
     }
 
     @Bean(name = "bracketConversionService")
