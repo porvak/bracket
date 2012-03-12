@@ -8,16 +8,16 @@ public class TournamentMetaData {
         regionId = checkNotNull(regionId);
         String regionName = "";
         if(regionId.equals("1")){
-            regionName = "East";
+            regionName = "South";
         }
         else if(regionId.equals("2")){
-            regionName = "West";
+            regionName = "East";
         }
         else if(regionId.equals("3")){
-            regionName = "Midwest";
+            regionName = "West";
         }
         else if(regionId.equals("4")){
-            regionName = "South";
+            regionName = "Midwest";
         }
         else if (regionId.equals("5")){
             regionName = "Finals";
