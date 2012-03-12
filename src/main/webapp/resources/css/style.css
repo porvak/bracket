@@ -132,7 +132,8 @@ body{
 }
 .seed{
 	float: left;
-	width: 15px;
+	width: 1.3em;
+    margin-right: 1%;
 	color: #00f;
 }
 .team{
@@ -162,17 +163,6 @@ body{
 .state,
 .links{
 	display: none;
-}
-
-
-.team-delete {
-    color: #de010f;
-    margin-left:1px;
-    font-weight: bolder;
-}
-
-.team-delete.hidden {
-    display:none;
 }
 
 .submit-score {

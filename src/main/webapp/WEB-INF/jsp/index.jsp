@@ -42,6 +42,9 @@
         <nav>
             <a href="#" class="navbar leaderboard hidden">Leaderboard</a>
         </nav>
+        <p class="follow_us">
+            Follow <a href="https://twitter.com/#!/thebracketapp">@thebracketapp</a> for updates.
+        </p>
         <div class="login">
             <c:if test="${not empty account.displayName}">
                 <p>Hello, <strong><c:out value="${account.displayName}"/></strong><br/>

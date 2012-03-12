@@ -63,6 +63,12 @@ h2 {
 strong {
   font-weight: bold;
 }
+a {
+  color: #13b5ea;
+}
+a:visited {
+  color: #0f91bb;
+}
 /*End General Tags*/
 header {
   background: #6c6c6c;
@@ -79,6 +85,7 @@ header {
 
   padding: 8px;
   margin-bottom: 50px;
+  position: relative;
 }
 header h1 {
   float: left;
@@ -86,6 +93,21 @@ header h1 {
   font-size: 2.0em;
 }
 header h1 strong {
+  font-weight: bold;
+}
+header p.follow_us {
+  color: #efe9e5;
+  background: #000000;
+  font-size: .85em;
+  position: absolute;
+  bottom: -2em;
+  right: 8px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: .5em;
+}
+header p.follow_us a {
   font-weight: bold;
 }
 header div.login {
@@ -198,40 +220,31 @@ header nav a.selected {
   position: absolute;
   top: 47%;
 }
-.region.region-1 h2,
-.region.region-3 h2 {
+.region.region-1 h2, .region.region-3 h2 {
   right: 2em;
 }
-.region.region-1 div.game,
-.region.region-3 div.game {
+.region.region-1 div.game, .region.region-3 div.game {
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
 }
-.region.region-1 div.game div.details,
-.region.region-3 div.game div.details {
+.region.region-1 div.game div.details, .region.region-3 div.game div.details {
   margin-right: 3px;
 }
-.region.region-2 h2,
-.region.region-4 h2 {
+.region.region-2 h2, .region.region-4 h2 {
   left: 2em;
 }
-.region.region-2 div.game,
-.region.region-4 div.game {
+.region.region-2 div.game, .region.region-4 div.game {
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
 }
-.region.region-2 div.game div.details,
-.region.region-4 div.game div.details {
+.region.region-2 div.game div.details, .region.region-4 div.game div.details {
   margin-left: 3px;
 }
-.region.region-2 div.game div.detail div.pick_icon,
-.region.region-4 div.game div.detail div.pick_icon {
+.region.region-2 div.game div.detail div.pick_icon, .region.region-4 div.game div.detail div.pick_icon {
   background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
 }
-.region.region-2 div.game div.detail div.pick_icon:hover,
-.region.region-4 div.game div.detail div.pick_icon:hover {
+.region.region-2 div.game div.detail div.pick_icon:hover, .region.region-4 div.game div.detail div.pick_icon:hover {
   background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
 }
-.region.region-3,
-.region.region-4 {
+.region.region-3, .region.region-4 {
   /*bottom: -60px;*/
 
   bottom: -5%;
@@ -253,8 +266,7 @@ header nav a.selected {
   position: relative;
   height: 100%;
 }
-.region.region-5 .round-1 .game-1,
-.region.region-5 .round-1 .game-2 {
+.region.region-5 .round-1 .game-1, .region.region-5 .round-1 .game-2 {
   position: absolute;
   height: 100%;
   width: 37.5%;
@@ -289,8 +301,7 @@ header nav a.selected {
   width: 100%;
   text-align: center;
 }
-.region.region-5 .round.round-2 .team-1,
-.region.region-5 .round.round-2 .team-0 {
+.region.region-5 .round.round-2 .team-1, .region.region-5 .round.round-2 .team-0 {
   position: absolute;
   width: 40%;
   top: 1.0em;
@@ -359,8 +370,7 @@ header nav a.selected {
   background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
   background-color: #FFF;
 }
-.region.region-5 .round.round-3 .game .team-0,
-.region.region-5 .round.round-3 .game .team-1 {
+.region.region-5 .round.round-3 .game .team-0, .region.region-5 .round.round-3 .game .team-1 {
   top: 50%;
   padding: 0;
   height: 50%;
@@ -371,12 +381,15 @@ header nav a.selected {
   -moz-box-shadow: none;
   font-size: .85em;
 }
-.region.region-5 .round.round-3 .game .team-0 .team,
-.region.region-5 .round.round-3 .game .team-1 .team {
-  width: auto;
+.region.region-5 .round.round-3 .game .team-0 .team, .region.region-5 .round.round-3 .game .team-1 .team {
+  width: 80%;
 }
 .region.region-5 .round.round-3 .game .pick_icon {
   display: none;
+}
+.region.region-5 .round.round-3 .game .seed {
+  width: 12%;
+  margin-right: .1em;
 }
 .region.region-5 .round.round-3 h3 {
   color: #1e4164;
@@ -421,13 +434,11 @@ div.game div.detail {
   line-height: 1.4em;
   width: 100%;
 }
-div.game div.detail.team-0,
-div.game div.detail.team-1 {
+div.game div.detail.team-0, div.game div.detail.team-1 {
   zoom: 1;
   padding: 4px 0px;
 }
-div.game div.detail.team-0:after,
-div.game div.detail.team-1:after {
+div.game div.detail.team-0:after, div.game div.detail.team-1:after {
   content: ".";
   display: block;
   height: 0;
@@ -444,12 +455,33 @@ div.game div.detail .team {
   width: 80px;
   margin-right: 0px;
 }
+div.game div.detail .team .team-delete {
+  position: relative;
+  top: 0;
+  float: left;
+  margin-left: 1px;
+  margin-right: 1px;
+  padding: 0px 1px 0 1px;
+  display: block;
+  font-family: Arial, sans-serif;
+  background: #de010f;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #eeeff0;
+  font-weight: bold;
+}
+div.game div.detail .team .team-delete:hover {
+  text-decoration: underline;
+}
+div.game div.detail .team .team-delete.hidden {
+  display: none;
+}
 div.game div.detail .seed {
   margin-left: 2px;
   float: left;
 }
-div.game div.detail .score,
-div.game div.detail .seed {
+div.game div.detail .score, div.game div.detail .seed {
   font-weight: bold;
   font-family: 'Blokletters-Viltstift', Arial, sans-serif;
 }
@@ -500,8 +532,7 @@ div.game .pickable div.pick_icon:hover {
   display: none;
 }
 /*Drop zone for highlighting a team*/
-.team-1.highlight-team-drop,
-.team-0.highlight-team-drop {
+.team-1.highlight-team-drop, .team-0.highlight-team-drop {
   background-color: #d3d6d8;
   background: #d3d6d8;
   background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
@@ -512,14 +543,17 @@ div.game .pickable div.pick_icon:hover {
   background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
   /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
 
-  border: 1px dashed #AAA;
+  border: 3px dashed #AAA;
   height: 1.4em;
   width: 98%;
   left: 1%;
 }
-.team-1.highlight-team-drop div.pick_icon,
-.team-0.highlight-team-drop div.pick_icon {
+.team-1.highlight-team-drop div.pick_icon, .team-0.highlight-team-drop div.pick_icon {
   display: none;
+}
+.team-1.saving, .team-0.saving {
+  border: 3px dashed #8dc63f;
+  background: none;
 }
 .seed {
   color: #b22773;

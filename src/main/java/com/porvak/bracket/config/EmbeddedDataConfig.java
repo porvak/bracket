@@ -86,7 +86,7 @@ public class EmbeddedDataConfig extends AbstractMongoConfiguration {
             }
         };
 
-        factory.setDatabaseConfigurer(config);
+        //factory.setDatabaseConfigurer(config);
         return populateDatabase(factory.getDatabase());
     }
 
