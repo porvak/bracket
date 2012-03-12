@@ -3,23 +3,23 @@ package com.porvak.bracket.domain;
 public class User extends AbstractBracket {
     private String id;
     private String displayName;
-    private String email;
+    private String twitterName;
     private String profileUrl;
 
     public User(){
     }
 
-    public User(String id, String displayName, String email, String profileUrl) {
+    public User(String id, String displayName, String twitterName, String profileUrl) {
         this.id = id;
         this.displayName = displayName;
-        this.email = email;
+        this.twitterName = twitterName;
         this.profileUrl = profileUrl;
     }
 
 
-    public User(String displayName, String email, String profileUrl) {
+    public User(String displayName, String twitterName, String profileUrl) {
         this.displayName = displayName;
-        this.email = email;
+        this.twitterName = twitterName;
         this.profileUrl = profileUrl;
     }
 
@@ -40,12 +40,12 @@ public class User extends AbstractBracket {
         this.displayName = displayName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTwitterName() {
+        return twitterName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
     }
 
     public String getProfileUrl() {

@@ -35,13 +35,13 @@ public class MongoAccountRepository implements AccountRepository {
         mongoTemplate.insert(user);
         tournamentService.createUserTournament(BracketConstants.POOL_ID, user.getId());
 
-        return new Account(user.getId(), user.getDisplayName(), user.getEmail(), user.getProfileUrl());
+        return new Account(user.getId(), user.getDisplayName(), user.getTwitterName(), user.getProfileUrl());
 	}
 
 	public Account findById(String id) {
         LOGGER.debug("Finding user by id: {}", id);
         User user = mongoTemplate.findById(id, User.class);
-        return new Account(user.getId(), user.getDisplayName(), user.getEmail(), user.getProfileUrl());
+        return new Account(user.getId(), user.getDisplayName(), user.getTwitterName(), user.getProfileUrl());
         
 		//return jdbcTemplate.queryForObject(AccountMapper.SELECT_ACCOUNT + " where id = ?", accountMapper, id);
 	}

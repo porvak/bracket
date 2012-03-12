@@ -9,14 +9,14 @@ public class Account implements Serializable {
 	
 	private final String displayName;
 	
-	private final String email;
+	private final String twitterName;
 
     private final String profileUrl;
 
-    public Account(String id, String displayName, String email, String profileUrl) {
+    public Account(String id, String displayName, String twitterName, String profileUrl) {
         this.id = id;
         this.displayName = displayName;
-        this.email = email;
+        this.twitterName = twitterName;
         this.profileUrl = profileUrl;
     }
 
@@ -29,8 +29,8 @@ public class Account implements Serializable {
         return displayName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTwitterName() {
+        return twitterName;
     }
 
     public String getProfileUrl() {

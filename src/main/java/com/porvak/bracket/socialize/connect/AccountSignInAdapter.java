@@ -3,6 +3,8 @@ package com.porvak.bracket.socialize.connect;
 import com.porvak.bracket.socialize.account.Account;
 import com.porvak.bracket.socialize.account.AccountRepository;
 import com.porvak.bracket.socialize.account.AccountUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -17,7 +19,8 @@ import javax.servlet.http.HttpSession;
 
 public class AccountSignInAdapter implements SignInAdapter {
 
-	private final AccountRepository accountRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountSignInAdapter.class);
+    private final AccountRepository accountRepository;
 
 	private final RequestCache requestCache;
 
@@ -28,12 +31,12 @@ public class AccountSignInAdapter implements SignInAdapter {
 	}
 
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
-        System.out.println("signIn: " + userId);
+        LOGGER.debug("signIn: " + userId);
         //Long longUserId = Long.valueOf(userId);
 		Account account = accountRepository.findById(userId);
 		AccountUtils.signin(account);
 		String extractedUrl = extractOriginalUrl(request);
-        System.out.println("Extracted URL: " + extractedUrl);
+        LOGGER.debug("Extracted URL: " + extractedUrl);
         return extractedUrl;
 	}
 

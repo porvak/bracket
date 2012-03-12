@@ -3,6 +3,7 @@ package com.porvak.bracket.socialize.signup;
 import com.porvak.bracket.socialize.account.Account;
 import com.porvak.bracket.socialize.account.AccountRepository;
 import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,16 +24,24 @@ public class SignupController {
     }
 
 	@RequestMapping(value="/signup", method= RequestMethod.GET)
-	public SignupForm signupForm(WebRequest request) {
+	public String signupForm(final WebRequest request) {
 		Connection<?> connection = ProviderSignInUtils.getConnection(request);
+
+// REDIRECT TO HOME PAGE IF sign-in was good.
 		if (connection != null) {
 			request.setAttribute("message", "Your twitter account is not connected yet. Please signup", WebRequest.SCOPE_REQUEST);
-            SignupForm form = SignupForm.fromProviderUser(connection.fetchUserProfile());
+            UserProfile userProfile = connection.fetchUserProfile();
+            SignupForm form = SignupForm.fromProviderUser(userProfile);
             form.setProfileUrl(connection.getImageUrl());
-			return form;
-		} else {
-			return new SignupForm();
+            boolean result = signupHelper.signup(form, null, new SignupHelper.SignupCallback() {
+                public void postSignup(Account account) {
+                    ProviderSignInUtils.handlePostSignUp(account.getId().toString(), request);
+                }
+            });
+            return result ? "redirect:/" : null;
 		}
+
+        return null;
 	}
 
 	@RequestMapping(value="/signup", method= RequestMethod.POST)

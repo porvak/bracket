@@ -7,33 +7,33 @@ public class SignupForm {
 
 	private String displayName;
 
-	private String email;
+	private String twitterName;
 
 	private String confirmEmail;
 
     private String profileUrl;
 
 	public User createPerson() {
-        return new User(displayName, email, profileUrl);
+        return new User(displayName, twitterName, profileUrl);
 	}
 
 	public static SignupForm fromProviderUser(UserProfile providerUser) {
 		SignupForm form = new SignupForm();
-        //form.setDisplayName("TODO DISPLAYNAME");
-		form.setEmail(providerUser.getEmail());
-		form.setConfirmEmail(providerUser.getEmail());
+        form.setDisplayName(providerUser.getName());
+		form.setTwitterName(providerUser.getUsername());
+//		form.setConfirmEmail(providerUser.getEmail());
 		return form;
 	}
 
     /**
      * The person's email, must be unique.
      */
-    public String getEmail() {
-        return email;
+    public String getTwitterName() {
+        return twitterName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
     }
 
     public String getDisplayName() {
