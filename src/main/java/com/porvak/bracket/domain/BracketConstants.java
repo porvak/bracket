@@ -8,6 +8,7 @@ public final class BracketConstants {
     
     public static final String POOL_ID = "4f3c8297a0eea26b78d77538";
     public static final String TOURNAMENT_ID = "4f41ce03d17060d0d8dbd4d6";
+    public static final String REDIRECT_TO_HOME = "redirect:/";
     
     private static Map<Integer, Integer> gameRoundMap = Maps.newHashMap();
     private static Map<Integer, Integer> gameRoundFinalsMap = Maps.newHashMap();

@@ -24,6 +24,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.*;
+import static com.porvak.bracket.domain.BracketConstants.REDIRECT_TO_HOME;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -58,13 +59,23 @@ public class PoolController extends AbstractBracketController {
         LOGGER.debug("Added userpick for userId: [{}] poolId: [{}]with:\n{}", new Object[]{account.getId(), poolId, userPickMap});
     }
 
+    @RequestMapping(value = "/api/pool/{poolId}/user/pick", method = GET)
+    public String saveUserPickGET(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> userPickMap, Principal currentUser){
+        return REDIRECT_TO_HOME;
+    }
+
     @ResponseStatus(CREATED)
     @RequestMapping(value = "/api/pool/{poolId}/user/tiebreaker", method = POST)
     public void saveUserTieBreaker(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> tieBreakerScore, Principal currentUser){
         Account account = getUserAccount(currentUser);
         poolService.addTieBreaker(account.getId(), poolId, Integer.parseInt(checkNotNull(tieBreakerScore.get("tieBreaker"), "Tie Breaker can not be null.").toString()));
     }
-    
+
+    @RequestMapping(value = "/api/pool/{poolId}/user/tiebreaker", method = GET)
+    public String saveUserTieBreakerGET(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> tieBreakerScore, Principal currentUser){
+        return REDIRECT_TO_HOME;
+    }
+
     @ResponseStatus(OK)
     @RequestMapping(value = "/api/pool/{poolId}/region/{regionId}/game/{gameId}/userpick/{position}", method = DELETE)
     public void deleteUserPick(@PathVariable("poolId") String poolId, @PathVariable("regionId") int regionId, @PathVariable("gameId") int gameId, @PathVariable("position") int position, Principal currentUser){
