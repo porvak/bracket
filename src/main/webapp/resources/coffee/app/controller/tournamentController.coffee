@@ -232,6 +232,9 @@ define [
           userPick:null
           previousGame:null
         )
+
+        @updatePercent()
+
         if pendingDeleteArr.length > 1 #if there are more views
           @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
 

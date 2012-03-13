@@ -238,6 +238,7 @@
               userPick: null,
               previousGame: null
             });
+            _this.updatePercent();
             if (pendingDeleteArr.length > 1) {
               return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
             }
