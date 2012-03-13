@@ -204,6 +204,7 @@
           _this = this;
         view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
         if (view != null) view.$el.addClass('saving');
+        if (callback != null) callback.apply(this, callbackArgs);
         return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
           wait: true,
           success: function(model, response) {
@@ -211,7 +212,7 @@
             if (pendingSaveArr.length > 1) {
               return _this.chainSaveCallbacks(_.last(pendingSaveArr, pendingSaveArr.length - 1), callback, callbackArgs);
             } else {
-              return callback != null ? callback.apply(_this, callbackArgs) : void 0;
+
             }
           },
           error: function(model, response) {

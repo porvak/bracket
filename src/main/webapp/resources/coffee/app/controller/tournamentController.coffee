@@ -194,6 +194,7 @@ define [
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
     view?.$el.addClass('saving')
+    callback?.apply(@,callbackArgs)
 
     view?.model.save(
       _.first(pendingSaveArr)?.model
@@ -206,7 +207,6 @@ define [
           if pendingSaveArr.length > 1 #if there are more views
             @chainSaveCallbacks(_.last(pendingSaveArr,pendingSaveArr.length-1),callback,callbackArgs) #save the rest of the views
           else
-            callback?.apply(@,callbackArgs)
 
         error: (model, response) =>
           pendingSaveArr.forEach((viewObj) ->
