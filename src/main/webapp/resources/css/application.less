@@ -224,6 +224,10 @@ header {
         , url('../../resources/images/gameborder_r.png') repeat-y left
         , url('../../resources/images/gameborder_r.png') repeat-y right;
 }
+.gameBackgroundLeftRight {
+    background: url('../../resources/images/gameborder_r.png') repeat-y left
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
 
 .pickIconBackgroundRight {
     background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
@@ -264,7 +268,7 @@ header {
             }
         }
     }
-	&.region-1, &.region-3, &.region-2, &.region-4 {
+	&.region-1, &.region-3, &.region-2, &.region-4, &.region-5 {
 		div.details {
 			width: 97%;
 			.team-0, .team-1 {
@@ -379,11 +383,12 @@ header {
         }
 
         .round.round-3 {
-            top: 50%;
-            margin-top: -2.5em;
+            top: 45%;
+            /*margin-top: -2.5em;*/
             height: auto;
             .game {
                 margin: 0 auto;
+                margin-top: -1em;
                 width: 60%;
                 height: 2.4em;
                 padding: 5px;
@@ -414,13 +419,14 @@ header {
             h3 {
 				color: @slalomBlue;
                 position: relative;
-                top: 1.3em;
+                /*top: 1.3em;*/
                 font-size: .95em;
-                .gameBackgroundAll;
+                /*.gameBackgroundAll;*/
+                .gameBackgroundLeftRight;
                 background-color: #FFF;
                 margin: 0 auto;
                 padding: 5px;
-                width: 55%;
+                width: 60%;
 				font-weight: bold;
             }
         }
@@ -518,7 +524,7 @@ div.game {
 }
 
 div.game .pickable {
-    .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, darken(@bgPrimary,10%), 60%);
+    .background-gradient(darken(@bgPrimary,5%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 70%);
     .box-shadow(1px 1px 1px 1px, #AAA);
 
     .score {
