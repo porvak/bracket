@@ -36,6 +36,7 @@
             tieBreaker: this.model.get('tieBreaker')
           })
         });
+        this.scoreView.model.on('change', this.updatePercent, this);
         elBracket = $(this.sectionHB({
           "class": "regions"
         }));
@@ -77,6 +78,7 @@
                         teamView.on('drop', _this.teamDrop, _this);
                         teamView.on('advance', _this.advanceTeam, _this);
                         teamView.on('remove', _this.removeTeam, _this);
+                        teamView.model.on('change', _this.updatePercent, _this);
                         _this.teamViews[team.locator] = teamView;
                         teamZero = elGame.find('.detail.team-0');
                         finalVS = elGame.find('.detail.finalVS');
@@ -103,9 +105,7 @@
             return elBracket.append(elRegion);
           });
         }
-        $('#bracketNode').append(elBracket);
-        this.updatePercent();
-        return this.scoreView.model.on('change', this.updatePercent, this);
+        return $('#bracketNode').append(elBracket);
       },
       updatePercent: function() {
         if (this.model.get('pickStatus') === "OPEN") {
@@ -149,8 +149,7 @@
               }
             }
           });
-          this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [baseView, baseView.model.get('previousGame')]);
-          return this.updatePercent();
+          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [baseView, baseView.model.get('previousGame')]);
         }
       },
       removeTeam: function(startingView) {
@@ -197,8 +196,7 @@
             previousGameView = eachView;
             return _.isEqual(baseView, dropView);
           });
-          this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
-          return this.updatePercent();
+          return this.chainSaveCallbacks(pendingSaveArr, this.checkRemoveFutureWins, [lastLandingView, baseView.model.get('previousGame')]);
         }
       },
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
@@ -238,7 +236,6 @@
               userPick: null,
               previousGame: null
             });
-            _this.updatePercent();
             if (pendingDeleteArr.length > 1) {
               return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
             }

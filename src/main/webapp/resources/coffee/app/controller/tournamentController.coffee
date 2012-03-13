@@ -47,6 +47,7 @@ define [
     @scoreView = new ScoreView(
       model:new ScoreModel(tieBreaker:@model.get('tieBreaker'))
     )
+    @scoreView.model.on('change',@updatePercent,@)
 
     elBracket = $(@sectionHB(
       class: "regions"
@@ -83,6 +84,7 @@ define [
             teamView.on('drop',@teamDrop,@)
             teamView.on('advance',@advanceTeam,@)
             teamView.on('remove',@removeTeam,@)
+            teamView.model.on('change',@updatePercent,@)
 
             @teamViews[team.locator] = teamView
 
@@ -102,8 +104,6 @@ define [
       elBracket.append(elRegion)
 
     $('#bracketNode').append(elBracket)
-    @updatePercent()
-    @scoreView.model.on('change',@updatePercent,@)
 
   updatePercent: ->
     if @model.get('pickStatus') is "OPEN"
@@ -140,7 +140,6 @@ define [
             position: landingView.model.get('position')
       )
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[baseView,baseView.model.get('previousGame')])
-      @updatePercent()
 
 
 
@@ -191,7 +190,6 @@ define [
         _.isEqual baseView, dropView
 
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView,baseView.model.get('previousGame')])
-      @updatePercent()
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
     view = _.first(pendingSaveArr)?.view
@@ -232,8 +230,6 @@ define [
           userPick:null
           previousGame:null
         )
-
-        @updatePercent()
 
         if pendingDeleteArr.length > 1 #if there are more views
           @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
