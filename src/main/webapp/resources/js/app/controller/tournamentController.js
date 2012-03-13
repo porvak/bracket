@@ -297,7 +297,7 @@
           prevTeamId = ((_ref = firstView.model.get('userPick')) != null ? _ref.teamId : void 0) || firstView.model.get('teamId');
           nextViewArr.forEach(function(view) {
             var _ref2;
-            if (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === prevTeamId || view.model.get('teamId') === prevTeamId) {
+            if (prevTeamId && (((_ref2 = view.model.get('userPick')) != null ? _ref2.teamId : void 0) === prevTeamId || view.model.get('teamId') === prevTeamId)) {
               return pendingDeleteArr.push(view);
             }
           });

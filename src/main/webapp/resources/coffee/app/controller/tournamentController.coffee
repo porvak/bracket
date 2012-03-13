@@ -285,7 +285,7 @@ define [
 
       prevTeamId = (firstView.model.get('userPick')?.teamId or firstView.model.get('teamId'))
       nextViewArr.forEach((view) ->
-          if (view.model.get('userPick')?.teamId is prevTeamId or view.model.get('teamId') is prevTeamId)
+          if (prevTeamId and (view.model.get('userPick')?.teamId is prevTeamId or view.model.get('teamId') is prevTeamId))
             pendingDeleteArr.push(view)
       )
 
