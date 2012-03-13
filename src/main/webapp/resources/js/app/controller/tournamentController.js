@@ -105,6 +105,7 @@
             return elBracket.append(elRegion);
           });
         }
+        this.updatePercent();
         return $('#bracketNode').append(elBracket);
       },
       updatePercent: function() {

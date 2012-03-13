@@ -103,6 +103,7 @@ define [
         elRegion.append(elRound)
       elBracket.append(elRegion)
 
+    @updatePercent()
     $('#bracketNode').append(elBracket)
 
   updatePercent: ->
