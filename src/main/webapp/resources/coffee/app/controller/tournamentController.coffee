@@ -193,32 +193,35 @@ define [
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView,baseView.model.get('previousGame')])
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
-    view = _.first(pendingSaveArr)?.view
-    view?.$el.addClass('saving')
-    callback?.apply(@,callbackArgs)
+    if @model.get('pickStatus') isnt "OPEN"
+      alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!')
+    else
+      view = _.first(pendingSaveArr)?.view
+      view?.$el.addClass('saving')
+      callback?.apply(@,callbackArgs)
 
-    view?.model.save(
-      _.first(pendingSaveArr)?.model
-    ,
-      {
-        wait:true
-        success: (model,response) =>
-#          console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-          view.$el.removeClass('saving')
-          if pendingSaveArr.length > 1 #if there are more views
-            @chainSaveCallbacks(_.last(pendingSaveArr,pendingSaveArr.length-1),callback,callbackArgs) #save the rest of the views
-          else
+      view?.model.save(
+        _.first(pendingSaveArr)?.model
+      ,
+        {
+          wait:true
+          success: (model,response) =>
+  #          console.log("POST: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+            view.$el.removeClass('saving')
+            if pendingSaveArr.length > 1 #if there are more views
+              @chainSaveCallbacks(_.last(pendingSaveArr,pendingSaveArr.length-1),callback,callbackArgs) #save the rest of the views
+            else
 
-        error: (model, response) =>
-          pendingSaveArr.forEach((viewObj) ->
-            viewObj.view.$el.removeClass('saving')
-          )
-          if response.status is 404
-            alert 'Please sign in using twitter.'
-#          if response.status is 500
-#            console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
-      }
-    )
+          error: (model, response) =>
+            pendingSaveArr.forEach((viewObj) ->
+              viewObj.view.$el.removeClass('saving')
+            )
+            if response.status is 404
+              alert 'Please sign in using twitter.'
+  #          if response.status is 500
+  #            console.log("POST ERROR: http://#{window.location.host + model.url()}\nJSON:#{JSON.stringify(model.toJSON())}\n\n")
+        }
+      )
 
   chainDeleteCallbacks: (pendingDeleteArr)->
     view = _.first(pendingDeleteArr)

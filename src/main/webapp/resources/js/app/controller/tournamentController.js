@@ -202,28 +202,32 @@
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
         var view, _ref, _ref2,
           _this = this;
-        view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
-        if (view != null) view.$el.addClass('saving');
-        if (callback != null) callback.apply(this, callbackArgs);
-        return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
-          wait: true,
-          success: function(model, response) {
-            view.$el.removeClass('saving');
-            if (pendingSaveArr.length > 1) {
-              return _this.chainSaveCallbacks(_.last(pendingSaveArr, pendingSaveArr.length - 1), callback, callbackArgs);
-            } else {
+        if (this.model.get('pickStatus') !== "OPEN") {
+          return alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!');
+        } else {
+          view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
+          if (view != null) view.$el.addClass('saving');
+          if (callback != null) callback.apply(this, callbackArgs);
+          return view != null ? view.model.save((_ref2 = _.first(pendingSaveArr)) != null ? _ref2.model : void 0, {
+            wait: true,
+            success: function(model, response) {
+              view.$el.removeClass('saving');
+              if (pendingSaveArr.length > 1) {
+                return _this.chainSaveCallbacks(_.last(pendingSaveArr, pendingSaveArr.length - 1), callback, callbackArgs);
+              } else {
 
+              }
+            },
+            error: function(model, response) {
+              pendingSaveArr.forEach(function(viewObj) {
+                return viewObj.view.$el.removeClass('saving');
+              });
+              if (response.status === 404) {
+                return alert('Please sign in using twitter.');
+              }
             }
-          },
-          error: function(model, response) {
-            pendingSaveArr.forEach(function(viewObj) {
-              return viewObj.view.$el.removeClass('saving');
-            });
-            if (response.status === 404) {
-              return alert('Please sign in using twitter.');
-            }
-          }
-        }) : void 0;
+          }) : void 0;
+        }
       },
       chainDeleteCallbacks: function(pendingDeleteArr) {
         var view,
