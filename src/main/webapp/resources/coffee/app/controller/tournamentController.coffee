@@ -224,25 +224,28 @@ define [
       )
 
   chainDeleteCallbacks: (pendingDeleteArr)->
-    view = _.first(pendingDeleteArr)
-    view?.$el.addClass('saving')
+    if @model.get('pickStatus') isnt "OPEN"
+      alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!')
+    else
+      view = _.first(pendingDeleteArr)
+      view?.$el.addClass('saving')
 
-    view?.model.deletePick({
-      success: () =>
-        view.$el.removeClass('saving')
-        view.model.set(
-          userPick:null
-          previousGame:null
-        )
+      view?.model.deletePick({
+        success: () =>
+          view.$el.removeClass('saving')
+          view.model.set(
+            userPick:null
+            previousGame:null
+          )
 
-        if pendingDeleteArr.length > 1 #if there are more views
-          @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
+          if pendingDeleteArr.length > 1 #if there are more views
+            @chainDeleteCallbacks(_.last(pendingDeleteArr,pendingDeleteArr.length-1))
 
-      error: () =>
-        pendingDeleteArr.forEach((view) ->
-            view.$el.removeClass('saving')
-        )
-    })
+        error: () =>
+          pendingDeleteArr.forEach((view) ->
+              view.$el.removeClass('saving')
+          )
+      })
 
 
 

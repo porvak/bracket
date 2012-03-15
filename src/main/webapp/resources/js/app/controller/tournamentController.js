@@ -232,25 +232,29 @@
       chainDeleteCallbacks: function(pendingDeleteArr) {
         var view,
           _this = this;
-        view = _.first(pendingDeleteArr);
-        if (view != null) view.$el.addClass('saving');
-        return view != null ? view.model.deletePick({
-          success: function() {
-            view.$el.removeClass('saving');
-            view.model.set({
-              userPick: null,
-              previousGame: null
-            });
-            if (pendingDeleteArr.length > 1) {
-              return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
+        if (this.model.get('pickStatus') !== "OPEN") {
+          return alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!');
+        } else {
+          view = _.first(pendingDeleteArr);
+          if (view != null) view.$el.addClass('saving');
+          return view != null ? view.model.deletePick({
+            success: function() {
+              view.$el.removeClass('saving');
+              view.model.set({
+                userPick: null,
+                previousGame: null
+              });
+              if (pendingDeleteArr.length > 1) {
+                return _this.chainDeleteCallbacks(_.last(pendingDeleteArr, pendingDeleteArr.length - 1));
+              }
+            },
+            error: function() {
+              return pendingDeleteArr.forEach(function(view) {
+                return view.$el.removeClass('saving');
+              });
             }
-          },
-          error: function() {
-            return pendingDeleteArr.forEach(function(view) {
-              return view.$el.removeClass('saving');
-            });
-          }
-        }) : void 0;
+          }) : void 0;
+        }
       },
       recurNextTeamViews: function(baseView, actionAttr, actionAttrArgs, nextTeamViewArr) {
         var nextGame, nextTeamView, _ref;
