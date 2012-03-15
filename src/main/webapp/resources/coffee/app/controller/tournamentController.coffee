@@ -40,7 +40,7 @@ define [
   render: ->
     if @model.get('pickStatus') isnt "OPEN"
       $('.navbar.leaderboard').removeClass('hidden')
-      $('#scoreboard').removeClass('hidden')
+#      $('#scoreboard').removeClass('hidden')
 
 #    console.log("GET: http://#{window.location.host + @model.url()}\n\n")
 

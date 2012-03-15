@@ -29,7 +29,6 @@
           _this = this;
         if (this.model.get('pickStatus') !== "OPEN") {
           $('.navbar.leaderboard').removeClass('hidden');
-          $('#scoreboard').removeClass('hidden');
         }
         this.scoreView = new ScoreView({
           model: new ScoreModel({
