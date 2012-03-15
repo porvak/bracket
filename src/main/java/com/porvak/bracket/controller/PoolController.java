@@ -24,7 +24,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.*;
-import static com.porvak.bracket.domain.BracketConstants.REDIRECT_TO_HOME;
+import static com.porvak.bracket.domain.BracketConstants.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -49,8 +49,8 @@ public class PoolController extends AbstractBracketController {
      * @param userPickMap Map that contains 'regionId', 'gameId', and 'teamId'
      * @param currentUser
      */
-    @ResponseStatus(CREATED)
-    @RequestMapping(value = "/api/pool/{poolId}/user/pick", method = POST)
+//    @ResponseStatus(CREATED)
+//    @RequestMapping(value = "/api/pool/{poolId}/user/pick", method = POST)
     public void saveUserPick(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> userPickMap, Principal currentUser){
         //TODO: validate that the given user has rights to save this pick
         Account account = getUserAccount(currentUser);
@@ -64,8 +64,8 @@ public class PoolController extends AbstractBracketController {
         return REDIRECT_TO_HOME;
     }
 
-    @ResponseStatus(CREATED)
-    @RequestMapping(value = "/api/pool/{poolId}/user/tiebreaker", method = POST)
+//    @ResponseStatus(CREATED)
+//    @RequestMapping(value = "/api/pool/{poolId}/user/tiebreaker", method = POST)
     public void saveUserTieBreaker(@PathVariable("poolId") String poolId, @RequestBody Map<String, Object> tieBreakerScore, Principal currentUser){
         Account account = getUserAccount(currentUser);
         poolService.addTieBreaker(account.getId(), poolId, Integer.parseInt(checkNotNull(tieBreakerScore.get("tieBreaker"), "Tie Breaker can not be null.").toString()));
