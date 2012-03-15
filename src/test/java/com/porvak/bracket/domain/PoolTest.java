@@ -23,6 +23,6 @@ public class PoolTest {
         System.out.println(ToStringBuilder.reflectionToString(pool, ToStringStyle.MULTI_LINE_STYLE));
         assertThat(pool.getPoolName(), is("2012 NCAA Global Pool"));
         assertThat(pool.getScoringStrategy().size(), is(7));
-        assertThat(pool.getScoringStrategy(), hasEntry(7,32));
+        assertThat(pool.getScoringStrategy(), hasEntry(7,0));
     }
 }
