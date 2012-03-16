@@ -19,7 +19,7 @@ public class Game extends AbstractBracket implements Comparable<Game>{
     private Map<Integer, GameTeam> teamMap;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    private Team userGameWinner;
+    private Team userPickedGameWinner;
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private GamePointer nextGame;
@@ -89,12 +89,12 @@ public class Game extends AbstractBracket implements Comparable<Game>{
         return null;
     }
 
-    public Team getUserGameWinner() {
-        return userGameWinner;
+    public Team getUserPickedGameWinner() {
+        return userPickedGameWinner;
     }
 
-    public void setUserGameWinner(Team userGameWinner) {
-        this.userGameWinner = userGameWinner;
+    public void setUserPickedGameWinner(Team userPickedGameWinner) {
+        this.userPickedGameWinner = userPickedGameWinner;
     }
 
     public static void validatePosition(int position){
