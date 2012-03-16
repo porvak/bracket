@@ -27,7 +27,7 @@
         } else {
           this.$el = $(this.teamHB(displayTeam));
         }
-        if (this.model.get('teamId') || ((_ref = this.model.get('userPick')) != null ? _ref.teamId : void 0)) {
+        if (this.model.get('pickStatus') === 'OPEN' && (this.model.get('teamId') || ((_ref = this.model.get('userPick')) != null ? _ref.teamId : void 0))) {
           this.$el.addClass('pickable');
         } else {
           this.$el.removeClass('pickable');

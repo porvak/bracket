@@ -29,7 +29,7 @@ define [
       else
         @$el = $(@teamHB(displayTeam))
 
-      if @model.get('teamId') or @model.get('userPick')?.teamId
+      if @model.get('pickStatus') is 'OPEN' and (@model.get('teamId') or @model.get('userPick')?.teamId)
         @$el.addClass 'pickable'
       else
         @$el.removeClass 'pickable'

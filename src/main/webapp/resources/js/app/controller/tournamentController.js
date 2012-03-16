@@ -27,7 +27,8 @@
       render: function() {
         var elBracket, _ref,
           _this = this;
-        if (this.model.get('pickStatus') !== "OPEN") {
+        this.pickStatus = this.model.get('pickStatus');
+        if (this.pickStatus !== "OPEN") {
           $('.navbar.leaderboard').removeClass('hidden');
         }
         this.scoreView = new ScoreView({
@@ -69,6 +70,7 @@
                         team.nextGame = (game.nextGame ? game.nextGame : null);
                         if (team.teamId) team.pickable = true;
                         team.locator = "" + region.regionId + "-" + game.gameId + "-" + team.position;
+                        team.pickStatus = _this.pickStatus;
                         teamView = new TeamView({
                           model: new TeamModel(team)
                         });
@@ -108,7 +110,7 @@
         return $('#bracketNode').append(elBracket);
       },
       updatePercent: function() {
-        if (this.model.get('pickStatus') === "OPEN") {
+        if (this.pickStatus === "OPEN") {
           return this.percentView.render(this.teamViews, this.scoreView);
         }
       },
@@ -202,7 +204,7 @@
       chainSaveCallbacks: function(pendingSaveArr, callback, callbackArgs) {
         var view, _ref, _ref2,
           _this = this;
-        if (this.model.get('pickStatus') !== "OPEN") {
+        if (this.pickStatus !== "OPEN") {
           return alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!');
         } else {
           view = (_ref = _.first(pendingSaveArr)) != null ? _ref.view : void 0;
@@ -232,7 +234,7 @@
       chainDeleteCallbacks: function(pendingDeleteArr) {
         var view,
           _this = this;
-        if (this.model.get('pickStatus') !== "OPEN") {
+        if (this.pickStatus !== "OPEN") {
           return alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!');
         } else {
           view = _.first(pendingDeleteArr);

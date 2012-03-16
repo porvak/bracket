@@ -38,7 +38,9 @@ define [
 
 
   render: ->
-    if @model.get('pickStatus') isnt "OPEN"
+    @pickStatus = @model.get('pickStatus')
+
+    if @pickStatus isnt "OPEN"
       $('.navbar.leaderboard').removeClass('hidden')
 #      $('#scoreboard').removeClass('hidden')
 
@@ -75,6 +77,7 @@ define [
             team.nextGame = (if game.nextGame then game.nextGame else null)
             team.pickable = true if team.teamId
             team.locator = "#{region.regionId}-#{game.gameId}-#{team.position}"
+            team.pickStatus = @pickStatus
 
             teamView = new TeamView(
               model:new TeamModel(team)
@@ -107,7 +110,7 @@ define [
     $('#bracketNode').append(elBracket)
 
   updatePercent: ->
-    if @model.get('pickStatus') is "OPEN"
+    if @pickStatus is "OPEN"
       @percentView.render(@teamViews,@scoreView)
 
 
@@ -193,7 +196,7 @@ define [
       @chainSaveCallbacks(pendingSaveArr, @checkRemoveFutureWins,[lastLandingView,baseView.model.get('previousGame')])
 
   chainSaveCallbacks: (pendingSaveArr,callback,callbackArgs)->
-    if @model.get('pickStatus') isnt "OPEN"
+    if @pickStatus isnt "OPEN"
       alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!')
     else
       view = _.first(pendingSaveArr)?.view
@@ -224,7 +227,7 @@ define [
       )
 
   chainDeleteCallbacks: (pendingDeleteArr)->
-    if @model.get('pickStatus') isnt "OPEN"
+    if @pickStatus isnt "OPEN"
       alert('Bracket picks have closed. Thanks for trying out the app, and check back soon to see your score!')
     else
       view = _.first(pendingDeleteArr)
