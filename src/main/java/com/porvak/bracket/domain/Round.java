@@ -11,8 +11,10 @@ import java.util.Map;
 
 public class Round extends AbstractBracket implements Comparable<Round>{
     private int roundId;
-    private String roundName;
 
+
+    private int dbRoundId;
+    private String roundName;
     @JsonIgnore
     @Field("games")
     private Map<Integer, Game> gameMap;
@@ -20,7 +22,7 @@ public class Round extends AbstractBracket implements Comparable<Round>{
     public Round(){
         gameMap = Maps.newHashMap();
     }
-    
+
     public Game findGameById(int id){
         return gameMap.get(id);
     }
@@ -39,6 +41,14 @@ public class Round extends AbstractBracket implements Comparable<Round>{
 
     public void setRoundName(String roundName) {
         this.roundName = roundName;
+    }
+
+    public int getDbRoundId() {
+        return dbRoundId;
+    }
+
+    public void setDbRoundId(int dbRoundId) {
+        this.dbRoundId = dbRoundId;
     }
 
     public List<Game> getGames() {
