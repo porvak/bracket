@@ -23,7 +23,7 @@
         this.$el.html(leaderBoardObj);
         return this.$el.find('table').dataTable({
           "bJQueryUI": true,
-          "sScrollY": "260px",
+          "sScrollY": "370px",
           "bPaginate": false
         });
       },
@@ -31,8 +31,8 @@
         if (this.$el.dialog('option', 'autoOpen')) {
           this.$el.dialog({
             autoOpen: false,
-            title: 'LeaderBoard',
-            height: 400,
+            title: 'Leaderboard',
+            height: 500,
             width: 600,
             position: ['center', 50],
             modal: true,

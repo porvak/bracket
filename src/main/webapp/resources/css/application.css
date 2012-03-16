@@ -98,7 +98,7 @@ header h1 strong {
 header p.follow_us {
   color: #efe9e5;
   background: #000000;
-  font-size: .85em;
+  font-size: 0.85em;
   position: absolute;
   bottom: -2em;
   right: 8px;
@@ -132,13 +132,14 @@ header nav {
   font-size: .95em;
   font-weight: bold;
 }
-header nav a {
+header nav a, header nav a:visited {
   margin-right: 5px;
   padding: 4px 4px;
   color: #ffffff;
-  text-decoration: none;
+  /*text-decoration: none;*/
+
 }
-header nav a.selected {
+header nav a.selected, header nav a:visited.selected {
   background: #000000;
   background: -moz-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(0%, #000000), color-stop(100%, #393939));
@@ -405,7 +406,7 @@ header nav a.selected {
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  font-size: .85em;
+  font-size: 0.85em;
 }
 .region.region-5 .round.round-3 .game .team-0 .team, .region.region-5 .round.round-3 .game .team-1 .team {
   width: 80%;
@@ -601,4 +602,96 @@ input.twitter_signin {
   text-align: left;
   font-size: 1.0em;
   border: 1px solid #333333;
+}
+.ui-widget {
+  font-family: Arial, sans-serif;
+}
+.ui-widget .ui-dialog-title {
+  color: #1e4164;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.45em;
+}
+.ui-dialog {
+  background: #eeeff0;
+  background: -moz-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeff0), color-stop(40%, #d3d6d8), color-stop(70%, #c5c9cc));
+  background: -webkit-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -o-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -ms-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+}
+.ui-dialog .ui-dialog-content {
+  padding: 0;
+  margin-top: 0em;
+}
+.ui-dialog .ui-state-default {
+  background: none;
+  border: none;
+}
+.ui-dialog .ui-dialog-titlebar, .ui-dialog .ui-toolbar {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 0.85em;
+}
+.ui-dialog .ui-dialog-titlebar label, .ui-dialog .ui-toolbar label {
+  font-weight: normal;
+}
+.ui-dialog .ui-toolbar {
+  margin-bottom: 1em;
+}
+.ui-dialog .ui-corner-all,
+.ui-dialog .ui-corner-top,
+.ui-dialog .ui-corner-right,
+.ui-dialog .ui-corner-tr {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+.ui-dialog .dataTable .DataTables_sort_wrapper {
+  padding-left: 1.25em;
+}
+.ui-dialog .dataTable th {
+  position: relative;
+  zoom: 1;
+  color: #1e4164;
+  font-size: .75em;
+  padding: .25em 0;
+}
+.ui-dialog .dataTable th:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.ui-dialog .dataTable th .ui-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.ui-dialog .dataTable tr.even td {
+  background: #c4c6c5;
+}
+.ui-dialog .dataTable tr.odd td {
+  background: #e2e4e3;
+}
+.ui-dialog .dataTable tr td {
+  font-size: 0.85em;
+  font-weight: normal;
+  padding: .5em .1em;
+}
+.ui-dialog .dataTables_info {
+  margin-top: 1em;
+}
+.ui-dialog #DataTables_Table_0 thead {
+  /*display: none;*/
+
+  border-bottom: 1px solid #efe9e5;
 }
