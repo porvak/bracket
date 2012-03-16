@@ -2,6 +2,8 @@
 @font-face { font-family: Blokletters-Balpen; src: url('../../resources/fonts/Blokletters-Balpen.ttf'); }
 @font-face { font-family: Blokletters-Viltstift; src: url('../../resources/fonts/Blokletters-Viltstift.ttf'); }
 
+@standardTextSize: .85em;
+
 /*Colors*/
 @slalomWarmGray: #efe9e5;
 @slalomBlue: #1E4164;
@@ -14,6 +16,8 @@
 @textPrimary: #000;
 @textSecondary: @slalomWarmGray;
 @textTertiary: #b22773;
+@evenColor: #c4c6c5;
+@oddColor: #e2e4e3;
 @errorAction: #DE010F;
 @goodAction: @slalomGreen;
 @colorLink: @slalomLightBlue;
@@ -130,7 +134,7 @@ header {
     p.follow_us {
         color: @textSecondary;
         background: @bgSecondary;
-        font-size: .85em;
+        font-size: @standardTextSize;
         position: absolute;
         bottom: -2em;
         right: 8px;
@@ -163,11 +167,11 @@ header {
         margin-top: 8px;
         font-size: .95em;
         font-weight: bold;
-        a {
+        a,a:visited {
             margin-right: 5px;
             padding: 4px 4px;
             color: lighten(@textSecondary, 80%);
-            text-decoration: none;
+            /*text-decoration: none;*/
 
             &.selected {
                 .background-gradient(@bgSecondary, 0%, @bgSecondary, 0%, darken(@bgSecondaryGradientHelper,20%), 100%);
@@ -401,7 +405,7 @@ header {
                     bottom: auto;
                     background: none;
                     .clear-box-shadow;
-					font-size: .85em;
+					font-size: @standardTextSize;
 					.team {
 						width: 80%;
 					}
@@ -591,4 +595,85 @@ input.twitter_signin {
     text-align: left;
     font-size: 1.0em;
     border: 1px solid lighten(@bgSecondary, 20%);
+}
+
+
+.ui-widget {
+    font-family: Arial, sans-serif;
+    .ui-dialog-title {
+        color: @slalomBlue;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.45em;
+    }
+}
+
+.ui-dialog {
+    .background-gradient(darken(@bgPrimary,0%), 0%, darken(@bgPrimary,10%), 40%, darken(@bgPrimary,15%), 70%);
+
+    .ui-dialog-content {
+        padding: 0;
+        margin-top: 0em;
+    }
+    .ui-state-default {
+        background: none;
+        border: none;
+    }
+    .ui-dialog-titlebar, .ui-toolbar {
+        .border-radius(0px);
+        border: none;
+        background: none;
+        text-align: center;
+        font-size: @standardTextSize;
+        label {
+            font-weight: normal;
+        }
+    }
+    .ui-toolbar {
+        margin-bottom: 1em;
+    }
+    .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+        .border-radius(0px);
+    }
+
+    .dataTable {
+        .DataTables_sort_wrapper {
+            padding-left: 1.25em;
+        }
+        th {
+            position: relative;
+            .clear_fix;
+            color: @slalomBlue;
+            font-size: .75em;
+            padding: .25em 0;
+            .ui-icon {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+        }
+        tr {
+            &.even td {
+                background: @evenColor;
+            }
+            &.odd td {
+                background: @oddColor;
+            }
+            td {
+                font-size: @standardTextSize;
+                font-weight: normal;
+                padding: .5em .1em;
+            }
+        }
+        
+    }
+    .dataTables_info {
+        margin-top: 1em;
+    }
+    #DataTables_Table_0 {
+        thead {
+            /*display: none;*/
+            border-bottom: 1px solid @slalomWarmGray;
+        }
+    }
 }

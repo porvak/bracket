@@ -7,8 +7,8 @@
     <title>The Bracket App</title>
     <link rel="stylesheet" type="text/css" href="resources/css/reset.css">
     <link rel="stylesheet" type="text/css" href="resources/css/style.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/application.css">
     <link rel="stylesheet" type="text/css" href="resources/css/smoothness/jquery-ui-1.8.18.custom.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/application.css">
 
     <!-- Use Google Web Fonts -->
     <link href='' rel='stylesheet' type='text/css'>
@@ -40,7 +40,7 @@
     <header class="clear_fix">
         <h1>The Bracket <strong>App</strong></h1>
         <nav>
-            <a href="#" class="navbar leaderboard hidden">Leaderboard</a>
+            <a href="#" class="navbar leaderboard">Leaderboard</a>
         </nav>
         <p class="follow_us">
             Follow <a href="https://twitter.com/#!/thebracketapp">@thebracketapp</a> for updates.
