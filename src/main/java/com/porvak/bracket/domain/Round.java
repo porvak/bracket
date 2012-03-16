@@ -11,10 +11,9 @@ import java.util.Map;
 
 public class Round extends AbstractBracket implements Comparable<Round>{
     private int roundId;
-
-
     private int dbRoundId;
     private String roundName;
+
     @JsonIgnore
     @Field("games")
     private Map<Integer, Game> gameMap;

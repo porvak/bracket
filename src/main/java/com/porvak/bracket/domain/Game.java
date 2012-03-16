@@ -51,6 +51,14 @@ public class Game extends AbstractBracket implements Comparable<Game>{
         return teamArray;
     }
     
+    public void setTeams(GameTeam[] gameTeams){
+        if(teamMap == null){
+            teamMap = Maps.newHashMap();
+        }
+        teamMap.put(0, gameTeams[0]);
+        teamMap.put(1, gameTeams[1]);
+    }
+    
     public void setNextGame(GamePointer nextGame){
         this.nextGame = nextGame;
     }

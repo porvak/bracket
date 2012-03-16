@@ -1,17 +1,17 @@
 package com.porvak.bracket.utils.builder;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.porvak.bracket.domain.Region;
 import com.porvak.bracket.domain.Tournament;
 import com.porvak.bracket.domain.TournamentType;
 
-import java.util.List;
+import java.util.Map;
 
 public class TournamentBuilder {
     private String id;
     private String name;
     private TournamentType type;
-    private List<Region> regions;
+    private Map<Integer, Region> regions;
     
     public TournamentBuilder(){
         defaults();
@@ -21,7 +21,7 @@ public class TournamentBuilder {
         id = "1";
         name = "2012 Men's Basketball Championship";
         type = TournamentType.NCAA;
-        regions = Lists.newLinkedList();
+        regions = Maps.newHashMap();
     }
     
     public TournamentBuilder withId(String id){
@@ -40,7 +40,7 @@ public class TournamentBuilder {
     }
 
     public TournamentBuilder addRegion(Region region){
-        regions.add(region);
+        regions.put(region.getRegionId(), region);
         return this;
     }
     
@@ -49,7 +49,7 @@ public class TournamentBuilder {
         tournament.setId(id);
         tournament.setName(name);
         tournament.setType(type);
-        tournament.setRegions(regions);
+        tournament.setRegionMap(regions);
         return tournament;
     }
 }
