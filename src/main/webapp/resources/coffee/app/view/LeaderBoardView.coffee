@@ -33,7 +33,13 @@ define [
       @$el.find('table').dataTable(
         "bJQueryUI": true,
         "sScrollY": "260px",
-        "bPaginate": false
+        "bPaginate": false,
+        "aaSorting": [[1,'desc'], [2, 'asc'], [0,'asc']],
+        "aoColumns": [
+            null,
+            { "sType": "numeric" },
+            null,
+        ]
       )
 
 

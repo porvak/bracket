@@ -23,16 +23,22 @@
         this.$el.html(leaderBoardObj);
         return this.$el.find('table').dataTable({
           "bJQueryUI": true,
-          "sScrollY": "370px",
-          "bPaginate": false
+          "sScrollY": "260px",
+          "bPaginate": false,
+          "aaSorting": [[1, 'desc'], [2, 'asc'], [0, 'asc']],
+          "aoColumns": [
+            null, {
+              "sType": "numeric"
+            }, null
+          ]
         });
       },
       toggle: function() {
         if (this.$el.dialog('option', 'autoOpen')) {
           this.$el.dialog({
             autoOpen: false,
-            title: 'Leaderboard',
-            height: 500,
+            title: 'LeaderBoard',
+            height: 400,
             width: 600,
             position: ['center', 50],
             modal: true,
