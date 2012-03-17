@@ -19,10 +19,6 @@ public class Region extends AbstractBracket{
 
     private String name;
 
-//    @JsonProperty
-//    @Transient
-//    private List<Round> rounds;
-
     @JsonIgnore
     @Field("rounds")
     private Map<Integer, Round> roundMap;
