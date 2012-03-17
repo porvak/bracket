@@ -22,6 +22,7 @@ import java.util.Map;
 
 @CompoundIndexes({
    @CompoundIndex(name = "user_tourn_pool_id_idx", unique = true, def = "{'userId': 1, 'poolId': 1, 'tournamentId': 1}"),
+   @CompoundIndex(name = "user_tourn_id_idx", unique = true, def = "{'userId': 1, 'tournamentId': 1}"),
    @CompoundIndex(name = "user_pool_id_idx", unique = true, def = "{'userId': 1, 'poolId': 1}")
 })
 public class UserTournament extends AbstractBracket {
@@ -33,8 +34,6 @@ public class UserTournament extends AbstractBracket {
     @Field("regions")
     private Map<Integer, Region> regionMap;
     
-//    @Transient
-//    private List<Region> regions;
     private Status pickStatus;
     private String tournamentId;
     private String poolId;
@@ -49,7 +48,6 @@ public class UserTournament extends AbstractBracket {
         this.tournamentId = tournament.getId();
         this.name = tournament.getName();
         this.type = tournament.getType();
-//        this.regions = tournament.getRegions();
         regionMap = Maps.uniqueIndex(tournament.getRegions(), new Function<Region, Integer>() {
             @Override
             public Integer apply(@Nullable Region input) {
