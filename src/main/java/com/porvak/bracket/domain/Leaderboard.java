@@ -1,5 +1,6 @@
 package com.porvak.bracket.domain;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Map;
@@ -13,6 +14,8 @@ public class Leaderboard extends AbstractBracket{
     private String username;
     private Integer totalScore;
     private Integer totalAvailablePoints;
+
+    @JsonProperty
     private Map<Integer, RoundScore> roundScores;
 
     @PersistenceConstructor

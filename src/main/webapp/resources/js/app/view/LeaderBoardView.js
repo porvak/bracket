@@ -25,11 +25,25 @@
           "bJQueryUI": true,
           "sScrollY": "260px",
           "bPaginate": false,
-          "aaSorting": [[1, 'desc'], [2, 'asc'], [0, 'asc']],
+          "aaSorting": [[7, 'desc'], [8, 'asc'], [0, 'asc']],
           "aoColumns": [
             null, {
               "sType": "numeric"
-            }, null
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }, {
+              "sType": "numeric"
+            }
           ]
         });
       },
