@@ -82,5 +82,10 @@ public class Tournament extends AbstractBracket{
             }
         });
     }
+    
+    @JsonIgnore
+    public Game findGameByPointer(GamePointer gamePointer){
+        return regionMap.get(gamePointer.getRegionId()).getRoundById(BracketConstants.getRoundIdForGame(gamePointer.getGameId(), gamePointer.getRegionId())).findGameById(gamePointer.getGameId());
+    }
 
 }

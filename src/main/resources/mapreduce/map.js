@@ -60,10 +60,14 @@ function() {
               }
             }
           }
+          else {
+            // User didn't make a pick, so they lose.
+            weWon = false;
+          }
 
           var maxPossible = maxPointsInRound(gameKey);
           if (weWon == null) {
-            // If we don't know abou this game, no win, no loss
+            // If we don't know about this game, no win, no loss
             emit(gameKey, {
               score: 0,
               pointsCounted: 0,

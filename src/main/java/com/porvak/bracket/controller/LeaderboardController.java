@@ -29,5 +29,12 @@ public class LeaderboardController {
     public List<Leaderboard> getLeaderboard(@PathVariable("poolId") String poolId){
         return leaderboardRepository.findByPoolId(poolId, new Sort(DESC, "totalScore"));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/pub/leaderboard/pool/{poolId}", method = GET)
+    public List<Leaderboard> getPublicLeaderboard(@PathVariable("poolId") String poolId){
+        return leaderboardRepository.findByPoolId(poolId, new Sort(DESC, "totalScore"));
+    }
+
     
 }
