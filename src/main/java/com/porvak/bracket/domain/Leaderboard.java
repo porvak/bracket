@@ -14,6 +14,8 @@ public class Leaderboard extends AbstractBracket{
     private String username;
     private Integer totalScore;
     private Integer totalAvailablePoints;
+    private Integer place;
+    private Integer totalParticipants;
 
     @JsonProperty
     private Map<Integer, RoundScore> roundScores;
@@ -69,6 +71,22 @@ public class Leaderboard extends AbstractBracket{
 
     public void setTotalAvailablePoints(Integer totalAvailablePoints) {
         this.totalAvailablePoints = totalAvailablePoints;
+    }
+
+    public Integer getPlace() {
+        return place;
+    }
+
+    public void setPlace(Integer place) {
+        this.place = place;
+    }
+
+    public Integer getTotalParticipants() {
+        return totalParticipants;
+    }
+
+    public void setTotalParticipants(Integer totalParticipants) {
+        this.totalParticipants = totalParticipants;
     }
 
     public void addRoundScore(int roundId, int score, int available) {

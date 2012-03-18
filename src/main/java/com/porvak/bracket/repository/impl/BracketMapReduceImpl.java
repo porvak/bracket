@@ -18,6 +18,7 @@ import org.bson.types.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
@@ -31,6 +32,9 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static com.porvak.bracket.domain.BracketConstants.*;
+import static org.springframework.data.domain.Sort.Direction.*;
 
 @Repository
 public class BracketMapReduceImpl {
@@ -108,6 +112,28 @@ public class BracketMapReduceImpl {
 
             leaderboardRepository.save(leaderboard);
         }
+        
+        //-- Add Rankings
+        List<Leaderboard> orderedLeaderboard = leaderboardRepository.findByPoolId(POOL_ID, new Sort(DESC, "totalScore"));
+
+        int place = 0;
+        int previousScore = 1000;
+        int totalParticipants = orderedLeaderboard.size();
+        int sameScoreCount = 1;
+
+        for (Leaderboard leaderboard : orderedLeaderboard) {
+            if(leaderboard.getTotalScore() < previousScore){
+                previousScore = leaderboard.getTotalScore();
+                place = place + sameScoreCount;
+                sameScoreCount = 0;
+            }
+
+            leaderboard.setPlace(place);
+            leaderboard.setTotalParticipants(totalParticipants);
+            sameScoreCount = sameScoreCount + 1;
+            leaderboardRepository.save(leaderboard);
+        }
+
     }
     
     private class LeaderboardMrKey{
