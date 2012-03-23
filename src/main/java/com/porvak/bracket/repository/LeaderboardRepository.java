@@ -9,4 +9,6 @@ import java.util.List;
 public interface LeaderboardRepository extends MongoRepository<Leaderboard, String> {
     
     List<Leaderboard> findByPoolId(String poolId, Sort sort);
+    
+    Leaderboard findByPoolIdAndUserId(String poolId, String userId);
 }

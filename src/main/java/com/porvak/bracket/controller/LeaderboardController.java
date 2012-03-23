@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
-public class LeaderboardController {
+public class LeaderboardController extends AbstractBracketController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LeaderboardController.class);
     
@@ -36,5 +37,10 @@ public class LeaderboardController {
         return leaderboardRepository.findByPoolId(poolId, new Sort(DESC, "totalScore"));
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/api/leaderboard/pool/{poolId}/user", method = GET)
+    public Leaderboard getUserScoreForPool(@PathVariable("poolId") String poolId, Principal currentUser){
+        return leaderboardRepository.findByPoolIdAndUserId(poolId, getUserAccount(currentUser).getId());
+    }
     
 }
