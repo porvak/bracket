@@ -34,7 +34,7 @@ define [
         "bJQueryUI": true,
         "sScrollY": "260px",
         "bPaginate": false,
-        "aaSorting": [[0,'asc'], [9, 'asc'], [1,'asc']],
+        "aaSorting": [[0,'asc'], [9, 'desc'], [1,'asc']],
         "aoColumns": [
             { "sType": "numeric" },
             null,
