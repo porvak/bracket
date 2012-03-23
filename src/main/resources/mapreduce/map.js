@@ -39,7 +39,7 @@ function() {
 
           if (pickedTeam != null) {
             // Before going further, check if our pick already lost
-            if (loserList.indexOf(pickedTeam.teamId) != -1) {
+            if (loserList.indexOf(pickedTeam._id.toString()) !== -1) {
               weWon = false;
             }
             else if (game.status == "COMPLETE") {
@@ -49,14 +49,17 @@ function() {
               var teams = game.teams;
               for (var teamId in teams) {
                 var team = teams[teamId];
-                if (team.winner) winningTeamId = team._id;
+                if (team.winner){
+                  winningTeamId = team._id;
+                }
+                else {
+                  loserList.push(team._id.toString());
+                }
               }
 
               // Check if we won
               if (winningTeamId != null) {
                 weWon = winningTeamId.equals(pickedTeam._id);
-                // If not, put the team on the loser list
-                if (!weWon) loserList.push(pickedTeam._id);
               }
             }
           }
