@@ -1,0 +1,6 @@
+bracket.i??
+src/main/resources/rebel.xml
+target/
+.librarian
+.tmp
+Puppetfile.lock

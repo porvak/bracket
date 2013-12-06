@@ -1,0 +1,61 @@
+<mockup version="1.0" skin="sketch" measuredW="1120" measuredH="788" mockupW="1060" mockupH="768">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::MenuBar" x="83" y="107" w="960" h="29" measuredW="564" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>3</selectedIndex>
+        <text>My%20Bracket%20%28Phase%202%20-%20My%20Pools%29%2C%20Current%20Bracket%2C%20Leaderboard%2C%20Login%20with%20Twitter</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="60" y="20" w="1024" h="768" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>The%20Bracket%20App%0Ahttp%3A//www.thebracketapp.com</text>
+        <verticalScrollbar>true</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Label" x="227" y="160" w="-1" h="-1" measuredW="77" measuredH="21" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>My%20Score%3A15</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="508" y="161" w="-1" h="-1" measuredW="109" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>My%20Place%3A%2020/200</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="783" y="161" w="-1" h="-1" measuredW="120" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Points%20Available%3A%2020</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Image" x="68" y="189" w="975" h="556" measuredW="1167" measuredH="554" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>../Desktop/Screen%2520Shot%25202012-02-25%2520at%252010.57.00%2520PM.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Arrow" x="178" y="277" w="268" h="110" measuredW="150" measuredH="100" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <leftArrow>false</leftArrow>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Label" x="415" y="387" w="62" h="21" measuredW="47" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Nicholls</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::StickyNote" x="202" y="322" w="176" h="178" measuredW="109" measuredH="123" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>When%20a%20user%20drag%20a%20team%2C%20the%20application%20should%20auto%20fill%20in%20the%20preceding%20picks.%20%20Also%20a%20user%20can%20click%20on%20a%20team%20to%20advance%20that%20team%20to%20the%20next%20round.</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Image" x="853" y="141" w="-1" h="-1" measuredW="142" measuredH="19" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>../Desktop/Screen%2520Shot%25202012-02-25%2520at%252011.03.05%2520PM.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::StickyNote" x="975" y="160" w="145" h="102" measuredW="109" measuredH="123" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Potential%20Feature%3A%20Tweet%20a%20link%20of%20their%20picks%20to%20their%20friends</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

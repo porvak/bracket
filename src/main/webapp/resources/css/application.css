@@ -1,0 +1,697 @@
+/*Fonts*/
+@font-face {
+  font-family: Blokletters-Balpen;
+  src: url('../../resources/fonts/Blokletters-Balpen.ttf');
+}
+@font-face {
+  font-family: Blokletters-Viltstift;
+  src: url('../../resources/fonts/Blokletters-Viltstift.ttf');
+}
+/*Colors*/
+/*End Colors*/
+/*Common classes / functions*/
+.clear_fix {
+  zoom: 1;
+}
+.clear_fix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clear-box-shadow {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
+/*Not supported very well*/
+/*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-top-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-bottom-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*End Common*/
+/*General tags*/
+body {
+  font-size: 14px;
+  text-align: left;
+  background: #eeeff0 url('../../resources/images/scanline.png') repeat;
+}
+input[type=submit] {
+  cursor: pointer;
+}
+h2 {
+  color: #1e4164;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.45em;
+}
+strong {
+  font-weight: bold;
+}
+a {
+  color: #13b5ea;
+}
+a:visited {
+  color: #0f91bb;
+}
+/*End General Tags*/
+header {
+  background: #6c6c6c;
+  background: -moz-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6c6c6c), color-stop(0%, #6c6c6c), color-stop(100%, #000000));
+  background: -webkit-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
+  background: -o-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
+  background: -ms-linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
+  background: linear-gradient(top, #6c6c6c 0%, #6c6c6c 0%, #000000 100%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  color: #efe9e5;
+  /*height: 40px;*/
+
+  padding: 8px;
+  margin-bottom: 50px;
+  position: relative;
+}
+header h1 {
+  float: left;
+  margin-right: 40px;
+  font-size: 2.0em;
+}
+header h1 strong {
+  font-weight: bold;
+}
+header p.follow_us {
+  color: #efe9e5;
+  background: #000000;
+  font-size: 0.85em;
+  position: absolute;
+  bottom: -2em;
+  right: 8px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: .5em;
+}
+header p.follow_us a {
+  font-weight: bold;
+}
+header div.login {
+  float: right;
+}
+header div.login p {
+  float: left;
+  margin-right: 5px;
+}
+header div.login p a {
+  color: #ffffff;
+  font-size: .8em;
+}
+header div.login img {
+  width: 60%;
+  height: 60%;
+}
+header nav {
+  font-family: Arial, sans-serif;
+  float: left;
+  margin-top: 8px;
+  font-size: .95em;
+  font-weight: bold;
+}
+header nav a, header nav a:visited {
+  margin-right: 5px;
+  padding: 4px 4px;
+  color: #ffffff;
+  /*text-decoration: none;*/
+
+}
+header nav a.selected, header nav a:visited.selected {
+  background: #000000;
+  background: -moz-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(0%, #000000), color-stop(100%, #393939));
+  background: -webkit-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
+  background: -o-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
+  background: -ms-linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
+  background: linear-gradient(top, #000000 0%, #000000 0%, #393939 100%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  border-right: 1px solid #6c6c6c;
+  border-bottom: 1px solid #6c6c6c;
+}
+#scoreboard {
+  position: relative;
+  margin: 0 auto;
+  width: 17em;
+  border: 1px solid #d3d6d8;
+  padding: 10px 5px;
+  background: #eeeff0;
+  background: -moz-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeff0), color-stop(40%, #d3d6d8), color-stop(70%, #c5c9cc));
+  background: -webkit-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -o-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -ms-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  box-shadow: 0px 0px 5px 1px #cccccc;
+  -webkit-box-shadow: 0px 0px 5px 1px #cccccc;
+  -moz-box-shadow: 0px 0px 5px 1px #cccccc;
+}
+#scoreboard h2 {
+  margin-bottom: .5em;
+}
+#scoreboard ul.stats {
+  zoom: 1;
+}
+#scoreboard ul.stats:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+#scoreboard ul.stats li {
+  float: left;
+  width: 25%;
+  text-align: center;
+}
+#scoreboard ul.stats div.title {
+  font-size: .7em;
+}
+#scoreboard ul.stats div.value {
+  color: #b22773;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+.gameBackgroundLeft {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundRight {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.gameBackgroundAll {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundLeftRight {
+  background: url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.pickIconBackgroundRight {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.pickIconBackgroundRight:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region h2 {
+  color: #c5c9cc;
+  text-shadow: 0px 0px 2px #c5c9cc;
+  position: absolute;
+  top: 47%;
+}
+.region.region-1 h2, .region.region-3 h2 {
+  right: 2em;
+}
+.region.region-1 div.game, .region.region-3 div.game {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-1 div.game div.details, .region.region-3 div.game div.details {
+  margin-right: 3%;
+}
+.region.region-2 h2, .region.region-4 h2 {
+  left: 2em;
+}
+.region.region-2 div.game, .region.region-4 div.game {
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.region.region-2 div.game div.details, .region.region-4 div.game div.details {
+  margin-left: 3%;
+}
+.region.region-2 div.game div.detail div.pick_icon, .region.region-4 div.game div.detail div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-2 div.game div.detail div.pick_icon:hover, .region.region-4 div.game div.detail div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-1 div.details,
+.region.region-3 div.details,
+.region.region-2 div.details,
+.region.region-4 div.details,
+.region.region-5 div.details {
+  width: 97%;
+}
+.region.region-1 div.details .team-0,
+.region.region-3 div.details .team-0,
+.region.region-2 div.details .team-0,
+.region.region-4 div.details .team-0,
+.region.region-5 div.details .team-0,
+.region.region-1 div.details .team-1,
+.region.region-3 div.details .team-1,
+.region.region-2 div.details .team-1,
+.region.region-4 div.details .team-1,
+.region.region-5 div.details .team-1 {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.region.region-3, .region.region-4 {
+  /*bottom: -60px;*/
+
+  bottom: -5%;
+}
+.region.region-5 {
+  /*background-color: #f5f5f5;*/
+
+  height: 60%;
+  width: 25%;
+  top: 22.5%;
+  left: 37.5%;
+}
+.region.region-5 h2 {
+  top: 30%;
+  width: 100%;
+  z-index: 1;
+}
+.region.region-5 .round-1 {
+  position: relative;
+  height: 100%;
+}
+.region.region-5 .round-1 .game-1, .region.region-5 .round-1 .game-2 {
+  position: absolute;
+  height: 100%;
+  width: 37.5%;
+}
+.region.region-5 .round-1 .game-1 {
+  left: 0;
+  top: 0;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-5 .round-1 .game-1 .details {
+  margin-right: 3px;
+}
+.region.region-5 .round-1 .game-2 {
+  right: 0;
+  top: 0;
+  margin-left: 3px;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.region.region-5 .round-1 .game-2 div.detail div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round-1 .game-2 div.detail div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round-1 .game-2 .details {
+  margin-left: 3px;
+}
+.region.region-5 .round.round-2 {
+  top: 45%;
+  height: 2.4em;
+  margin-top: -2.4em;
+  width: 100%;
+  text-align: center;
+}
+.region.region-5 .round.round-2 .team-1, .region.region-5 .round.round-2 .team-0 {
+  position: absolute;
+  width: 40%;
+  top: 1.0em;
+  bottom: auto;
+}
+.region.region-5 .round.round-2 .team-0 {
+  left: 5%;
+}
+.region.region-5 .round.round-2 .team-0.highlight-team-drop {
+  left: 5%;
+}
+.region.region-5 .round.round-2 .team-1 {
+  right: 5%;
+}
+.region.region-5 .round.round-2 .team-1.highlight-team-drop {
+  right: 5%;
+  left: auto;
+}
+.region.region-5 .round.round-2 .team-1 div.pick_icon {
+  background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round.round-2 .team-1 div.pick_icon:hover {
+  background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+}
+.region.region-5 .round.round-2 .game {
+  /*position: absolute;*/
+
+  height: inherit;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  width: 90%;
+  margin: 0 auto;
+  /*top: 50%;*/
+
+  /*height: 1.4em;*/
+
+}
+.region.region-5 .round.round-2 .game .pickable {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background: none;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.region.region-5 .round.round-2 .game .pickable .pick_icon {
+  display: none;
+}
+.region.region-5 .round.round-2 .finalVS {
+  font-weight: bold;
+  font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+  top: 1.0em;
+  position: absolute;
+  left: 47.5%;
+  width: 5%;
+}
+.region.region-5 .round.round-3 {
+  top: 45%;
+  /*margin-top: -2.5em;*/
+
+  height: auto;
+}
+.region.region-5 .round.round-3 .game {
+  margin: 0 auto;
+  margin-top: -1em;
+  width: 60%;
+  height: 2.4em;
+  padding: 5px;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+}
+.region.region-5 .round.round-3 .game .team-0, .region.region-5 .round.round-3 .game .team-1 {
+  top: 50%;
+  padding: 0;
+  height: 50%;
+  bottom: auto;
+  background: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  font-size: 0.85em;
+}
+.region.region-5 .round.round-3 .game .team-0 .team, .region.region-5 .round.round-3 .game .team-1 .team {
+  width: 80%;
+}
+.region.region-5 .round.round-3 .game .pick_icon {
+  display: none;
+}
+.region.region-5 .round.round-3 .game .seed {
+  width: 12%;
+  margin-right: .1em;
+}
+.region.region-5 .round.round-3 h3 {
+  color: #1e4164;
+  position: relative;
+  /*top: 1.3em;*/
+
+  font-size: .95em;
+  /*.gameBackgroundAll;*/
+
+  background: url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  margin: 0 auto;
+  padding: 5px;
+  width: 60%;
+  font-weight: bold;
+}
+.region.region-5 .round {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+.region.region-5 .round .game {
+  margin-top: 0;
+}
+#combined {
+  position: relative;
+  top: 1.6em;
+  background: url('../images/gameborder_t.png') repeat-x top, url('../../resources/images/gameborder_b.png') repeat-x bottom, url('../../resources/images/gameborder_r.png') repeat-y left, url('../../resources/images/gameborder_r.png') repeat-y right;
+  background-color: #FFF;
+  width: 60%;
+  margin: 0 auto;
+  padding: .2em;
+}
+#combined label {
+  font-size: .75em;
+}
+div.game {
+  padding: 4px 0px;
+  border: none;
+}
+div.game div.detail {
+  font-family: 'Blokletters-Balpen', Arial, sans-serif;
+  font-size: .55em;
+  line-height: 1.4em;
+  width: 100%;
+}
+div.game div.detail.team-0, div.game div.detail.team-1 {
+  zoom: 1;
+  padding: 4px 0px;
+}
+div.game div.detail.team-0:after, div.game div.detail.team-1:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+div.game div.detail.team-0 .score {
+  color: #21314d;
+}
+div.game div.detail.team-1 .score {
+  color: #199fce;
+}
+div.game div.detail .team {
+  width: 80px;
+  margin-right: 0px;
+}
+div.game div.detail .team .team-delete {
+  position: relative;
+  top: 0;
+  float: left;
+  margin-left: 1px;
+  margin-right: 1px;
+  padding: 0px 1px 0 1px;
+  display: block;
+  font-family: Arial, sans-serif;
+  background: #de010f;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #eeeff0;
+  font-weight: bold;
+}
+div.game div.detail .team .team-delete:hover {
+  text-decoration: underline;
+}
+div.game div.detail .team .team-delete.hidden {
+  display: none;
+}
+div.game div.detail .seed {
+  margin-left: 2px;
+  float: left;
+}
+div.game div.detail .score, div.game div.detail .seed {
+  font-weight: bold;
+  font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+}
+div.game div.detail .score {
+  float: right;
+}
+div.game div.detail .pick_icon {
+  display: none;
+}
+div.game .pickable {
+  background: #e0e2e4;
+  background: -moz-linear-gradient(top, #e0e2e4 0%, #eeeff0 20%, #ffffff 70%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e0e2e4), color-stop(20%, #eeeff0), color-stop(70%, #ffffff));
+  background: -webkit-linear-gradient(top, #e0e2e4 0%, #eeeff0 20%, #ffffff 70%);
+  background: -o-linear-gradient(top, #e0e2e4 0%, #eeeff0 20%, #ffffff 70%);
+  background: -ms-linear-gradient(top, #e0e2e4 0%, #eeeff0 20%, #ffffff 70%);
+  background: linear-gradient(top, #e0e2e4 0%, #eeeff0 20%, #ffffff 70%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  box-shadow: 1px 1px 1px 1px #aaaaaa;
+  -webkit-box-shadow: 1px 1px 1px 1px #aaaaaa;
+  -moz-box-shadow: 1px 1px 1px 1px #aaaaaa;
+}
+div.game .pickable .score {
+  display: none;
+}
+div.game .pickable div.pick_icon {
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+  display: block;
+  float: right;
+  text-indent: -9999px;
+  height: 100%;
+  width: 12px;
+  background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
+}
+div.game .pickable div.pick_icon:hover {
+  background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+}
+.clear-pickable-style {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background: none;
+}
+.clear-pickable-style .pick_icon {
+  display: none;
+}
+/*Drop zone for highlighting a team*/
+.team-1.highlight-team-drop, .team-0.highlight-team-drop {
+  background-color: #d3d6d8;
+  background: #d3d6d8;
+  background: -moz-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d3d6d8), color-stop(20%, #eeeff0), color-stop(60%, #ffffff));
+  background: -webkit-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -o-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: -ms-linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  background: linear-gradient(top, #d3d6d8 0%, #eeeff0 20%, #ffffff 60%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+  border: 3px dashed #AAA;
+  height: 1.4em;
+  width: 98%;
+  left: 1%;
+}
+.team-1.highlight-team-drop div.pick_icon, .team-0.highlight-team-drop div.pick_icon {
+  display: none;
+}
+.team-1.saving, .team-0.saving {
+  border: 3px dashed #8dc63f;
+  background: none;
+}
+.seed {
+  color: #b22773;
+}
+input.twitter_signin {
+  border: none;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  /*width: 100px;*/
+
+  height: 30px;
+  background: 4px 4px url('../../resources/images/sprite.png') no-repeat;
+  padding: 2px 4px 2px 32px;
+  color: #efe9e5;
+  text-align: left;
+  font-size: 1.0em;
+  border: 1px solid #333333;
+}
+.ui-widget {
+  font-family: Arial, sans-serif;
+}
+.ui-widget .ui-dialog-title {
+  color: #1e4164;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.45em;
+}
+.ui-dialog {
+  background: #eeeff0;
+  background: -moz-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeff0), color-stop(40%, #d3d6d8), color-stop(70%, #c5c9cc));
+  background: -webkit-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -o-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: -ms-linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  background: linear-gradient(top, #eeeff0 0%, #d3d6d8 40%, #c5c9cc 70%);
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+
+}
+.ui-dialog .ui-dialog-content {
+  padding: 0;
+  margin-top: 0em;
+}
+.ui-dialog .ui-state-default {
+  background: none;
+  border: none;
+}
+.ui-dialog .ui-dialog-titlebar, .ui-dialog .ui-toolbar {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 0.85em;
+}
+.ui-dialog .ui-dialog-titlebar label, .ui-dialog .ui-toolbar label {
+  font-weight: normal;
+}
+.ui-dialog .ui-toolbar {
+  margin-bottom: 1em;
+}
+.ui-dialog .ui-corner-all,
+.ui-dialog .ui-corner-top,
+.ui-dialog .ui-corner-right,
+.ui-dialog .ui-corner-tr {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+.ui-dialog .dataTable .DataTables_sort_wrapper {
+  padding-left: 1.25em;
+}
+.ui-dialog .dataTable th {
+  position: relative;
+  zoom: 1;
+  color: #1e4164;
+  font-size: .75em;
+  padding: .25em 0;
+}
+.ui-dialog .dataTable th:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.ui-dialog .dataTable th .ui-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.ui-dialog .dataTable tr.even td {
+  background: #c4c6c5;
+}
+.ui-dialog .dataTable tr.odd td {
+  background: #e2e4e3;
+}
+.ui-dialog .dataTable tr td {
+  font-size: 0.85em;
+  font-weight: normal;
+  padding: .5em .1em;
+}
+.ui-dialog .dataTables_info {
+  margin-top: 1em;
+}
+.ui-dialog #DataTables_Table_0 thead {
+  /*display: none;*/
+
+  border-bottom: 1px solid #efe9e5;
+}

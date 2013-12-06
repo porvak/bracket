@@ -1,0 +1,679 @@
+/*Fonts*/
+@font-face { font-family: Blokletters-Balpen; src: url('../../resources/fonts/Blokletters-Balpen.ttf'); }
+@font-face { font-family: Blokletters-Viltstift; src: url('../../resources/fonts/Blokletters-Viltstift.ttf'); }
+
+@standardTextSize: .85em;
+
+/*Colors*/
+@slalomWarmGray: #efe9e5;
+@slalomBlue: #1E4164;
+@slalomGreen: #8dc63f;
+@slalomLightBlue: #13b5ea;
+
+@bgPrimary: #eeeff0;
+@bgSecondary: #000;
+@bgSecondaryGradientHelper: #6C6C6C;
+@textPrimary: #000;
+@textSecondary: @slalomWarmGray;
+@textTertiary: #b22773;
+@evenColor: #c4c6c5;
+@oddColor: #e2e4e3;
+@errorAction: #DE010F;
+@goodAction: @slalomGreen;
+@colorLink: @slalomLightBlue;
+
+@seedColor: @textTertiary;
+@teamOneScoreColor: #21314d;
+@teamTwoScoreColor: #199fce;
+/*End Colors*/
+
+/*Common classes / functions*/
+.clear_fix{
+    zoom:1;
+    &:after {
+        content:".";display:block;height:0;clear:both;visibility:hidden;
+    }
+}
+
+.background-gradient(@color1, @percent1, @color2, @percent2, @color3, @percent3) {
+	background: @color1;
+	background: -moz-linear-gradient(top,  @color1 @percent1, @color2 @percent2, @color3 @percent3);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(@percent1,@color1), color-stop(@percent2,@color2), color-stop(@percent3,@color3));
+	background: -webkit-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: -o-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: -ms-linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	background: linear-gradient(top,  @color1 @percent1,@color2 @percent2,@color3 @percent3);
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );	*/
+}
+
+.border-radius(@border) {
+	-webkit-border-radius: @border;
+	-moz-border-radius: @border;
+	border-radius: @border;
+}
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+.clear-box-shadow {
+  box-shadow:         none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow:    none;
+}
+
+/*Not supported very well*/
+/*//.border-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-top-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-top-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*// .border-bottom-image(@image, @topOffset, @rightOffset, @bottomOffset, @leftOffset, @horizontalRepeat, @verticalRepeat) {*/
+/*//     -moz-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -webkit-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     -o-border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*//     border-bottom-image: url(@image) @topOffset @rightOffset @bottomOffset @leftOffset @horizontalRepeat @verticalRepeat;*/
+/*// }*/
+/*End Common*/
+
+/*General tags*/
+body {
+    font-size: 14px;
+    text-align: left;
+    background: @bgPrimary url('../../resources/images/scanline.png') repeat;
+}
+
+input[type=submit] {
+    cursor: pointer;
+}
+
+h2 {
+    color: @slalomBlue;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.45em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+a {
+    color: @colorLink;
+    &:visited {
+        color: darken(@colorLink,10%);
+    }
+}
+/*End General Tags*/
+
+header {
+    .background-gradient(@bgSecondaryGradientHelper, 0%, @bgSecondaryGradientHelper, 0%, @bgSecondary, 100%);
+    color: @textSecondary;
+    /*height: 40px;*/
+    padding: 8px;
+    margin-bottom: 50px;
+    position: relative;
+
+    h1 {
+        float: left;
+        margin-right: 40px;
+        font-size: 2.0em;
+        strong {
+            font-weight: bold;
+        }
+    }
+
+    p.follow_us {
+        color: @textSecondary;
+        background: @bgSecondary;
+        font-size: @standardTextSize;
+        position: absolute;
+        bottom: -2em;
+        right: 8px;
+        .border-radius(4px);
+        padding: .5em;
+        a {
+            font-weight: bold;
+        }
+    }
+
+    div.login {
+        float: right;
+        p {
+            float: left;
+            margin-right: 5px;
+            a {
+                color: lighten(@textSecondary, 80%);
+                font-size: .8em;
+            }
+        }
+        img {
+            width: 60%;
+            height: 60%;
+        }
+    }
+    
+    nav {
+        font-family: Arial, sans-serif;
+        float: left;
+        margin-top: 8px;
+        font-size: .95em;
+        font-weight: bold;
+        a,a:visited {
+            margin-right: 5px;
+            padding: 4px 4px;
+            color: lighten(@textSecondary, 80%);
+            /*text-decoration: none;*/
+
+            &.selected {
+                .background-gradient(@bgSecondary, 0%, @bgSecondary, 0%, darken(@bgSecondaryGradientHelper,20%), 100%);
+                .border-radius(6px);
+                border-right: 1px solid @bgSecondaryGradientHelper;
+                border-bottom: 1px solid @bgSecondaryGradientHelper;
+            }
+        }
+    }
+}
+
+#scoreboard {
+    position: relative;
+    margin: 0 auto;
+    width: 17em;
+    border: 1px solid darken(@bgPrimary,10%);
+    padding: 10px 5px;
+    .background-gradient(darken(@bgPrimary,0%), 0%, darken(@bgPrimary,10%), 40%, darken(@bgPrimary,15%), 70%);
+    .box-shadow(0px 0px 5px 1px, #CCC);
+    h2 {
+        margin-bottom: .5em;
+    }
+    ul.stats {
+        .clear_fix;
+        li {
+            float: left;
+            width: 25%;
+            text-align: center;
+        }
+        div.title {
+            font-size: .7em;
+        }
+        div.value {
+            color: @textTertiary;
+            font-weight: bold;
+            font-size: 1.25em;
+        }
+    }
+}
+
+.gameBackgroundLeft {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundRight {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y left;
+}
+.gameBackgroundAll {
+    background: url('../images/gameborder_t.png') repeat-x top
+        , url('../../resources/images/gameborder_b.png') repeat-x bottom
+        , url('../../resources/images/gameborder_r.png') repeat-y left
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+.gameBackgroundLeftRight {
+    background: url('../../resources/images/gameborder_r.png') repeat-y left
+        , url('../../resources/images/gameborder_r.png') repeat-y right;
+}
+
+.pickIconBackgroundRight {
+    background: 4px -70px url('../../resources/images/sprite.png') no-repeat;
+        &:hover {
+            background: 4px -90px url('../../resources/images/sprite.png') no-repeat;
+        }
+}
+
+.region {
+    h2 {
+        color: darken(@bgPrimary, 15%);
+        text-shadow: 0px 0px 2px darken(@bgPrimary, 15%);
+        position: absolute;
+        top: 47%;
+    }
+    &.region-1, &.region-3 {
+        h2 {
+            right: 2em;
+        }
+        div.game {
+            .gameBackgroundLeft;
+            div.details {
+                margin-right: 3%;
+            }
+        }
+    }
+    &.region-2, &.region-4 {
+        h2 {
+            left: 2em;
+        }
+        div.game {
+            .gameBackgroundRight;
+            div.details {
+                margin-left: 3%;
+            }
+            div.detail div.pick_icon {
+                .pickIconBackgroundRight;
+            }
+        }
+    }
+	&.region-1, &.region-3, &.region-2, &.region-4, &.region-5 {
+		div.details {
+			width: 97%;
+			.team-0, .team-1 {
+				.border-radius(5px);
+			}
+		}
+	}
+
+    @bottomRegionOffset: 5%;
+    &.region-3, &.region-4 {
+        /*bottom: -60px;*/
+        bottom: -@bottomRegionOffset;
+    }
+
+    &.region-5 {
+        @height: 60%;
+        @width: 25%;
+        /*background-color: #f5f5f5;*/
+        height: @height;
+        width: @width;
+        top: (50%+@bottomRegionOffset/2) - @height/2;
+        left: 50% - @width/2;
+
+        h2 {
+            top: 30%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .round-1 {
+            position: relative;
+            height: 100%;
+            .game-1, .game-2 {
+                position: absolute;
+                height: 100%;
+                width: 37.5%;
+            }
+            .game-1 {
+                left: 0;
+                top: 0;
+                .gameBackgroundLeft;
+                .details {
+                    margin-right: 3px;
+                }
+            }
+            .game-2 {
+                right: 0;
+                top: 0;
+                margin-left: 3px;
+                .gameBackgroundRight;
+                div.detail div.pick_icon {
+                    .pickIconBackgroundRight;
+                }
+                .details {
+                    margin-left: 3px;
+                }
+            }
+        }
+
+        .round.round-2 {
+            top: 45%;
+            height: 2.4em;
+            margin-top: -2.4em;
+            width: 100%;
+            text-align: center;
+            .team-1, .team-0 {
+                position: absolute;
+                width: 40%;
+                top: 1.0em;
+                bottom: auto;
+            }
+            .team-0 {
+                @leftPos: 5%;
+                left: @leftPos;
+                &.highlight-team-drop {
+                    left: @leftPos;
+                }
+            }
+            .team-1 {
+                @rightPos: 5%;
+                right: @rightPos;
+                &.highlight-team-drop {
+                    right: @rightPos;
+                    left: auto;
+                }
+                div.pick_icon {
+                    .pickIconBackgroundRight;
+                }
+            }
+            .game {
+                /*position: absolute;*/
+                height: inherit;
+                .gameBackgroundAll;
+                background-color: #FFF;
+                width: 90%;
+                margin: 0 auto;
+                /*top: 50%;*/
+                /*height: 1.4em;*/
+                .pickable {
+                    .clear-pickable-style;
+                    .gameBackgroundAll;
+                }
+            }
+			.finalVS {
+				font-weight: bold;
+				font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+				top: 1.0em;
+				position: absolute;
+				left: 47.5%;
+				width: 5%;
+			}
+        }
+
+        .round.round-3 {
+            top: 45%;
+            /*margin-top: -2.5em;*/
+            height: auto;
+            .game {
+                margin: 0 auto;
+                margin-top: -1em;
+                width: 60%;
+                height: 2.4em;
+                padding: 5px;
+                .gameBackgroundAll;
+                background-color: #FFF;
+                .team-0, .team-1 {
+                    top: 50%;
+                    padding: 0;
+                    height: 50%;
+                    bottom: auto;
+                    background: none;
+                    .clear-box-shadow;
+					font-size: @standardTextSize;
+					.team {
+						width: 80%;
+					}
+					
+                }
+                .pick_icon {
+                    display: none;
+                }
+
+                .seed {
+                    width: 12%;
+                    margin-right: .1em;
+                }
+            }
+            h3 {
+				color: @slalomBlue;
+                position: relative;
+                /*top: 1.3em;*/
+                font-size: .95em;
+                /*.gameBackgroundAll;*/
+                .gameBackgroundLeftRight;
+                background-color: #FFF;
+                margin: 0 auto;
+                padding: 5px;
+                width: 60%;
+				font-weight: bold;
+            }
+        }
+
+        .round {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            .game {
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+#combined {
+    position: relative;
+    top: 1.6em;
+    label {
+        font-size: .75em;
+    }
+    .gameBackgroundAll;
+    background-color: #FFF;
+    width: 60%;
+    margin: 0 auto;
+	padding: .2em;
+}
+
+div.game {
+    padding: 4px 0px;
+    border: none;
+
+    div.detail {
+        font-family: 'Blokletters-Balpen', Arial, sans-serif;
+        font-size: .55em;
+        line-height: 1.4em;
+        width: 100%;
+        &.team-0, &.team-1 {
+            .clear_fix;
+            padding: 4px 0px;
+        }
+        &.team-0 .score {
+            color: @teamOneScoreColor;
+        }
+        &.team-1 .score {
+            color: @teamTwoScoreColor;
+        }
+
+        .team {
+            width: 80px;
+            margin-right: 0px;
+
+            .team-delete {
+                position: relative;
+                top: 0;
+                float: left;
+                margin-left:1px;
+                margin-right:1px;
+                padding: 0px 1px 0 1px;
+                display: block;
+                font-family: Arial, sans-serif;
+                background: @errorAction;
+                .border-radius(4px);
+                color: @bgPrimary;
+                font-weight: bold;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .team-delete.hidden {
+                display:none;
+            }
+        }
+
+        .seed {
+            margin-left: 2px;
+            float: left;
+        }
+
+        .score, .seed {
+            font-weight: bold;
+            font-family: 'Blokletters-Viltstift', Arial, sans-serif;
+        }
+
+        .score {
+            float: right;
+        }
+
+        .pick_icon {
+            display: none;
+        }
+    }
+}
+
+div.game .pickable {
+    .background-gradient(darken(@bgPrimary,5%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 70%);
+    .box-shadow(1px 1px 1px 1px, #AAA);
+
+    .score {
+        display: none;
+    }
+
+    div.pick_icon {
+        cursor: pointer;
+        position: relative;
+        top: 1px;
+        display: block;
+        float: right;
+        text-indent: -9999px;
+        height: 100%;
+        width: 12px;
+        background: 4px -35px url('../../resources/images/sprite.png') no-repeat;
+
+        &:hover {
+            background: 4px -55px url('../../resources/images/sprite.png') no-repeat;
+        }
+    }
+}
+
+.clear-pickable-style {
+                    .clear-box-shadow;
+                    background: none;
+                    .pick_icon {
+                        display: none;
+                    }
+                }
+
+/*Drop zone for highlighting a team*/
+.team-1, .team-0 {
+    &.highlight-team-drop {
+        background-color: darken(@bgPrimary,10%);
+        .background-gradient(darken(@bgPrimary,10%), 0%, @bgPrimary, 20%, lighten(@bgPrimary,10%), 60%);
+        border: 3px dashed #AAA;
+        height:1.4em;
+        width:98%;
+        left: 1%;
+        div.pick_icon {
+            display: none;
+        }
+    }
+
+    &.saving {
+        border: 3px dashed @goodAction;
+        background: none;
+    }
+}
+
+.seed {
+    color: @seedColor;
+}
+
+input.twitter_signin {
+    border: none;
+    .border-radius(8px);
+    /*width: 100px;*/
+    height: 30px;
+    background: 4px 4px url('../../resources/images/sprite.png') no-repeat;
+    padding: 2px 4px 2px 32px;
+    color: @textSecondary;
+    text-align: left;
+    font-size: 1.0em;
+    border: 1px solid lighten(@bgSecondary, 20%);
+}
+
+
+.ui-widget {
+    font-family: Arial, sans-serif;
+    .ui-dialog-title {
+        color: @slalomBlue;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.45em;
+    }
+}
+
+.ui-dialog {
+    .background-gradient(darken(@bgPrimary,0%), 0%, darken(@bgPrimary,10%), 40%, darken(@bgPrimary,15%), 70%);
+
+    .ui-dialog-content {
+        padding: 0;
+        margin-top: 0em;
+    }
+    .ui-state-default {
+        background: none;
+        border: none;
+    }
+    .ui-dialog-titlebar, .ui-toolbar {
+        .border-radius(0px);
+        border: none;
+        background: none;
+        text-align: center;
+        font-size: @standardTextSize;
+        label {
+            font-weight: normal;
+        }
+    }
+    .ui-toolbar {
+        margin-bottom: 1em;
+    }
+    .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+        .border-radius(0px);
+    }
+
+    .dataTable {
+        .DataTables_sort_wrapper {
+            padding-left: 1.25em;
+        }
+        th {
+            position: relative;
+            .clear_fix;
+            color: @slalomBlue;
+            font-size: .75em;
+            padding: .25em 0;
+            .ui-icon {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+        }
+        tr {
+            &.even td {
+                background: @evenColor;
+            }
+            &.odd td {
+                background: @oddColor;
+            }
+            td {
+                font-size: @standardTextSize;
+                font-weight: normal;
+                padding: .5em .1em;
+            }
+        }
+        
+    }
+    .dataTables_info {
+        margin-top: 1em;
+    }
+    #DataTables_Table_0 {
+        thead {
+            /*display: none;*/
+            border-bottom: 1px solid @slalomWarmGray;
+        }
+    }
+}
