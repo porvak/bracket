@@ -4,6 +4,7 @@
     - "tomcat::source"
     - "jdk_oracle"
     - "mongodb"
+    - "maven::maven"
   mongodb::enable_10gen: true
   tomcat::source::version: "6.0.37"
   tomcat::source::mirror: "http://www.eng.lsu.edu/mirrors/apache/tomcat"

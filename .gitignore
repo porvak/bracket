@@ -3,4 +3,5 @@ src/main/resources/rebel.xml
 target/
 .librarian
 .tmp
+.vagrant
 Puppetfile.lock
