@@ -40,3 +40,7 @@ This application should be automatically configured in any IDE that supports mav
 To run the application use run __mvn package__ from the project's root directory.
 
 Once the build sucessfully finishes, you can deploy /target/bracket.war to your favorite Servlet container.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/porvak/bracket/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
