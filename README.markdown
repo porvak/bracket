@@ -44,4 +44,3 @@ Once the build sucessfully finishes, you can deploy /target/bracket.war to your 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/porvak/bracket/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-
