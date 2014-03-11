@@ -1,0 +1,24 @@
+# This file contains the list of external puppet module dependencies.
+# Edit this list and run the librarian update each time an external module is added.
+forge "http://forge.puppetlabs.com"
+
+# Most projects need the stdlib module from puppetlabs
+mod "puppetlabs/stdlib"
+mod "puppetlabs/apache"
+mod "puppetlabs/firewall"
+mod "bashtoni/timezone"
+mod "tylerwalts/jdk_oracle"
+mod "puppetlabs/mongodb"
+mod "maestrodev/maven"
+
+# For github sources, use the following syntax:
+mod "tomcat",
+    :ref => '1.1.0',
+    :git => "git://github.com/tylerwalts/puppet-tomcat.git"
+
+mod "user_account",
+    :git => "git://github.com/tylerwalts/puppet-user_account.git"
+
+mod "archive",
+    :git => "git://github.com/camptocamp/puppet-archive.git"
+

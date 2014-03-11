@@ -1,0 +1,23 @@
+---
+  classes:
+    - "apache"
+    - "tomcat::source"
+    - "jdk_oracle"
+    - "mongodb"
+    - "maven::maven"
+  mongodb::enable_10gen: true
+  tomcat::source::version: "6.0.37"
+  tomcat::source::mirror: "http://www.eng.lsu.edu/mirrors/apache/tomcat"
+  tomcat_instances:
+    dev:
+      ensure: "present"
+      http_port: "8080"
+      owner: "appUser"
+      ajp_port: "8009"
+      manage: true
+      access_log: true
+      server_port: "8005"
+      java_home: "/opt/java_home"
+      setenv:
+        - "JAVA_XMX=256m"
+

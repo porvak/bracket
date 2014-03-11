@@ -1,0 +1,23 @@
+---
+:hierarchy:
+  - "hosts/%{::fqdn}"
+  - "roles/%{::hostname}"
+  - "domains/%{::domain7}.%{::domain6}.%{::domain5}.%{::domain4}.%{::domain3}.%{::domain2}.%{::domain1}"
+  - "domains/%{::domain6}.%{::domain5}.%{::domain4}.%{::domain3}.%{::domain2}.%{::domain1}"
+  - "domains/%{::domain5}.%{::domain4}.%{::domain3}.%{::domain2}.%{::domain1}"
+  - "domains/%{::domain4}.%{::domain3}.%{::domain2}.%{::domain1}"
+  - "domains/%{::domain3}.%{::domain2}.%{::domain1}"
+  - "domains/%{::domain2}.%{::domain1}"
+  - "domains/%{::domain1}"
+  - project
+  - common
+
+:backends:
+  - yaml
+  - json
+
+:json: &data_dir
+  :datadir: "%{::hiera_config}/"
+
+:yaml: *data_dir
+
