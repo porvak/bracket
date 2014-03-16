@@ -1,8 +1,8 @@
 -
-    hostname: 'dev'
+    hostname: 'bracket'
     domain: 'example.com'
     ip: '192.168.88.10'
-    imageType: 'centos64'
-    ram: '512'
+    imageType: 'centos65'
+    ram: '1024'
     awsType: 't1.micro'
 #3663194 on 2013-12-03_1050

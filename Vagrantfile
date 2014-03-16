@@ -1,7 +1,5 @@
 # Note: First time users run this:  `vagrant plugin install vagrant-aws`
 require 'yaml'
-Vagrant.require_plugin "vagrant-aws"
-
 
 awsKeys = {
   "accessKey"       => ENV['AWS_ACCESS_KEY']        || 'define_access',
@@ -20,14 +18,13 @@ end
 begin
   imageTypes = YAML.load_file("#{File.dirname(__FILE__)}/tools/vagrant/imageTypes.yaml")
 rescue
-  imageTypes ||= {vagrantBox:'a',vagrantUrl:'b',amazonImage:'c',rackspaceImage:'d'}
+  imageTypes ||= {vagrantBox:'a',vagrantUrl:'b',amazonImage:'c',rackspaceImage:'d', vmware:'e'}
 end
 
 ### Node List ###
 # Use environment var, or default below:
 nodeList = ENV['nodes']
 nodeList ||= 'dev'
-#nodeList ||= 'cluster'
 p "Using node list: #{nodeList}"
 nodes = YAML.load_file("#{File.dirname(__FILE__)}/tools/vagrant/nodeLists/#{nodeList}.yaml")
 
@@ -76,13 +73,30 @@ Vagrant.configure("2") do |config|
                 vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1" ]
             end
 
+            # Vmware Fusion
+            node_default.vm.provider "vmware_fusion" do |v, override|
+                fqdn = "#{node['hostname']}.vagrant.#{node['domain']}"
+                override.vm.hostname           = fqdn
+                override.vm.box                = imageTypes[ node['imageType'] ]['vagrantBox']
+                override.vm.box_url            = imageTypes[ node['imageType'] ]['vmware']
+                override.vm.network :private_network, ip: node['ip']
+                node['portmappings'] && node['portmappings'].each do |portmap|
+                    override.vm.network :forwarded_port, guest: portmap['from'], host: portmap['to']
+                end
+                v.vmx["memsize"] = node['ram']
+                v.vmx["numvcpus"] = "2"
+            end
+
             # Rackspace
             # TODO
 
             ### Provision VMs ###
-            # Assume using the puppet apply wrapper with librarian argument
+            $script = <<-SCRIPT
+              /vagrant/tools/ansible/provision.sh
+            SCRIPT
+
             config.vm.provision :shell do |shell|
-                shell.inline = "/vagrant/tools/puppet/run_puppet_apply.sh -l"
+                shell.inline = $script
             end
         end
     end

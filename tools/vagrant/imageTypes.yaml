@@ -1,15 +1,22 @@
 # Define instance types in sets, to work local, AWS and Rackspace
 
-centos64:
-    vagrantBox: Centos64
-    vagrantUrl: http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box
-    amazonImage: ami-6fb1fe06
-    rackspaceImage: TBD
-
-precise64:
-    vagrantBox: precise64
-    vagrantUrl: http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box
+centos65:
+    vagrantBox: centos65
+    vagrantUrl: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
     amazonImage: TBD
     rackspaceImage: TBD
+    vmware: http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_centos-6.5_chef-provisionerless.box
+ubuntu1204:
+    vagrantBox: ubuntu1204
+    vagrantUrl: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
+    amazonImage: TBD
+    rackspaceImage: TBD
+    vmware: http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_ubuntu-12.04_chef-provisionerless.box
+ubuntu1310:
+    vagrantBox: ubuntu1310
+    vagrantUrl: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
+    amazonImage: TBD
+    rackspaceImage: TBD
+    vmware: http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_ubuntu-13.10_chef-provisionerless.box
 
 #3663194 on 2013-12-03_1050
