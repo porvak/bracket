@@ -1,0 +1,8 @@
+--- 
+- name: "Install packages to make a developer's life easier, not for production use."
+  yum: "pkg={{item}} state=installed"
+  with_items: 
+   - vim
+   - htop
+   - time
+     

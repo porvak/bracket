@@ -1,0 +1,6 @@
+[tomcat]
+localhost  ansible_connection=local
+
+[mongo]
+localhost  ansible_connection=local
+

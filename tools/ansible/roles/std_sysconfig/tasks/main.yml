@@ -1,0 +1,7 @@
+---
+- name: Ensure NTP (for time synchronization) is installed.
+  yum: pkg=ntp state=installed
+- name: Ensure NTP is running
+  service: name=ntpd state=started enabled=yes
+- name: Install tzdata package to manage timezone
+  yum: pkg=tzdata state=installed
