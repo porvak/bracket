@@ -8,4 +8,5 @@ installAnsible $ANSIBLE_VERSION
 
 echo "Provision bracket application for development."
 cd $SCRIPT_PATH
-sudo ansible-playbook -i vagrant_local_dev developer.yml 
+sudo ansible-playbook -i vagrant_local_dev site-developer.yml 
+
