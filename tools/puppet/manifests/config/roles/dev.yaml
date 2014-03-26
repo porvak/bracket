@@ -3,10 +3,13 @@
     - "apache"
     - "tomcat::source"
     - "jdk_oracle"
-    - "mongodb"
+    - "mongodb::globals"
+    - "mongodb::server"
+    - "mongodb::client"
     - "maven::maven"
-  mongodb::enable_10gen: true
-  tomcat::source::version: "6.0.37"
+  mongodb::globals::manage_package_repo: true
+  jdk_oracle::version: "8"
+  tomcat::source::version: "6.0.39"
   tomcat::source::mirror: "http://www.eng.lsu.edu/mirrors/apache/tomcat"
   tomcat_instances:
     dev:
